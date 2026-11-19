@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Criar Conta – Utilizador | HorizonteMZ</title>
+  <meta name="description" content="Cria a tua conta gratuita de utilizador no HorizonteMZ e acede a milhares de oportunidades."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ══════════════════════════════════════════
+       VARIÁVEIS E RESET
+    ══════════════════════════════════════════ */
+    :root {
+      --azul:        #0057C2;
+      --azul-dark:   #003F8F;
+      --azul-light:  #EEF4FF;
+      --amarelo:     #FFBE00;
+      --amarelo-dark:#E5AA00;
+      --verde:       #1DB954;
+      --vermelho:    #E53935;
+      --bg:          #F4F7FF;
+      --bg2:         #FFFFFF;
+      --texto:       #1A1A2E;
+      --texto2:      #555577;
+      --borda:       #DDE3F0;
+      --sombra:      rgba(0,87,194,0.10);
+      --sombra-hover:rgba(0,87,194,0.20);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --trans:       all 0.25s ease;
+    }
+    body.dark {
+      --azul:        #4A9EFF;
+      --azul-dark:   #2979D9;
+      --azul-light:  #0D1B3E;
+      --bg:          #0D1117;
+      --bg2:         #161B27;
+      --texto:       #E8EEFF;
+      --texto2:      #8899BB;
+      --borda:       #253050;
+      --sombra:      rgba(0,0,0,0.30);
+      --sombra-hover:rgba(0,0,0,0.50);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Segoe UI', system-ui, sans-serif;
+      background:var(--bg);
+      color:var(--texto);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      transition:background 0.3s, color 0.3s;
+    }
+    a { text-decoration:none; color:inherit; }
+
+    /* ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ */
+    header {
+      background:var(--azul);
+      height:65px;
+      padding:0 28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow:0 2px 20px rgba(0,0,0,0.22);
+      position:sticky;
+      top:0; z-index:100;
+    }
+    .logo { font-size:1.45rem; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+    .logo span { color:var(--amarelo); }
+    .h-right { display:flex; align-items:center; gap:10px; }
+    .btn-dark {
+      background:none; border:none; color:#fff;
+      font-size:1.05rem; cursor:pointer;
+      padding:7px; border-radius:var(--radius-sm);
+      transition:var(--trans);
+    }
+    .btn-dark:hover { background:rgba(255,255,255,0.18); }
+    .btn-voltar {
+      display:inline-flex; align-items:center; gap:6px;
+      color:rgba(255,255,255,0.88); font-size:0.87rem;
+      font-weight:600; padding:7px 14px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(255,255,255,0.30);
+      transition:var(--trans);
+    }
+    .btn-voltar:hover { background:rgba(255,255,255,0.18); color:#fff; }
+
+    /* ══════════════════════════════════════════
+       INDICADOR DE PROGRESSO
+    ══════════════════════════════════════════ */
+    .progresso-bar {
+      background:var(--bg2);
+      border-bottom:1px solid var(--borda);
+      padding:16px 28px;
+    }
+    .progresso-inner {
+      max-width:680px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      gap:0;
+    }
+    .passo {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      flex:1;
+      position:relative;
+    }
+    /* Linha conectora entre passos */
+    .passo:not(:last-child)::after {
+      content:'';
+      position:absolute;
+      top:16px;
+      left:calc(50% + 16px);
+      width:calc(100% - 32px);
+      height:2px;
+      background:var(--borda);
+      transition:var(--trans);
+    }
+    .passo.concluido:not(:last-child)::after { background:var(--azul); }
+
+    .passo-circulo {
+      width:32px; height:32px;
+      border-radius:50%;
+      background:var(--borda);
+      color:var(--texto2);
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.82rem; font-weight:700;
+      transition:var(--trans);
+      position:relative; z-index:1;
+    }
+    .passo.ativo .passo-circulo {
+      background:var(--azul);
+      color:#fff;
+      box-shadow:0 0 0 4px rgba(0,87,194,0.18);
+    }
+    .passo.concluido .passo-circulo {
+      background:var(--verde);
+      color:#fff;
+    }
+    .passo-label {
+      font-size:0.73rem;
+      color:var(--texto2);
+      margin-top:6px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .passo.ativo .passo-label { color:var(--azul); }
+    .passo.concluido .passo-label { color:var(--verde); }
+
+    /* ══════════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════════ */
+    main {
+      flex:1;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:44px 24px 60px;
+    }
+    .form-wrap {
+      width:100%;
+      max-width:680px;
+    }
+
+    /* Cabeçalho do form */
+    .form-topo {
+      text-align:center;
+      margin-bottom:36px;
+      animation:fadeUp 0.4s ease both;
+    }
+    .badge-tipo {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--azul-light);
+      color:var(--azul);
+      border:1px solid var(--borda);
+      padding:5px 14px;
+      border-radius:50px;
+      font-size:0.78rem; font-weight:700;
+      margin-bottom:14px;
+    }
+    .form-topo h1 {
+      font-size:1.85rem; font-weight:800;
+      color:var(--azul); letter-spacing:-0.4px;
+      margin-bottom:8px;
+    }
+    .form-topo p { font-size:0.92rem; color:var(--texto2); line-height:1.6; }
+
+    /* Card do formulário */
+    .form-card {
+      background:var(--bg2);
+      border-radius:var(--radius);
+      border:1.5px solid var(--borda);
+      padding:36px;
+      box-shadow:0 4px 24px var(--sombra);
+      animation:fadeUp 0.4s 0.1s ease both;
+    }
+
+    /* Secção dentro do card */
+    .sec-form {
+      display:none;
+    }
+    .sec-form.ativa { display:block; }
+
+    .sec-titulo {
+      font-size:1.05rem;
+      font-weight:800;
+      color:var(--azul);
+      margin-bottom:6px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .sec-sub {
+      font-size:0.85rem;
+      color:var(--texto2);
+      margin-bottom:28px;
+      line-height:1.5;
+    }
+
+    /* Grid de campos */
+    .grid-2 {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:0 20px;
+    }
+
+    /* ══════════════════════════════════════════
+       CAMPOS
+    ══════════════════════════════════════════ */
+    .campo { margin-bottom:20px; }
+    .campo label {
+      display:block;
+      font-size:0.85rem; font-weight:700;
+      margin-bottom:7px; color:var(--texto);
+    }
+    .campo label span.obrig { color:var(--vermelho); margin-left:2px; }
+    .campo label span.opc {
+      color:var(--texto2); font-weight:400;
+      font-size:0.78rem; margin-left:4px;
+    }
+
+    .input-wrap { position:relative; }
+    .input-wrap i.ic-esq {
+      position:absolute; left:14px; top:50%;
+      transform:translateY(-50%);
+      color:var(--texto2); font-size:0.92rem;
+      pointer-events:none;
+      transition:var(--trans);
+    }
+    .input-wrap:focus-within i.ic-esq { color:var(--azul); }
+
+    .input-wrap input,
+    .input-wrap select,
+    .input-wrap textarea {
+      width:100%;
+      padding:12px 14px 12px 42px;
+      border:1.5px solid var(--borda);
+      border-radius:var(--radius-sm);
+      font-size:0.93rem;
+      background:var(--bg);
+      color:var(--texto);
+      font-family:inherit;
+      transition:var(--trans);
+      outline:none;
+    }
+    .input-wrap select { cursor:pointer; }
+    .input-wrap textarea {
+      resize:vertical;
+      min-height:90px;
+      padding-top:10px;
+      line-height:1.55;
+    }
+    .input-wrap input:focus,
+    .input-wrap select:focus,
+    .input-wrap textarea:focus {
+      border-color:var(--azul);
+      box-shadow:0 0 0 3px rgba(0,87,194,0.12);
+      background:var(--bg2);
+    }
+
+    /* Sem ícone esquerdo */
+    .input-sem-ic input,
+    .input-sem-ic select,
+    .input-sem-ic textarea {
+      padding-left:14px;
+    }
+
+    /* Botão olho */
+    .btn-olho {
+      position:absolute; right:12px; top:50%;
+      transform:translateY(-50%);
+      background:none; border:none;
+      color:var(--texto2); cursor:pointer;
+      font-size:0.95rem; padding:4px;
+      transition:var(--trans);
+    }
+    .btn-olho:hover { color:var(--azul); }
+
+    /* Contador de caracteres */
+    .char-count {
+      font-size:0.75rem; color:var(--texto2);
+      text-align:right; margin-top:4px;
+    }
+
+    /* Estados de erro/valido */
+    .campo.erro .input-wrap input,
+    .campo.erro .input-wrap select,
+    .campo.erro .input-wrap textarea {
+      border-color:var(--vermelho);
+      box-shadow:0 0 0 3px rgba(229,57,53,0.10);
+    }
+    .campo.erro .input-wrap i.ic-esq { color:var(--vermelho); }
+    .campo.valido .input-wrap input,
+    .campo.valido .input-wrap select,
+    .campo.valido .input-wrap textarea {
+      border-color:var(--verde);
+    }
+    .msg-erro {
+      display:none;
+      font-size:0.79rem;
+      color:var(--vermelho);
+      margin-top:5px;
+      align-items:center; gap:5px;
+    }
+    .campo.erro .msg-erro { display:flex; }
+
+    /* ══════════════════════════════════════════
+       FORÇA DA SENHA
+    ══════════════════════════════════════════ */
+    .forca-wrap { margin-top:8px; }
+    .forca-barras {
+      display:flex; gap:4px; margin-bottom:5px;
+    }
+    .forca-barra {
+      flex:1; height:4px;
+      border-radius:2px;
+      background:var(--borda);
+      transition:var(--trans);
+    }
+    .forca-barra.fraca   { background:#E53935; }
+    .forca-barra.media   { background:#FF9800; }
+    .forca-barra.forte   { background:#4CAF50; }
+    .forca-barra.muitoforte { background:#1DB954; }
+    .forca-label {
+      font-size:0.77rem; font-weight:700;
+    }
+    .forca-fraca      { color:#E53935; }
+    .forca-media      { color:#FF9800; }
+    .forca-forte      { color:#4CAF50; }
+    .forca-muitoforte { color:#1DB954; }
+
+    /* ══════════════════════════════════════════
+       CHECKBOX E RADIO
+    ══════════════════════════════════════════ */
+    .check-grupo {
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-bottom:4px;
+    }
+    .check-item {
+      display:flex; align-items:center; gap:8px;
+      background:var(--bg);
+      border:1.5px solid var(--borda);
+      border-radius:var(--radius-sm);
+      padding:8px 14px;
+      cursor:pointer;
+      font-size:0.85rem;
+      transition:var(--trans);
+      user-select:none;
+    }
+    .check-item:hover { border-color:var(--azul); }
+    .check-item input[type="checkbox"] {
+      accent-color:var(--azul);
+      width:15px; height:15px;
+      cursor:pointer;
+    }
+    .check-item.selecionado {
+      border-color:var(--azul);
+      background:var(--azul-light);
+      color:var(--azul);
+      font-weight:600;
+    }
+
+    /* Termos */
+    .termos-label {
+      display:flex; align-items:flex-start; gap:10px;
+      font-size:0.86rem; color:var(--texto2);
+      cursor:pointer; line-height:1.5;
+    }
+    .termos-label input[type="checkbox"] {
+      accent-color:var(--azul);
+      width:16px; height:16px;
+      margin-top:2px; cursor:pointer; flex-shrink:0;
+    }
+    .termos-label a { color:var(--azul); font-weight:600; }
+    .termos-label a:hover { text-decoration:underline; }
+
+    /* ══════════════════════════════════════════
+       BOTÕES DE NAVEGAÇÃO
+    ══════════════════════════════════════════ */
+    .nav-btns {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:32px;
+      padding-top:24px;
+      border-top:1px solid var(--borda);
+      gap:12px;
+    }
+
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:12px 24px;
+      border-radius:var(--radius-sm);
+      font-size:0.93rem; font-weight:700;
+      border:none; cursor:pointer;
+      font-family:inherit; transition:var(--trans);
+      text-decoration:none;
+    }
+    .btn-azul {
+      background:var(--azul); color:#fff; flex:1;
+    }
+    .btn-azul:hover:not(:disabled) {
+      background:var(--azul-dark);
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px var(--sombra-hover);
+    }
+    .btn-azul:disabled { opacity:0.60; cursor:not-allowed; transform:none; }
+
+    .btn-outline {
+      background:transparent;
+      border:1.5px solid var(--borda);
+      color:var(--texto2);
+    }
+    .btn-outline:hover {
+      border-color:var(--azul);
+      color:var(--azul);
+    }
+
+    .spinner {
+      display:none; width:16px; height:16px;
+      border:2px solid rgba(255,255,255,0.35);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .btn-azul.loading .spinner { display:block; }
+    .btn-azul.loading .btn-txt { display:none; }
+
+    /* ══════════════════════════════════════════
+       ALERTA GERAL
+    ══════════════════════════════════════════ */
+    .alerta {
+      display:none; padding:12px 16px;
+      border-radius:var(--radius-sm);
+      font-size:0.87rem; margin-bottom:20px;
+      align-items:center; gap:10px; border:1px solid;
+    }
+    .alerta.erro    { background:#FFF5F5; border-color:#FFCDD2; color:#C62828; }
+    .alerta.sucesso { background:#F0FFF4; border-color:#C8E6C9; color:#1B5E20; }
+    body.dark .alerta.erro    { background:#2d1a1a; border-color:#5c2222; color:#ff8a80; }
+    body.dark .alerta.sucesso { background:#1a2d1a; border-color:#225c22; color:#80ff9e; }
+    .alerta.visivel { display:flex; }
+
+    /* ══════════════════════════════════════════
+       ECRÃ DE SUCESSO
+    ══════════════════════════════════════════ */
+    .sucesso-ecrã {
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      padding:20px 0;
+    }
+    .sucesso-ecrã.visivel { display:flex; }
+
+    .sucesso-ic {
+      width:88px; height:88px;
+      border-radius:50%;
+      background:#F0FFF4;
+      border:3px solid var(--verde);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.5rem; color:var(--verde);
+      margin-bottom:24px;
+      animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { transform:scale(0); opacity:0; }
+      to   { transform:scale(1); opacity:1; }
+    }
+    .sucesso-ecrã h2 {
+      font-size:1.6rem; font-weight:800;
+      color:var(--azul); margin-bottom:10px;
+    }
+    .sucesso-ecrã p {
+      color:var(--texto2); font-size:0.92rem;
+      line-height:1.65; max-width:380px;
+      margin-bottom:30px;
+    }
+
+    /* ══════════════════════════════════════════
+       RODAPÉ DO FORM
+    ══════════════════════════════════════════ */
+    .form-rodape {
+      text-align:center;
+      margin-top:24px;
+      font-size:0.86rem;
+      color:var(--texto2);
+    }
+    .form-rodape a { color:var(--azul); font-weight:700; }
+    .form-rodape a:hover { text-decoration:underline; }
+
+    /* ══════════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════════ */
+    #toast-container {
+      position:fixed; bottom:24px; right:24px;
+      z-index:9999; display:flex;
+      flex-direction:column; gap:10px;
+      pointer-events:none;
+    }
+    .toast {
+      background:var(--bg2); border:1px solid var(--borda);
+      border-left:4px solid var(--azul); color:var(--texto);
+      padding:13px 18px; border-radius:var(--radius-sm);
+      font-size:0.88rem;
+      box-shadow:0 8px 24px rgba(0,0,0,0.15);
+      animation:toastIn 0.3s ease;
+      pointer-events:all; max-width:320px;
+    }
+    .toast.sucesso { border-left-color:var(--verde); }
+    .toast.erro    { border-left-color:var(--vermelho); }
+    @keyframes toastIn  { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes toastOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(40px)} }
+
+    /* ══════════════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    footer {
+      background:#0D1B3E;
+      color:rgba(255,255,255,0.50);
+      text-align:center;
+      padding:18px 24px;
+      font-size:0.82rem;
+    }
+    footer strong { color:rgba(255,255,255,0.80); }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVIDADE
+    ══════════════════════════════════════════ */
+    @media (max-width:640px) {
+      .grid-2 { grid-template-columns:1fr; }
+      .form-card { padding:24px 18px; }
+      .form-topo h1 { font-size:1.5rem; }
+      .progresso-bar { padding:14px 16px; }
+      .passo-label { display:none; }
+    }
+    @media (max-width:440px) {
+      main { padding:28px 14px 50px; }
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <a href="login-utilizador.html" class="btn-voltar">
+      <i class="fas fa-arrow-left"></i> Já tenho conta
+    </a>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     BARRA DE PROGRESSO
+══════════════════════════════════════════ -->
+<div class="progresso-bar">
+  <div class="progresso-inner">
+    <div class="passo ativo" id="p1">
+      <div class="passo-circulo" id="pc1">1</div>
+      <div class="passo-label">Dados pessoais</div>
+    </div>
+    <div class="passo" id="p2">
+      <div class="passo-circulo" id="pc2">2</div>
+      <div class="passo-label">Perfil académico</div>
+    </div>
+    <div class="passo" id="p3">
+      <div class="passo-circulo" id="pc3">3</div>
+      <div class="passo-label">Interesses</div>
+    </div>
+    <div class="passo" id="p4">
+      <div class="passo-circulo" id="pc4">4</div>
+      <div class="passo-label">Segurança</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════ -->
+<main>
+  <div class="form-wrap">
+
+    <!-- Cabeçalho -->
+    <div class="form-topo">
+      <div class="badge-tipo"><i class="fas fa-user-graduate"></i> Utilizador</div>
+      <h1>Criar conta gratuita</h1>
+      <p>Preenche os dados abaixo e começa a aceder a milhares de oportunidades em Moçambique.</p>
+    </div>
+
+    <!-- Card do formulário -->
+    <div class="form-card">
+
+      <!-- Alerta geral -->
+      <div class="alerta" id="alerta-geral">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="alerta-msg"></span>
+      </div>
+
+      <!-- ────── PASSO 1 — Dados pessoais ────── -->
+      <div class="sec-form ativa" id="sec1">
+        <div class="sec-titulo"><i class="fas fa-user"></i> Dados Pessoais</div>
+        <div class="sec-sub">Informação básica para identificar a tua conta.</div>
+
+        <div class="grid-2">
+          <!-- Nome -->
+          <div class="campo" id="campo-nome">
+            <label for="nome">Nome completo <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-user ic-esq"></i>
+              <input type="text" id="nome" placeholder="Ex: Ana Macuácua" maxlength="100" autocomplete="name"/>
+            </div>
+            <div class="msg-erro" id="erro-nome"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nome"></span></div>
+          </div>
+
+          <!-- Data de nascimento -->
+          <div class="campo" id="campo-nasc">
+            <label for="nasc">Data de nascimento <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-calendar ic-esq"></i>
+              <input type="date" id="nasc" autocomplete="bday"/>
+            </div>
+            <div class="msg-erro" id="erro-nasc"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nasc"></span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Género -->
+          <div class="campo" id="campo-genero">
+            <label for="genero">Género <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-venus-mars ic-esq"></i>
+              <select id="genero">
+                <option value="">Selecionar...</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Prefiro não dizer">Prefiro não dizer</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-genero"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-genero"></span></div>
+          </div>
+
+          <!-- Telefone -->
+          <div class="campo" id="campo-tel">
+            <label for="tel">Número de telefone <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-phone ic-esq"></i>
+              <input type="tel" id="tel" placeholder="+258 8X XXX XXXX" maxlength="18" autocomplete="tel" inputmode="tel"/>
+            </div>
+            <div class="msg-erro" id="erro-tel"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-tel"></span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Província -->
+          <div class="campo" id="campo-prov">
+            <label for="prov">Província <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-map-marker-alt ic-esq"></i>
+              <select id="prov">
+                <option value="">Selecionar...</option>
+                <option>Cabo Delgado</option>
+                <option>Gaza</option>
+                <option>Inhambane</option>
+                <option>Manica</option>
+                <option>Maputo Cidade</option>
+                <option>Maputo Província</option>
+                <option>Nampula</option>
+                <option>Niassa</option>
+                <option>Sofala</option>
+                <option>Tete</option>
+                <option>Zambézia</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-prov"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-prov"></span></div>
+          </div>
+
+          <!-- Email -->
+          <div class="campo" id="campo-email">
+            <label for="email">Endereço de e-mail <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope ic-esq"></i>
+              <input type="email" id="email" placeholder="exemplo@email.com" maxlength="120" autocomplete="email" inputmode="email"/>
+            </div>
+            <div class="msg-erro" id="erro-email"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-email"></span></div>
+          </div>
+        </div>
+
+        <div class="nav-btns">
+          <div></div>
+          <button class="btn btn-azul" onclick="irPasso(2)">
+            <span class="btn-txt">Continuar <i class="fas fa-arrow-right"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ────── PASSO 2 — Perfil académico ────── -->
+      <div class="sec-form" id="sec2">
+        <div class="sec-titulo"><i class="fas fa-graduation-cap"></i> Perfil Académico</div>
+        <div class="sec-sub">Ajuda-nos a encontrar oportunidades mais adequadas para ti.</div>
+
+        <div class="grid-2">
+          <!-- Nível de escolaridade -->
+          <div class="campo" id="campo-nivel">
+            <label for="nivel">Nível de escolaridade <span class="obrig">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-graduation-cap ic-esq"></i>
+              <select id="nivel">
+                <option value="">Selecionar...</option>
+                <option>Ensino Primário</option>
+                <option>Ensino Secundário (10ª classe)</option>
+                <option>Ensino Secundário (12ª classe)</option>
+                <option>Técnico Médio</option>
+                <option>Licenciatura (em curso)</option>
+                <option>Licenciatura (concluída)</option>
+                <option>Mestrado (em curso)</option>
+                <option>Mestrado (concluído)</option>
+                <option>Doutoramento</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-nivel"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nivel"></span></div>
+          </div>
+
+          <!-- Área de estudo -->
+          <div class="campo" id="campo-area">
+            <label for="area">Área de estudo <span class="opc">(opcional)</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-book ic-esq"></i>
+              <select id="area">
+                <option value="">Selecionar...</option>
+                <option>Ciências e Tecnologia</option>
+                <option>Engenharia e Arquitectura</option>
+                <option>Saúde e Medicina</option>
+                <option>Ciências Sociais</option>
+                <option>Economia e Gestão</option>
+                <option>Direito</option>
+                <option>Educação e Pedagogia</option>
+                <option>Artes e Humanidades</option>
+                <option>Agricultura e Ambiente</option>
+                <option>Tecnologia de Informação</option>
+                <option>Comunicação e Jornalismo</option>
+                <option>Outra</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instituição de ensino -->
+        <div class="campo">
+          <label for="instituicao-ensino">Instituição de ensino <span class="opc">(opcional)</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-university ic-esq"></i>
+            <input type="text" id="instituicao-ensino" placeholder="Ex: UEM, UCM, ISCTEM..." maxlength="100"/>
+          </div>
+        </div>
+
+        <!-- Objectivo profissional -->
+        <div class="campo">
+          <label for="objectivo">Objectivo profissional <span class="opc">(opcional)</span></label>
+          <div class="input-wrap input-sem-ic">
+            <textarea id="objectivo" placeholder="Descreve brevemente o que procuras e os teus objectivos de carreira..." maxlength="400" oninput="contarChars(this,'cont-objectivo',400)"></textarea>
+          </div>
+          <div class="char-count"><span id="cont-objectivo">0</span>/400</div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="irPasso(1)">
+            <i class="fas fa-arrow-left"></i> Anterior
+          </button>
+          <button class="btn btn-azul" onclick="irPasso(3)">
+            <span class="btn-txt">Continuar <i class="fas fa-arrow-right"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ────── PASSO 3 — Interesses ────── -->
+      <div class="sec-form" id="sec3">
+        <div class="sec-titulo"><i class="fas fa-heart"></i> Áreas de Interesse</div>
+        <div class="sec-sub">Seleciona as categorias que mais te interessam. Usaremos isto para recomendar oportunidades.</div>
+
+        <!-- Tipos de oportunidade -->
+        <div class="campo" id="campo-interesses">
+          <label>Que tipo de oportunidades te interessam? <span class="obrig">*</span></label>
+          <div class="check-grupo" id="grupo-interesses">
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Bolsas"/> <i class="fas fa-graduation-cap"></i> Bolsas
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Empregos"/> <i class="fas fa-briefcase"></i> Empregos
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Estágios"/> <i class="fas fa-building"></i> Estágios
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Cursos"/> <i class="fas fa-book-open"></i> Cursos
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Workshops"/> <i class="fas fa-chalkboard-teacher"></i> Workshops
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Voluntariado"/> <i class="fas fa-hands-helping"></i> Voluntariado
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Concursos"/> <i class="fas fa-trophy"></i> Concursos
+            </label>
+          </div>
+          <div class="msg-erro" id="erro-interesses" style="margin-top:8px;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-interesses"></span>
+          </div>
+        </div>
+
+        <!-- Idiomas -->
+        <div class="campo">
+          <label>Idiomas que dominas <span class="opc">(opcional)</span></label>
+          <div class="check-grupo">
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Português"/> Português
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Inglês"/> Inglês
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Francês"/> Francês
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Espanhol"/> Espanhol
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Changana"/> Changana
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Macua"/> Macua
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Sena"/> Sena
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="checkbox" value="Ndau"/> Ndau
+            </label>
+          </div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="irPasso(2)">
+            <i class="fas fa-arrow-left"></i> Anterior
+          </button>
+          <button class="btn btn-azul" onclick="irPasso(4)">
+            <span class="btn-txt">Continuar <i class="fas fa-arrow-right"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ────── PASSO 4 — Segurança ────── -->
+      <div class="sec-form" id="sec4">
+        <div class="sec-titulo"><i class="fas fa-shield-alt"></i> Segurança da Conta</div>
+        <div class="sec-sub">Define uma senha segura para proteger a tua conta.</div>
+
+        <!-- Senha -->
+        <div class="campo" id="campo-senha">
+          <label for="senha">Senha <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="senha" placeholder="Mínimo 8 caracteres" maxlength="100" autocomplete="new-password" oninput="avaliarForca(this.value)"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('senha','olho1')" aria-label="Mostrar senha">
+              <i class="fas fa-eye" id="olho1"></i>
+            </button>
+          </div>
+          <!-- Indicador de força -->
+          <div class="forca-wrap" id="forca-wrap">
+            <div class="forca-barras">
+              <div class="forca-barra" id="fb1"></div>
+              <div class="forca-barra" id="fb2"></div>
+              <div class="forca-barra" id="fb3"></div>
+              <div class="forca-barra" id="fb4"></div>
+            </div>
+            <span class="forca-label" id="forca-label"></span>
+          </div>
+          <div class="msg-erro" id="erro-senha"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-senha"></span></div>
+        </div>
+
+        <!-- Confirmar senha -->
+        <div class="campo" id="campo-confirmar">
+          <label for="confirmar">Confirmar senha <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="confirmar" placeholder="Repete a senha" maxlength="100" autocomplete="new-password"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('confirmar','olho2')" aria-label="Mostrar confirmação">
+              <i class="fas fa-eye" id="olho2"></i>
+            </button>
+          </div>
+          <div class="msg-erro" id="erro-confirmar"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-confirmar"></span></div>
+        </div>
+
+        <!-- Termos -->
+        <div class="campo" id="campo-termos" style="margin-top:24px;">
+          <label class="termos-label">
+            <input type="checkbox" id="termos"/>
+            Concordo com os <a href="termos.html" target="_blank">Termos de Uso</a> e a <a href="termos.html#privacidade" target="_blank">Política de Privacidade</a> do HorizonteMZ.
+          </label>
+          <div class="msg-erro" id="erro-termos" style="margin-top:8px;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-termos"></span>
+          </div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="irPasso(3)">
+            <i class="fas fa-arrow-left"></i> Anterior
+          </button>
+          <button class="btn btn-azul" id="btn-submit" onclick="submeter()">
+            <span class="spinner"></span>
+            <span class="btn-txt"><i class="fas fa-user-plus"></i> Criar conta</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ────── ECRÃ DE SUCESSO ────── -->
+      <div class="sucesso-ecrã" id="sec-sucesso">
+        <div class="sucesso-ic"><i class="fas fa-check"></i></div>
+        <h2>Conta criada com sucesso!</h2>
+        <p>Bem-vindo ao HorizonteMZ, <strong id="nome-sucesso"></strong>! A tua conta foi criada e a sessão foi iniciada automaticamente.</p>
+        <a href="dashboard-utilizador.html" class="btn btn-azul" style="margin-top:8px; max-width:280px; width:100%;">
+          <i class="fas fa-tachometer-alt"></i> Ir para o meu painel
+        </a>
+        <a href="explorar.html" class="btn btn-outline" style="margin-top:10px; max-width:280px; width:100%; justify-content:center;">
+          <i class="fas fa-search"></i> Explorar oportunidades
+        </a>
+      </div>
+
+    </div><!-- /form-card -->
+
+    <!-- Rodapé -->
+    <div class="form-rodape" id="form-rodape">
+      <p>Já tens conta? <a href="login-utilizador.html">Entrar na minha conta</a></p>
+    </div>
+
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 &nbsp;|&nbsp;
+  <a href="termos.html" style="color:rgba(255,255,255,0.55);transition:color 0.2s;"
+     onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a>
+</footer>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+  /* ─── CHAVES localStorage ─── */
+  const KEYS = {
+    tema:         'hmz_tema',
+    sessaoUtil:   'hmz_sessao_utilizador',
+    utilizadores: 'hmz_utilizadores',
+  };
+
+  /* ─── UTILITÁRIOS ─── */
+  function lsGet(key, def = null) {
+    try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
+    catch { return def; }
+  }
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch(e) { console.warn('Erro localStorage:', e); }
+  }
+  function gerarId() {
+    return 'util_' + Date.now() + '_' + Math.random().toString(36).substr(2,6);
+  }
+
+  /* ─── MODO ESCURO ─── */
+  function aplicarTema(dark) {
+    document.body.classList.toggle('dark', dark);
+    document.getElementById('dark-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  function toggleDark() {
+    const dark = !document.body.classList.contains('dark');
+    lsSet(KEYS.tema, dark ? 'dark' : 'light');
+    aplicarTema(dark);
+  }
+  if (lsGet(KEYS.tema) === 'dark') aplicarTema(true);
+
+  /* ─── TOAST ─── */
+  function mostrarToast(msg, tipo = '') {
+    const cont  = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className   = 'toast ' + tipo;
+    toast.textContent = msg;
+    cont.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  /* ─── ALERTA GERAL ─── */
+  function mostrarAlerta(msg, tipo = 'erro') {
+    const el  = document.getElementById('alerta-geral');
+    const txt = document.getElementById('alerta-msg');
+    el.className    = 'alerta ' + tipo + ' visivel';
+    txt.textContent = msg;
+    el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+  function esconderAlerta() {
+    document.getElementById('alerta-geral').className = 'alerta';
+  }
+
+  /* ─── MARCAÇÃO DE CAMPOS ─── */
+  function marcarErro(campoId, msg) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+    campo.classList.add('erro');
+    campo.classList.remove('valido');
+    const txt = document.getElementById('txt-erro-' + campoId.replace('campo-',''));
+    if (txt) txt.textContent = msg;
+  }
+  function marcarValido(campoId) {
+    const campo = document.getElementById(campoId);
+    if (!campo) return;
+    campo.classList.remove('erro');
+    campo.classList.add('valido');
+  }
+  function limpar(campoId) {
+    const campo = document.getElementById(campoId);
+    if (campo) campo.classList.remove('erro','valido');
+  }
+
+  /* ─── VALIDAÇÕES ─── */
+  function validarEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  }
+  function validarTel(tel) {
+    const limpo = tel.replace(/\s/g,'');
+    return /^(\+258)?[0-9]{9,12}$/.test(limpo);
+  }
+  function calcularIdade(nasc) {
+    const hoje = new Date();
+    const dn   = new Date(nasc);
+    let idade  = hoje.getFullYear() - dn.getFullYear();
+    const m    = hoje.getMonth() - dn.getMonth();
+    if (m < 0 || (m === 0 && hoje.getDate() < dn.getDate())) idade--;
+    return idade;
+  }
+
+  /* ─── TOGGLE SENHA ─── */
+  function toggleSenha(inputId, iconId) {
+    const inp  = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    const show = inp.type === 'password';
+    inp.type   = show ? 'text' : 'password';
+    icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+  }
+
+  /* ─── FORÇA DA SENHA ─── */
+  function avaliarForca(senha) {
+    let pontos = 0;
+    if (senha.length >= 8)  pontos++;
+    if (senha.length >= 12) pontos++;
+    if (/[A-Z]/.test(senha) && /[a-z]/.test(senha)) pontos++;
+    if (/[0-9]/.test(senha)) pontos++;
+    if (/[^A-Za-z0-9]/.test(senha)) pontos++;
+
+    const barras = ['fb1','fb2','fb3','fb4'];
+    const clases = ['fraca','media','forte','muitoforte'];
+    const labels = ['Fraca','Média','Forte','Muito forte'];
+    const lclass = ['forca-fraca','forca-media','forca-forte','forca-muitoforte'];
+
+    const nivel = Math.min(Math.max(Math.ceil(pontos * 4 / 5), senha.length > 0 ? 1 : 0), 4);
+
+    barras.forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.className = 'forca-barra';
+      if (i < nivel) el.classList.add(clases[nivel - 1]);
+    });
+
+    const lbl = document.getElementById('forca-label');
+    if (senha.length === 0) { lbl.textContent = ''; return; }
+    lbl.textContent = labels[nivel - 1] || '';
+    lbl.className   = 'forca-label ' + (lclass[nivel - 1] || '');
+  }
+
+  /* ─── CONTADOR DE CARACTERES ─── */
+  function contarChars(el, contId, max) {
+    document.getElementById(contId).textContent = el.value.length;
+  }
+
+  /* ─── TOGGLE CHECKBOX ESTILIZADO ─── */
+  function toggleCheck(label) {
+    const cb = label.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    label.classList.toggle('selecionado', cb.checked);
+  }
+
+  /* ─── NAVEGAÇÃO ENTRE PASSOS ─── */
+  let passoAtual = 1;
+
+  function irPasso(novo) {
+    // Validar passo actual antes de avançar
+    if (novo > passoAtual && !validarPasso(passoAtual)) return;
+
+    esconderAlerta();
+
+    // Esconder passo actual
+    document.getElementById('sec' + passoAtual).classList.remove('ativa');
+    // Mostrar novo passo
+    document.getElementById('sec' + novo).classList.add('ativa');
+
+    // Actualizar indicadores de progresso
+    for (let i = 1; i <= 4; i++) {
+      const p  = document.getElementById('p' + i);
+      const pc = document.getElementById('pc' + i);
+      p.classList.remove('ativo','concluido');
+      if (i < novo) {
+        p.classList.add('concluido');
+        pc.innerHTML = '<i class="fas fa-check" style="font-size:0.75rem"></i>';
+      } else if (i === novo) {
+        p.classList.add('ativo');
+        pc.textContent = i;
+      } else {
+        pc.textContent = i;
+      }
+    }
+
+    passoAtual = novo;
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  /* ─── VALIDAR PASSO ─── */
+  function validarPasso(passo) {
+    let valido = true;
+
+    if (passo === 1) {
+      const nome  = document.getElementById('nome').value.trim();
+      const nasc  = document.getElementById('nasc').value;
+      const gen   = document.getElementById('genero').value;
+      const tel   = document.getElementById('tel').value.trim();
+      const prov  = document.getElementById('prov').value;
+      const email = document.getElementById('email').value.trim();
+
+      limpar('campo-nome'); limpar('campo-nasc'); limpar('campo-genero');
+      limpar('campo-tel');  limpar('campo-prov'); limpar('campo-email');
+
+      if (!nome || nome.length < 3) {
+        marcarErro('campo-nome', 'Introduz o teu nome completo (mínimo 3 caracteres).');
+        valido = false;
+      } else { marcarValido('campo-nome'); }
+
+      if (!nasc) {
+        marcarErro('campo-nasc', 'A data de nascimento é obrigatória.');
+        valido = false;
+      } else {
+        const idade = calcularIdade(nasc);
+        if (idade < 10) {
+          marcarErro('campo-nasc', 'Deves ter pelo menos 10 anos.');
+          valido = false;
+        } else if (idade > 100) {
+          marcarErro('campo-nasc', 'Data de nascimento inválida.');
+          valido = false;
+        } else { marcarValido('campo-nasc'); }
+      }
+
+      if (!gen) {
+        marcarErro('campo-genero', 'Seleciona o teu género.');
+        valido = false;
+      } else { marcarValido('campo-genero'); }
+
+      if (!tel) {
+        marcarErro('campo-tel', 'O número de telefone é obrigatório.');
+        valido = false;
+      } else if (!validarTel(tel)) {
+        marcarErro('campo-tel', 'Introduz um número de telefone válido (+258...).');
+        valido = false;
+      } else { marcarValido('campo-tel'); }
+
+      if (!prov) {
+        marcarErro('campo-prov', 'Seleciona a tua província.');
+        valido = false;
+      } else { marcarValido('campo-prov'); }
+
+      if (!email) {
+        marcarErro('campo-email', 'O e-mail é obrigatório.');
+        valido = false;
+      } else if (!validarEmail(email)) {
+        marcarErro('campo-email', 'Introduz um e-mail válido.');
+        valido = false;
+      } else {
+        // Verificar se email já existe
+        const utilizadores = lsGet(KEYS.utilizadores, []);
+        const existe = utilizadores.some(u => u.email.toLowerCase() === email.toLowerCase());
+        if (existe) {
+          marcarErro('campo-email', 'Já existe uma conta com este e-mail.');
+          valido = false;
+        } else { marcarValido('campo-email'); }
+      }
+    }
+
+    else if (passo === 2) {
+      const nivel = document.getElementById('nivel').value;
+      limpar('campo-nivel');
+      if (!nivel) {
+        marcarErro('campo-nivel', 'Seleciona o teu nível de escolaridade.');
+        valido = false;
+      } else { marcarValido('campo-nivel'); }
+    }
+
+    else if (passo === 3) {
+      const checkboxes = document.querySelectorAll('#grupo-interesses input[type="checkbox"]:checked');
+      document.getElementById('campo-interesses').classList.remove('erro');
+      document.getElementById('erro-interesses').style.display = 'none';
+      if (checkboxes.length === 0) {
+        document.getElementById('campo-interesses').classList.add('erro');
+        document.getElementById('txt-erro-interesses').textContent = 'Seleciona pelo menos uma área de interesse.';
+        document.getElementById('erro-interesses').style.display = 'flex';
+        valido = false;
+      }
+    }
+
+    if (!valido) {
+      mostrarAlerta('Por favor corrige os erros assinalados antes de continuar.');
+    }
+
+    return valido;
+  }
+
+  /* ─── SUBMETER ─── */
+  function submeter() {
+    const cfgGlobal=lsGet('hmz_admin_config',{});
+    if(cfgGlobal.regPub===false){mostrarAlerta('Os novos registos estão temporariamente desactivados pelo administrador.','aviso');return;}
+
+    esconderAlerta();
+    limpar('campo-senha'); limpar('campo-confirmar');
+    document.getElementById('campo-termos').classList.remove('erro');
+
+    const senha     = document.getElementById('senha').value;
+    const confirmar = document.getElementById('confirmar').value;
+    const termos    = document.getElementById('termos').checked;
+    let   valido    = true;
+
+    if (!senha || senha.length < 8) {
+      marcarErro('campo-senha', 'A senha deve ter pelo menos 8 caracteres.');
+      valido = false;
+    } else { marcarValido('campo-senha'); }
+
+    if (!confirmar) {
+      marcarErro('campo-confirmar', 'Confirma a tua senha.');
+      valido = false;
+    } else if (senha !== confirmar) {
+      marcarErro('campo-confirmar', 'As senhas não coincidem.');
+      valido = false;
+    } else if (senha.length >= 8) { marcarValido('campo-confirmar'); }
+
+    if (!termos) {
+      document.getElementById('campo-termos').classList.add('erro');
+      document.getElementById('txt-erro-termos').textContent = 'Deves aceitar os Termos de Uso para continuar.';
+      document.getElementById('erro-termos').style.display = 'flex';
+      valido = false;
+    }
+
+    if (!valido) {
+      mostrarAlerta('Por favor corrige os erros assinalados.');
+      return;
+    }
+
+    // Activar loading
+    const btn = document.getElementById('btn-submit');
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    setTimeout(() => {
+      // Recolher todos os dados
+      const nome     = document.getElementById('nome').value.trim();
+      const nasc     = document.getElementById('nasc').value;
+      const genero   = document.getElementById('genero').value;
+      const tel      = document.getElementById('tel').value.trim();
+      const prov     = document.getElementById('prov').value;
+      const email    = document.getElementById('email').value.trim().toLowerCase();
+      const nivel    = document.getElementById('nivel').value;
+      const area     = document.getElementById('area').value;
+      const instEns  = document.getElementById('instituicao-ensino').value.trim();
+      const obj      = document.getElementById('objectivo').value.trim();
+
+      const interesses = Array.from(
+        document.querySelectorAll('#grupo-interesses input[type="checkbox"]:checked')
+      ).map(cb => cb.value);
+
+      const idiomas = Array.from(
+        document.querySelectorAll('.check-grupo:not(#grupo-interesses) input[type="checkbox"]:checked')
+      ).map(cb => cb.value);
+
+      // Criar objecto utilizador
+      const novoUtil = {
+        id:               gerarId(),
+        nome,
+        email,
+        senha,
+        tel,
+        nasc,
+        genero,
+        provincia:        prov,
+        nivelEscolaridade:nivel,
+        areaEstudo:       area,
+        instituicaoEnsino:instEns,
+        objectivo:        obj,
+        interesses,
+        idiomas,
+        foto:             null,
+        criadoEm:         new Date().toISOString(),
+        ultimoLogin:      new Date().toISOString(),
+        candidaturas:     [],
+        guardados:        [],
+      };
+
+      // Guardar no localStorage
+      const utilizadores = lsGet(KEYS.utilizadores, []);
+      utilizadores.push(novoUtil);
+      lsSet(KEYS.utilizadores, utilizadores);
+
+      // Iniciar sessão automaticamente
+      const sessao = {
+        id:      novoUtil.id,
+        nome:    novoUtil.nome,
+        email:   novoUtil.email,
+        foto:    null,
+        loginEm: new Date().toISOString(),
+      };
+      lsSet(KEYS.sessaoUtil, sessao);
+
+      btn.classList.remove('loading');
+
+      // Mostrar ecrã de sucesso
+      document.getElementById('sec4').classList.remove('ativa');
+      document.getElementById('sec-sucesso').classList.add('visivel');
+      document.getElementById('nome-sucesso').textContent = nome.split(' ')[0];
+      document.getElementById('form-rodape').style.display = 'none';
+      document.querySelector('.progresso-bar').style.display = 'none';
+
+      // Marcar todos os passos como concluídos
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('p' + i).classList.add('concluido');
+      }
+
+      mostrarToast('Conta criada com sucesso! Bem-vindo ao HMZ 🎉', 'sucesso');
+
+    }, 1200);
+  }
+
+  /* ─── VERIFICAR SESSÃO EXISTENTE ─── */
+  document.addEventListener('DOMContentLoaded', function() {
+    if (lsGet(KEYS.sessaoUtil)) {
+      mostrarToast('Já tens sessão activa. A redirigir...','sucesso');
+      setTimeout(() => { window.location.href = 'dashboard-utilizador.html'; }, 1200);
+    }
+  });
+
+  /* ─── LIMPAR ERROS AO DIGITAR ─── */
+  ['nome','nasc','genero','tel','prov','email','nivel','senha','confirmar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => limpar('campo-' + id));
+  });
+</script>
+</body>
+</html>

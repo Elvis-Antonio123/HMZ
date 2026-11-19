@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Escolha o tipo de conta – HorizonteMZ</title>
+  <meta name="description" content="Escolha como pretende aceder à plataforma HorizonteMZ."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ══════════════════════════════════════════
+       VARIÁVEIS E RESET
+    ══════════════════════════════════════════ */
+    :root {
+      --azul:        #0057C2;
+      --azul-dark:   #003F8F;
+      --azul-light:  #EEF4FF;
+      --amarelo:     #FFBE00;
+      --amarelo-dark:#E5AA00;
+      --verde:       #1DB954;
+      --vermelho:    #E53935;
+      --bg:          #F4F7FF;
+      --bg2:         #FFFFFF;
+      --texto:       #1A1A2E;
+      --texto2:      #555577;
+      --borda:       #DDE3F0;
+      --sombra:      rgba(0,87,194,0.10);
+      --sombra-hover:rgba(0,87,194,0.22);
+      --radius:      16px;
+      --radius-sm:   8px;
+      --trans:       all 0.25s ease;
+    }
+
+    body.dark {
+      --azul:        #4A9EFF;
+      --azul-dark:   #2979D9;
+      --azul-light:  #0D1B3E;
+      --bg:          #0D1117;
+      --bg2:         #161B27;
+      --texto:       #E8EEFF;
+      --texto2:      #8899BB;
+      --borda:       #253050;
+      --sombra:      rgba(0,0,0,0.30);
+      --sombra-hover:rgba(0,0,0,0.50);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ══════════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════════ */
+    header {
+      background: var(--azul);
+      height: 65px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.22);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--amarelo); }
+
+    .h-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-dark {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.05rem;
+      cursor: pointer;
+      padding: 7px;
+      border-radius: var(--radius-sm);
+      transition: var(--trans);
+    }
+    .btn-dark:hover { background: rgba(255,255,255,0.18); }
+
+    .btn-voltar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.87rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      transition: var(--trans);
+      border: 1px solid rgba(255,255,255,0.30);
+    }
+    .btn-voltar:hover {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    /* ══════════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════════ */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 52px 24px;
+    }
+
+    /* Cabeçalho da secção */
+    .topo {
+      text-align: center;
+      margin-bottom: 44px;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .topo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--azul-light);
+      color: var(--azul);
+      border: 1px solid var(--borda);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .topo h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--azul);
+      letter-spacing: -0.4px;
+      margin-bottom: 10px;
+    }
+
+    .topo p {
+      color: var(--texto2);
+      font-size: 0.97rem;
+      max-width: 460px;
+      line-height: 1.65;
+      margin: 0 auto;
+    }
+
+    /* ══════════════════════════════════════════
+       GRELHA DE CARTÕES
+    ══════════════════════════════════════════ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* Cartão individual */
+    .tipo-card {
+      background: var(--bg2);
+      border: 2px solid var(--borda);
+      border-radius: var(--radius);
+      padding: 36px 26px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      cursor: pointer;
+      transition: var(--trans);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .tipo-card:nth-child(1) { animation-delay: 0.10s; }
+    .tipo-card:nth-child(2) { animation-delay: 0.20s; }
+    .tipo-card:nth-child(3) { animation-delay: 0.30s; }
+
+    /* Faixa colorida no topo do cartão */
+    .tipo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--cor-card, var(--azul));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .tipo-card:hover {
+      border-color: var(--cor-card, var(--azul));
+      transform: translateY(-8px);
+      box-shadow: 0 20px 48px var(--sombra-hover);
+    }
+
+    .tipo-card.selecionado {
+      border-color: var(--cor-card, var(--azul));
+      box-shadow: 0 0 0 4px rgba(0,87,194,0.12);
+    }
+
+    /* Cores por tipo */
+    .card-util  { --cor-card: #0057C2; }
+    .card-inst  { --cor-card: #16A34A; }
+    .card-emp   { --cor-card: #D97706; }
+
+    /* Ícone */
+    .card-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      margin-bottom: 20px;
+      transition: var(--trans);
+    }
+    .tipo-card:hover .card-icon { transform: scale(1.1); }
+
+    .ci-util { background: #EEF4FF; color: #0057C2; }
+    .ci-inst { background: #F0FDF4; color: #16A34A; }
+    .ci-emp  { background: #FEF3C7; color: #D97706; }
+
+    body.dark .ci-util { background: rgba(0,87,194,0.18); }
+    body.dark .ci-inst { background: rgba(22,163,74,0.18); }
+    body.dark .ci-emp  { background: rgba(217,119,6,0.18); }
+
+    /* Texto do cartão */
+    .card-titulo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--texto);
+    }
+
+    .card-desc {
+      font-size: 0.86rem;
+      color: var(--texto2);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    /* Lista de features */
+    .card-features {
+      list-style: none;
+      width: 100%;
+      margin-bottom: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+    .card-features li {
+      font-size: 0.82rem;
+      color: var(--texto2);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .card-features li i {
+      color: var(--cor-card);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Botões dentro do cartão */
+    .card-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: auto;
+    }
+
+    .btn-card {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--trans);
+      font-family: inherit;
+      text-decoration: none;
+      width: 100%;
+    }
+
+    .btn-primario {
+      background: var(--cor-card);
+      color: #fff;
+    }
+    .btn-primario:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .btn-secundario {
+      background: transparent;
+      border: 1.5px solid var(--borda);
+      color: var(--texto2);
+    }
+    .btn-secundario:hover {
+      border-color: var(--cor-card);
+      color: var(--cor-card);
+      background: var(--azul-light);
+    }
+
+    /* ══════════════════════════════════════════
+       ADMIN HINT (acesso secreto)
+    ══════════════════════════════════════════ */
+    .admin-hint {
+      margin-top: 44px;
+      text-align: center;
+      animation: fadeUp 0.5s 0.5s ease both;
+    }
+    .admin-hint p {
+      font-size: 0.82rem;
+      color: var(--texto2);
+    }
+    .admin-hint a {
+      color: var(--azul);
+      font-weight: 600;
+      transition: var(--trans);
+    }
+    .admin-hint a:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════════════════
+       FOOTER SIMPLES
+    ══════════════════════════════════════════ */
+    footer {
+      background: #0D1B3E;
+      color: rgba(255,255,255,0.50);
+      text-align: center;
+      padding: 18px 24px;
+      font-size: 0.82rem;
+    }
+    footer strong { color: rgba(255,255,255,0.80); }
+
+    /* ══════════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════════ */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--bg2);
+      border: 1px solid var(--borda);
+      border-left: 4px solid var(--azul);
+      color: var(--texto);
+      padding: 13px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      animation: toastIn 0.3s ease;
+      pointer-events: all;
+      max-width: 320px;
+    }
+    .toast.aviso { border-left-color: var(--amarelo); }
+
+    /* ══════════════════════════════════════════
+       ANIMAÇÕES
+    ══════════════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(40px); }
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVIDADE
+    ══════════════════════════════════════════ */
+    @media (max-width: 780px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+        max-width: 420px;
+      }
+      .topo h1 { font-size: 1.6rem; }
+    }
+
+    @media (max-width: 440px) {
+      main { padding: 36px 16px; }
+      .topo { margin-bottom: 30px; }
+      .tipo-card { padding: 28px 20px 22px; }
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-back-style">
+/* Botão Voltar HMZ — sempre integrado ao header, como nas telas de login */
+.hmz-back-page{background:none;border:1px solid transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;font-size:inherit;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18);transform:translateY(-1px);}
+@media(max-width:760px){.hmz-back-page{padding:7px 10px;font-size:.84rem;}}
+@media print{.hmz-back-page{display:none!important;}}
+</style>
+</head>
+<body>
+
+
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <a href="index.html" class="btn-voltar">
+      <i class="fas fa-arrow-left"></i> Voltar ao início
+    </a>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════ -->
+<main>
+
+  <!-- Cabeçalho -->
+  <div class="topo">
+    <div class="topo-badge">
+      <i class="fas fa-user-circle"></i> Acesso à plataforma
+    </div>
+    <h1>Como pretende aceder?</h1>
+    <p>Escolha o tipo de conta que corresponde ao seu perfil para entrar ou criar a sua conta no HorizonteMZ.</p>
+  </div>
+
+  <!-- Cartões de tipo de conta -->
+  <div class="cards-grid">
+
+    <!-- ─── UTILIZADOR ─── -->
+    <div class="tipo-card card-util" onclick="irPara('login-utilizador.html')" role="button" tabindex="0"
+         onkeypress="if(event.key==='Enter') irPara('login-utilizador.html')">
+      <div class="card-icon ci-util">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+      <div class="card-titulo">Utilizador</div>
+      <div class="card-desc">Para jovens que procuram oportunidades, querem criar o seu CV ou descobrir a sua carreira ideal.</div>
+      <ul class="card-features">
+        <li><i class="fas fa-check-circle"></i> Explorar bolsas, cursos e workshops</li>
+        <li><i class="fas fa-check-circle"></i> Candidatar-se a empregos e estágios</li>
+        <li><i class="fas fa-check-circle"></i> Gerar CV profissional em PDF</li>
+        <li><i class="fas fa-check-circle"></i> Orientação profissional gratuita</li>
+        <li><i class="fas fa-check-circle"></i> Acompanhar as tuas candidaturas</li>
+      </ul>
+      <div class="card-btns">
+        <a href="login-utilizador.html" class="btn-card btn-primario" onclick="event.stopPropagation()">
+          <i class="fas fa-sign-in-alt"></i> Entrar como Utilizador
+        </a>
+        <a href="registo-utilizador.html" class="btn-card btn-secundario" onclick="event.stopPropagation()">
+          <i class="fas fa-user-plus"></i> Criar conta gratuita
+        </a>
+      </div>
+    </div>
+
+    <!-- ─── INSTITUIÇÃO ─── -->
+    <div class="tipo-card card-inst" onclick="irPara('login-instituicao.html')" role="button" tabindex="0"
+         onkeypress="if(event.key==='Enter') irPara('login-instituicao.html')">
+      <div class="card-icon ci-inst">
+        <i class="fas fa-university"></i>
+      </div>
+      <div class="card-titulo">Instituição</div>
+      <div class="card-desc">Para organizações, ONGs, universidades e entidades que publicam oportunidades de aprendizagem.</div>
+      <ul class="card-features">
+        <li><i class="fas fa-check-circle"></i> Publicar bolsas, cursos e workshops</li>
+        <li><i class="fas fa-check-circle"></i> Gerir as suas oportunidades</li>
+        <li><i class="fas fa-check-circle"></i> Ver perfis dos candidatos</li>
+        <li><i class="fas fa-check-circle"></i> Painel com métricas e estatísticas</li>
+        <li><i class="fas fa-check-circle"></i> Badge de instituição verificada</li>
+      </ul>
+      <div class="card-btns">
+        <a href="login-instituicao.html" class="btn-card btn-primario" onclick="event.stopPropagation()">
+          <i class="fas fa-sign-in-alt"></i> Entrar como Instituição
+        </a>
+        <a href="registo-instituicao.html" class="btn-card btn-secundario" onclick="event.stopPropagation()">
+          <i class="fas fa-building"></i> Registar Instituição
+        </a>
+      </div>
+    </div>
+
+    <!-- ─── EMPRESA ─── -->
+    <div class="tipo-card card-emp" onclick="irPara('login-empresa.html')" role="button" tabindex="0"
+         onkeypress="if(event.key==='Enter') irPara('login-empresa.html')">
+      <div class="card-icon ci-emp">
+        <i class="fas fa-briefcase"></i>
+      </div>
+      <div class="card-titulo">Empresa</div>
+      <div class="card-desc">Para empresas moçambicanas que pretendem publicar vagas de emprego e encontrar profissionais qualificados.</div>
+      <ul class="card-features">
+        <li><i class="fas fa-check-circle"></i> Publicar vagas de emprego reais</li>
+        <li><i class="fas fa-check-circle"></i> Receber candidaturas com CVs</li>
+        <li><i class="fas fa-check-circle"></i> Gerir e fechar vagas</li>
+        <li><i class="fas fa-check-circle"></i> Painel de gestão completo</li>
+        <li><i class="fas fa-check-circle"></i> Validação e badge de empresa verificada</li>
+      </ul>
+      <div class="card-btns">
+        <a href="login-empresa.html" class="btn-card btn-primario" onclick="event.stopPropagation()">
+          <i class="fas fa-sign-in-alt"></i> Entrar como Empresa
+        </a>
+        <a href="registo-empresa.html" class="btn-card btn-secundario" onclick="event.stopPropagation()">
+          <i class="fas fa-plus-circle"></i> Registar Empresa
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Dica de acesso admin -->
+  <div class="admin-hint">
+    <p>Tens uma conta de administrador? <a href="login-instituicao.html" id="link-admin">Clica aqui para aceder</a>.</p>
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 — Todos os direitos reservados &nbsp;|&nbsp;
+  <a href="termos.html" style="color:rgba(255,255,255,0.55); transition:color 0.2s;" onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a>
+</footer>
+
+<!-- Toast container -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+  /* ─── CHAVES localStorage ─── */
+  const KEYS = {
+    tema:       'hmz_tema',
+    sessaoUtil: 'hmz_sessao_utilizador',
+    sessaoInst: 'hmz_sessao_instituicao',
+    sessaoEmp:  'hmz_sessao_empresa',
+  };
+
+  /* ─── UTILITÁRIOS ─── */
+  function lsGet(key, def = null) {
+    try {
+      const v = localStorage.getItem(key);
+      return v !== null ? JSON.parse(v) : def;
+    } catch { return def; }
+  }
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch(e) { console.warn('Erro localStorage:', e); }
+  }
+
+  /* ─── MODO ESCURO ─── */
+  function aplicarTema(dark) {
+    document.body.classList.toggle('dark', dark);
+    document.getElementById('dark-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  function toggleDark() {
+    const dark = !document.body.classList.contains('dark');
+    lsSet(KEYS.tema, dark ? 'dark' : 'light');
+    aplicarTema(dark);
+  }
+  if (lsGet(KEYS.tema) === 'dark') aplicarTema(true);
+
+  /* ─── TOAST ─── */
+  function mostrarToast(msg, tipo = '') {
+    const cont  = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + tipo;
+    toast.textContent = msg;
+    cont.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  /* ─── REDIRECCIONAMENTO ─── */
+  function irPara(url) {
+    window.location.href = url;
+  }
+
+  /* ─── VERIFICAR SE JÁ HÁ SESSÃO ACTIVA ─── */
+  function verificarSessaoExistente() {
+    const sUtil = lsGet(KEYS.sessaoUtil);
+    const sInst = lsGet(KEYS.sessaoInst);
+    const sEmp  = lsGet(KEYS.sessaoEmp);
+
+    if (sUtil) {
+      mostrarToast('Já tens sessão iniciada como utilizador. A redirigir...', 'aviso');
+      setTimeout(() => { window.location.href = 'dashboard-utilizador.html'; }, 1400);
+      return;
+    }
+    if (sInst) {
+      mostrarToast('Já tens sessão iniciada como instituição. A redirigir...', 'aviso');
+      setTimeout(() => { window.location.href = 'dashboard-instituicao.html'; }, 1400);
+      return;
+    }
+    if (sEmp) {
+      mostrarToast('Já tens sessão iniciada como empresa. A redirigir...', 'aviso');
+      setTimeout(() => { window.location.href = 'dashboard-empresa.html'; }, 1400);
+      return;
+    }
+  }
+
+  /* ─── ACESSO ADMIN SECRETO ─── */
+  // Clicar no link admin 5 vezes rápidas revela o hint
+  let cliquesAdmin = 0;
+  let timerAdmin   = null;
+
+  document.getElementById('link-admin').addEventListener('click', function(e) {
+    e.preventDefault();
+    cliquesAdmin++;
+    clearTimeout(timerAdmin);
+    timerAdmin = setTimeout(() => { cliquesAdmin = 0; }, 2000);
+
+    if (cliquesAdmin >= 5) {
+      cliquesAdmin = 0;
+      mostrarToast('💡 Dica: entra como Instituição e usa o código especial no campo de email.', '');
+    } else {
+      window.location.href = 'login-instituicao.html';
+    }
+  });
+
+  /* ─── INICIALIZAR ─── */
+  document.addEventListener('DOMContentLoaded', function() {
+    verificarSessaoExistente();
+  });
+</script>
+</body>
+</html>

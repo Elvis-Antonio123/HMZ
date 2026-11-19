@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orientação Profissional | HorizonteMZ</title>
+  <meta name="description" content="Explora as áreas profissionais de Moçambique e descobre a carreira certa para ti."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;
+      --amarelo:#FFBE00;--amarelo-dark:#E5AA00;
+      --verde:#1DB954;--verde-light:#F0FFF4;
+      --vermelho:#E53935;--roxo:#7C3AED;--roxo-light:#F5F3FF;
+      --bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;
+      --borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);--sombra-hover:rgba(0,87,194,0.16);
+      --header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;
+    }
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--verde:#22C55E;--verde-light:#0f2d1a;--roxo:#A78BFA;--roxo-light:#1e1a3d;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;overflow-x:hidden;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{background:var(--azul);height:var(--header-h);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-h{font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);font-size:0.84rem;font-weight:700;border:none;cursor:pointer;transition:var(--trans);text-decoration:none;font-family:inherit;color:rgba(255,255,255,0.88);background:rgba(255,255,255,0.15);}
+    .btn-h:hover{background:rgba(255,255,255,0.28);color:#fff;}
+
+    /* HERO */
+    .hero{background:linear-gradient(135deg,#4C1D95,#7C3AED,#0057C2);padding:56px 24px 48px;color:#fff;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,0.05);top:-120px;left:-80px;}
+    .hero::after{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06);bottom:-60px;right:-40px;}
+    .hero-inner{position:relative;z-index:1;}
+    .hero-ic{width:80px;height:80px;border-radius:24px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 22px;animation:float 4s ease-in-out infinite;}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .hero h1{font-size:2.1rem;font-weight:800;margin-bottom:12px;letter-spacing:-0.3px;}
+    .hero h1 span{color:var(--amarelo);}
+    .hero p{font-size:0.97rem;opacity:0.88;max-width:560px;margin:0 auto 28px;line-height:1.7;}
+
+    /* FILTROS */
+    .filtros{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+    .filtro-btn{padding:7px 18px;border-radius:30px;font-size:0.82rem;font-weight:700;border:2px solid rgba(255,255,255,0.35);background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;transition:var(--trans);font-family:inherit;}
+    .filtro-btn:hover,.filtro-btn.ativo{background:#fff;color:#4C1D95;border-color:#fff;}
+
+    /* MAIN */
+    main{max-width:1080px;margin:0 auto;padding:40px 24px 80px;}
+
+    /* STAT BAR */
+    .stat-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px;}
+    .stat-item{background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:14px 20px;display:flex;align-items:center;gap:12px;flex:1;min-width:160px;}
+    .stat-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .stat-val{font-size:1.3rem;font-weight:800;color:var(--texto);}
+    .stat-lbl{font-size:0.75rem;color:var(--texto2);}
+
+    /* SECÇÃO TÍTULO */
+    .sec-titulo{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+    .sec-titulo h2{font-size:1.15rem;font-weight:800;color:var(--texto);}
+    .sec-titulo span{font-size:0.82rem;color:var(--texto2);}
+
+    /* GRID DE ÁREAS */
+    .areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-bottom:48px;}
+    .area-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);overflow:hidden;cursor:pointer;transition:var(--trans);box-shadow:0 2px 12px var(--sombra);}
+    .area-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px var(--sombra-hover);border-color:var(--cor-area,var(--azul));}
+    .area-card-header{padding:24px 22px 18px;}
+    .area-tag{display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px;}
+    .area-ic-grande{width:58px;height:58px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,0.10);}
+    .area-card-header h3{font-size:1.05rem;font-weight:800;margin-bottom:6px;color:var(--texto);}
+    .area-card-header p{font-size:0.83rem;color:var(--texto2);line-height:1.6;}
+    .area-card-body{padding:0 22px 18px;border-top:1px solid var(--borda);}
+    .area-meta{display:flex;gap:18px;padding:14px 0 10px;flex-wrap:wrap;}
+    .meta-item{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--texto2);}
+    .meta-item i{font-size:0.85rem;}
+    .meta-item strong{color:var(--texto);font-weight:700;}
+    .area-card-footer{padding:12px 22px 16px;display:flex;align-items:center;justify-content:space-between;}
+    .demanda-barra{flex:1;height:6px;background:var(--borda);border-radius:3px;overflow:hidden;margin:0 10px;}
+    .demanda-fill{height:100%;border-radius:3px;}
+    .demanda-lbl{font-size:0.75rem;color:var(--texto2);}
+    .ver-mais{display:inline-flex;align-items:center;gap:5px;font-size:0.80rem;font-weight:700;transition:var(--trans);}
+    .area-card:hover .ver-mais{gap:9px;}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(10,14,30,0.65);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.3s;overflow:hidden;}
+    .modal-overlay.aberto{opacity:1;pointer-events:all;}
+    .modal{background:var(--bg2);border-radius:var(--radius);width:100%;max-width:700px;max-height:92vh;overflow-y:auto;overflow-x:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.30);animation:slideUp 0.35s ease both;}
+    @keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .modal-hero{padding:28px 28px 22px;position:relative;color:#fff;}
+    .modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.20);border:none;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--trans);z-index:2;}
+    .modal-close:hover{background:rgba(255,255,255,0.35);}
+    .modal-ic{width:60px;height:60px;border-radius:18px;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.28);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:14px;}
+    .modal-hero h2{font-size:1.45rem;font-weight:800;margin-bottom:6px;}
+    .modal-hero p{font-size:0.88rem;opacity:0.88;line-height:1.65;max-width:520px;}
+
+    /* CARROSSEL */
+    .carrossel-wrap{position:relative;margin:0;overflow:hidden;width:100%;}
+    .carrossel-track{display:flex;transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;width:100%;}
+    .carrossel-slide{min-width:100%;width:100%;height:220px;position:relative;flex-shrink:0;overflow:hidden;}
+    .carrossel-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+    .slide-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.55) 0%,transparent 55%);}
+    .slide-caption{position:absolute;bottom:12px;left:16px;right:16px;font-size:0.78rem;color:rgba(255,255,255,0.90);font-weight:500;}
+    .carrossel-btn{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.40);border:none;color:#fff;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--trans);z-index:10;backdrop-filter:blur(4px);}
+    .carrossel-btn:hover{background:rgba(0,0,0,0.65);}
+    .carrossel-btn.prev{left:12px;}
+    .carrossel-btn.next{right:12px;}
+    .carrossel-dots{display:flex;justify-content:center;gap:6px;padding:10px 0 4px;}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--borda);border:none;cursor:pointer;transition:var(--trans);padding:0;}
+    .dot.ativo{background:var(--cor-modal,var(--azul));width:18px;border-radius:4px;}
+
+    /* MODAL BODY */
+    .modal-body{padding:20px 28px 28px;}
+    .info-section{margin-bottom:22px;}
+    .info-section h4{font-size:0.80rem;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--texto2);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+    .info-section h4 i{font-size:0.9rem;}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .info-box{background:var(--bg);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:13px 15px;}
+    .info-box label{font-size:0.73rem;color:var(--texto2);display:block;margin-bottom:4px;}
+    .info-box strong{font-size:0.91rem;font-weight:700;color:var(--texto);}
+    .carreiras-list{display:flex;flex-direction:column;gap:8px;}
+    .carreira-item{background:var(--bg);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:11px 15px;display:flex;align-items:center;gap:12px;}
+    .carreira-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+    .carreira-info h5{font-size:0.87rem;font-weight:700;margin-bottom:2px;}
+    .carreira-info p{font-size:0.77rem;color:var(--texto2);}
+    .tags-wrap{display:flex;flex-wrap:wrap;gap:7px;}
+    .tag{padding:5px 12px;border-radius:20px;font-size:0.78rem;font-weight:600;background:var(--bg);border:1.5px solid var(--borda);color:var(--texto2);}
+    .tendencia-box{background:var(--verde-light);border:1.5px solid rgba(29,185,84,0.25);border-radius:var(--radius-sm);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;}
+    .tendencia-box i{color:var(--verde);font-size:1rem;margin-top:2px;flex-shrink:0;}
+    .tendencia-box p{font-size:0.84rem;color:var(--texto);line-height:1.6;}
+    .modal-footer{padding:14px 28px 22px;border-top:1px solid var(--borda);display:flex;gap:10px;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 22px;border-radius:var(--radius-sm);font-size:0.90rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);}
+    .btn-roxo{background:var(--roxo);color:#fff;}
+    .btn-roxo:hover{background:#6D28D9;transform:translateY(-1px);}
+    .btn-azul{background:var(--azul);color:#fff;}
+    .btn-azul:hover{background:var(--azul-dark);transform:translateY(-1px);}
+    .btn-outline{background:transparent;border:1.5px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--roxo);color:var(--roxo);}
+
+    /* SKELETON IMAGEM */
+    .slide-skeleton{width:100%;height:220px;background:linear-gradient(90deg,var(--borda) 25%,var(--bg) 50%,var(--borda) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--texto2);font-size:0.82rem;}
+    .slide-skeleton i{font-size:2rem;opacity:0.4;}
+    @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+    .slide-erro{width:100%;height:220px;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:var(--texto2);font-size:0.82rem;}
+    .slide-erro i{font-size:2rem;opacity:0.35;}
+
+    /* TOAST */
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--roxo);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    .toast.sucesso{border-left-color:var(--verde);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:640px){
+      .areas-grid{grid-template-columns:1fr;}
+      .info-grid{grid-template-columns:1fr;}
+      .modal-body{padding:16px 16px 22px;}
+      .modal-hero{padding:22px 16px 18px;}
+      .carrossel-wrap{margin:0 -16px;}
+      .modal-footer{padding:12px 16px 20px;}
+      .hero h1{font-size:1.65rem;}
+      .stat-bar{flex-direction:column;}
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <button class="btn-h" onclick="history.back()"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-ic"><i class="fas fa-compass"></i></div>
+    <h1>Orientação <span>Profissional</span></h1>
+    <p>Explora as principais áreas profissionais de Moçambique — formação necessária, salários, demanda no mercado e carreiras disponíveis.</p>
+    <div class="filtros">
+      <button class="filtro-btn ativo" onclick="filtrar('todos',this)">Todas as áreas</button>
+      <button class="filtro-btn" onclick="filtrar('alta',this)">Alta demanda</button>
+      <button class="filtro-btn" onclick="filtrar('tecnica',this)">Técnica</button>
+      <button class="filtro-btn" onclick="filtrar('social',this)">Social</button>
+      <button class="filtro-btn" onclick="filtrar('negocios',this)">Negócios</button>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="stat-bar">
+    <div class="stat-item">
+      <div class="stat-ic" style="background:#EEF4FF;color:#0057C2;"><i class="fas fa-layer-group"></i></div>
+      <div><div class="stat-val">9</div><div class="stat-lbl">Áreas profissionais</div></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-ic" style="background:#F5F3FF;color:#7C3AED;"><i class="fas fa-briefcase"></i></div>
+      <div><div class="stat-val">60+</div><div class="stat-lbl">Carreiras mapeadas</div></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-ic" style="background:#F0FFF4;color:#1DB954;"><i class="fas fa-chart-line"></i></div>
+      <div><div class="stat-val">5</div><div class="stat-lbl">Áreas em crescimento</div></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-ic" style="background:#FFF8E1;color:#E5AA00;"><i class="fas fa-map-marker-alt"></i></div>
+      <div><div class="stat-val">11</div><div class="stat-lbl">Províncias cobertas</div></div>
+    </div>
+  </div>
+  <div class="sec-titulo">
+    <h2>Áreas Profissionais</h2>
+    <span id="contagem">9 áreas encontradas</span>
+  </div>
+  <div class="areas-grid" id="areas-grid"></div>
+</main>
+
+<div class="modal-overlay" id="modal-overlay" onclick="fecharModal(event)">
+  <div class="modal" id="modal-conteudo"></div>
+</div>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+<div id="toast-container" aria-live="polite"></div>
+
+<script>
+/* ── DADOS ── */
+const AREAS = [
+  {
+    id:'ti', nome:'Tecnologia de Informação', faIcon:'fa-laptop-code',
+    tag:'Técnica', tagCat:'tecnica', cor:'#0057C2', corBg:'#EEF4FF', demanda:95,
+    descBreve:'Desenvolvimento de software, análise de dados e infraestrutura digital.',
+    descCompleta:'A área de TI é uma das que mais cresce em Moçambique, impulsionada pela digitalização do Estado e do sector privado. Profissionais com competências digitais têm vantagem em praticamente todos os sectores da economia nacional.',
+    salarioMin:'25.000 MT', salarioMax:'120.000 MT',
+    formacaoMin:'Técnico Médio ou autodidacta', formacaoIdeal:'Licenciatura em Informática ou Engenharia Informática',
+    provincias:['Maputo','Beira','Nampula'], profissionais:'~12.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/dev1/700/220',legenda:'Desenvolvedor a trabalhar no código'},
+      {url:'https://picsum.photos/seed/data1/700/220',legenda:'Análise de dados e dashboards'},
+      {url:'https://picsum.photos/seed/team1/700/220',legenda:'Equipa de TI em colaboração'},
+      {url:'https://picsum.photos/seed/net1/700/220',legenda:'Infraestrutura e redes'},
+    ],
+    carreiras:[
+      {ic:'fa-code', nome:'Desenvolvedor Web/Mobile', desc:'Criação de sites, apps e plataformas digitais'},
+      {ic:'fa-chart-bar', nome:'Analista de Dados', desc:'Business intelligence, dashboards e relatórios'},
+      {ic:'fa-shield-alt', nome:'Especialista em Cibersegurança', desc:'Protecção de sistemas e dados empresariais'},
+      {ic:'fa-network-wired', nome:'Administrador de Redes', desc:'Infraestrutura, servidores e telecomunicações'},
+      {ic:'fa-robot', nome:'Cientista de Dados / IA', desc:'Machine learning e inteligência artificial'},
+    ],
+    competencias:['Programação','Resolução de problemas','Pensamento lógico','Inglês técnico','Trabalho remoto'],
+    tendencia:'A digitalização acelerada do governo moçambicano e o crescimento das fintechs criam uma procura sem precedentes por profissionais de TI até 2030.',
+  },
+  {
+    id:'saude', nome:'Saúde e Medicina', faIcon:'fa-heartbeat',
+    tag:'Social', tagCat:'social', cor:'#E53935', corBg:'#FFF5F5', demanda:90,
+    descBreve:'Medicina, enfermagem, saúde pública e ciências biomédicas.',
+    descCompleta:'Com uma das maiores carências de profissionais de saúde da África austral, Moçambique oferece oportunidades excepcionais nesta área. O sector público e as ONGs internacionais são os maiores empregadores.',
+    salarioMin:'18.000 MT', salarioMax:'90.000 MT',
+    formacaoMin:'Técnico de Saúde (Ensino Médio)', formacaoIdeal:'Licenciatura em Medicina, Enfermagem ou Farmácia',
+    provincias:['Todo o país','Cabo Delgado','Zambézia'], profissionais:'~35.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/doc1/700/220',legenda:'Médico em consulta'},
+      {url:'https://picsum.photos/seed/nurse1/700/220',legenda:'Enfermeira em cuidados ao paciente'},
+      {url:'https://picsum.photos/seed/lab1/700/220',legenda:'Análise laboratorial'},
+      {url:'https://picsum.photos/seed/health1/700/220',legenda:'Equipa de saúde em acção'},
+    ],
+    carreiras:[
+      {ic:'fa-user-md', nome:'Médico Clínico Geral', desc:'Diagnóstico e tratamento de doenças comuns'},
+      {ic:'fa-pills', nome:'Farmacêutico', desc:'Gestão e dispensação de medicamentos'},
+      {ic:'fa-stethoscope', nome:'Enfermeiro/a', desc:'Cuidados directos ao paciente'},
+      {ic:'fa-flask', nome:'Técnico de Laboratório', desc:'Análises clínicas e diagnóstico'},
+      {ic:'fa-brain', nome:'Psicólogo Clínico', desc:'Saúde mental e bem-estar psicológico'},
+    ],
+    competencias:['Empatia','Trabalho sob pressão','Ética profissional','Comunicação','Trabalho em equipa'],
+    tendencia:'O Plano Estratégico de Saúde 2024-2030 prevê a contratação de mais de 10.000 profissionais de saúde em todo o país, com foco nas zonas rurais.',
+  },
+  {
+    id:'educacao', nome:'Educação e Formação', faIcon:'fa-chalkboard-teacher',
+    tag:'Social', tagCat:'social', cor:'#16A34A', corBg:'#F0FFF4', demanda:80,
+    descBreve:'Ensino, pedagogia, formação profissional e investigação académica.',
+    descCompleta:'A educação é um dos pilares do desenvolvimento nacional. Com uma taxa de escolarização em expansão e crescimento do ensino superior e técnico-profissional, há espaço para docentes e formadores qualificados em todo o país.',
+    salarioMin:'12.000 MT', salarioMax:'55.000 MT',
+    formacaoMin:'Curso de Formação de Professores', formacaoIdeal:'Licenciatura em Ensino ou Pedagogia',
+    provincias:['Todo o país'], profissionais:'~120.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/class1/700/220',legenda:'Professor em sala de aula'},
+      {url:'https://picsum.photos/seed/student1/700/220',legenda:'Estudantes em actividade'},
+      {url:'https://picsum.photos/seed/train1/700/220',legenda:'Formação profissional técnica'},
+      {url:'https://picsum.photos/seed/prof1/700/220',legenda:'Docente universitário'},
+    ],
+    carreiras:[
+      {ic:'fa-chalkboard-teacher', nome:'Professor/a do Ensino Básico e Médio', desc:'Docência nas áreas curriculares nacionais'},
+      {ic:'fa-graduation-cap', nome:'Docente Universitário', desc:'Ensino superior e investigação académica'},
+      {ic:'fa-tools', nome:'Formador Técnico-Profissional', desc:'Formação vocacional e profissional'},
+      {ic:'fa-school', nome:'Gestor Educacional', desc:'Direcção de escolas e programas educativos'},
+      {ic:'fa-microscope', nome:'Investigador em Educação', desc:'Pesquisa e políticas educacionais'},
+    ],
+    competencias:['Comunicação','Paciência','Criatividade','Liderança','Gestão de sala de aula'],
+    tendencia:'O crescimento do ensino técnico-profissional e a expansão das universidades privadas criam oportunidades crescentes para docentes especializados.',
+  },
+  {
+    id:'engenharia', nome:'Engenharia e Construção', faIcon:'fa-hard-hat',
+    tag:'Técnica', tagCat:'tecnica', cor:'#D97706', corBg:'#FEF3C7', demanda:85,
+    descBreve:'Engenharia civil, eléctrica, mecânica e gestão de projectos de construção.',
+    descCompleta:'Os mega-projectos de gás natural no norte de Moçambique e o programa nacional de infraestruturas impulsionam uma forte procura por engenheiros e técnicos de construção qualificados, especialmente em Cabo Delgado e Nampula.',
+    salarioMin:'30.000 MT', salarioMax:'180.000 MT',
+    formacaoMin:'Técnico de Construção Civil', formacaoIdeal:'Licenciatura em Engenharia Civil, Eléctrica ou Mecânica',
+    provincias:['Cabo Delgado','Maputo','Tete'], profissionais:'~8.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/eng1/700/220',legenda:'Engenheiro civil em obra'},
+      {url:'https://picsum.photos/seed/build1/700/220',legenda:'Supervisão de construção'},
+      {url:'https://picsum.photos/seed/elec1/700/220',legenda:'Instalações eléctricas industriais'},
+      {url:'https://picsum.photos/seed/arch1/700/220',legenda:'Projecto arquitectónico'},
+    ],
+    carreiras:[
+      {ic:'fa-drafting-compass', nome:'Engenheiro Civil', desc:'Projecto e supervisão de obras e infraestruturas'},
+      {ic:'fa-bolt', nome:'Engenheiro Eléctrico', desc:'Sistemas eléctricos industriais e domésticos'},
+      {ic:'fa-cogs', nome:'Engenheiro Mecânico', desc:'Maquinaria, equipamentos e manutenção industrial'},
+      {ic:'fa-building', nome:'Arquitecto', desc:'Design e projecto de edifícios e espaços'},
+      {ic:'fa-clipboard-list', nome:'Gestor de Projecto', desc:'Coordenação de obras e equipas de construção'},
+    ],
+    competencias:['Cálculo e matemática','Gestão de projecto','Liderança de equipas','Desenho técnico','Inglês'],
+    tendencia:'Os projectos LNG em Cabo Delgado e o Plano Nacional de Infraestruturas garantem alta procura de engenheiros pelos próximos 15 anos.',
+  },
+  {
+    id:'agricultura', nome:'Agricultura e Agronegócio', faIcon:'fa-seedling',
+    tag:'Técnica', tagCat:'tecnica', cor:'#65A30D', corBg:'#F7FEE7', demanda:75,
+    descBreve:'Produção agrícola, agronegócio, pecuária e desenvolvimento rural.',
+    descCompleta:'Com mais de 75% da população ligada à agricultura, e um crescente investimento no agronegócio moderno, esta área tem enorme potencial de crescimento em Moçambique, especialmente em regiões como a Zambézia, Niassa e Manica.',
+    salarioMin:'15.000 MT', salarioMax:'70.000 MT',
+    formacaoMin:'Técnico Agrário', formacaoIdeal:'Licenciatura em Agronomia, Veterinária ou Gestão Agrária',
+    provincias:['Zambézia','Niassa','Manica','Todo o país'], profissionais:'~18.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/farm1/700/220',legenda:'Agrónomo em campo'},
+      {url:'https://picsum.photos/seed/crop1/700/220',legenda:'Inspecção de culturas'},
+      {url:'https://picsum.photos/seed/agro1/700/220',legenda:'Gestão de produção agrícola'},
+      {url:'https://picsum.photos/seed/agro2/700/220',legenda:'Tecnologia agrícola moderna'},
+    ],
+    carreiras:[
+      {ic:'fa-leaf', nome:'Agrónomo', desc:'Planeamento e gestão da produção agrícola'},
+      {ic:'fa-paw', nome:'Médico Veterinário', desc:'Saúde e produção animal'},
+      {ic:'fa-store', nome:'Gestor de Agronegócio', desc:'Gestão de empresas e cooperativas agrícolas'},
+      {ic:'fa-tint', nome:'Técnico de Irrigação', desc:'Sistemas de rega e gestão da água'},
+      {ic:'fa-microscope', nome:'Investigador Agrícola', desc:'Pesquisa e desenvolvimento de novas culturas'},
+    ],
+    competencias:['Conhecimentos técnicos agrários','Gestão rural','Extensão agrária','Sustentabilidade','Empreendedorismo'],
+    tendencia:'O aumento do investimento em agronegócio e a procura global de alimentos posicionam Moçambique como um mercado agrário emergente com potencial de exportação.',
+  },
+  {
+    id:'financas', nome:'Finanças e Banca', faIcon:'fa-landmark',
+    tag:'Negócios', tagCat:'negocios', cor:'#7C3AED', corBg:'#F5F3FF', demanda:78,
+    descBreve:'Banca, contabilidade, finanças empresariais e mercados de capitais.',
+    descCompleta:'O sector financeiro moçambicano está em expansão, com o crescimento das fintechs, da banca móvel (M-Pesa, e-Mola) e do mercado de capitais. Profissionais de finanças com competências digitais têm alta valorização.',
+    salarioMin:'22.000 MT', salarioMax:'130.000 MT',
+    formacaoMin:'Técnico de Contabilidade', formacaoIdeal:'Licenciatura em Gestão, Contabilidade ou Economia',
+    provincias:['Maputo','Beira','Nampula'], profissionais:'~25.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/fin1/700/220',legenda:'Analista financeiro em trabalho'},
+      {url:'https://picsum.photos/seed/acc1/700/220',legenda:'Contabilista a rever relatórios'},
+      {url:'https://picsum.photos/seed/bank1/700/220',legenda:'Banca e serviços financeiros'},
+      {url:'https://picsum.photos/seed/fintech1/700/220',legenda:'Fintech e pagamentos móveis'},
+    ],
+    carreiras:[
+      {ic:'fa-calculator', nome:'Contabilista / Auditor', desc:'Contabilidade financeira e auditoria empresarial'},
+      {ic:'fa-university', nome:'Bancário / Analista de Crédito', desc:'Operações bancárias e análise de risco'},
+      {ic:'fa-chart-line', nome:'Analista Financeiro', desc:'Investimentos, orçamentos e relatórios financeiros'},
+      {ic:'fa-mobile-alt', nome:'Especialista em Fintech', desc:'Pagamentos móveis e inovação financeira digital'},
+      {ic:'fa-file-invoice-dollar', nome:'Consultor Fiscal', desc:'Impostos, legislação fiscal e compliance'},
+    ],
+    competencias:['Excel avançado','Análise financeira','Ética profissional','Legislação fiscal','Inglês'],
+    tendencia:'O crescimento das fintechs e da banca móvel em Moçambique cria uma procura crescente por profissionais que combinam finanças com competências digitais.',
+  },
+  {
+    id:'comunicacao', nome:'Comunicação e Media', faIcon:'fa-satellite-dish',
+    tag:'Social', tagCat:'social', cor:'#0891B2', corBg:'#ECFEFF', demanda:65,
+    descBreve:'Jornalismo, relações públicas, marketing digital e produção de conteúdo.',
+    descCompleta:'Com o crescimento das redes sociais e da comunicação digital, Moçambique vive uma transformação no sector dos media. As empresas e ONGs procuram cada vez mais profissionais de comunicação com competências digitais.',
+    salarioMin:'14.000 MT', salarioMax:'65.000 MT',
+    formacaoMin:'Técnico de Comunicação', formacaoIdeal:'Licenciatura em Comunicação Social, Jornalismo ou Marketing',
+    provincias:['Maputo','Beira','Nampula'], profissionais:'~6.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/jour1/700/220',legenda:'Jornalista em reportagem'},
+      {url:'https://picsum.photos/seed/media1/700/220',legenda:'Criação de conteúdo digital'},
+      {url:'https://picsum.photos/seed/mktg1/700/220',legenda:'Reunião de estratégia de marketing'},
+      {url:'https://picsum.photos/seed/design1/700/220',legenda:'Design gráfico e identidade visual'},
+    ],
+    carreiras:[
+      {ic:'fa-newspaper', nome:'Jornalista', desc:'Reportagem, investigação e produção de notícias'},
+      {ic:'fa-bullhorn', nome:'Gestor de Marketing Digital', desc:'Redes sociais, SEO e campanhas online'},
+      {ic:'fa-handshake', nome:'Relações Públicas', desc:'Comunicação institucional e gestão de imagem'},
+      {ic:'fa-video', nome:'Produtor de Conteúdo', desc:'Vídeos, podcasts e conteúdo para redes sociais'},
+      {ic:'fa-paint-brush', nome:'Designer Gráfico / UI', desc:'Identidade visual, interfaces e comunicação visual'},
+    ],
+    competencias:['Escrita criativa','Redes sociais','Edição de vídeo','Português e Inglês','Storytelling'],
+    tendencia:'A explosão do marketing digital e dos criadores de conteúdo locais abre novas oportunidades para profissionais de comunicação com domínio das plataformas digitais.',
+  },
+  {
+    id:'direito', nome:'Direito e Justiça', faIcon:'fa-balance-scale',
+    tag:'Social', tagCat:'social', cor:'#B45309', corBg:'#FEF3C7', demanda:70,
+    descBreve:'Advocacia, magistratura, consultoria jurídica e direitos humanos.',
+    descCompleta:'O sector jurídico em Moçambique oferece oportunidades em escritórios de advocacia, empresas multinacionais ligadas aos projectos de recursos naturais, ONGs de direitos humanos e no próprio Estado.',
+    salarioMin:'20.000 MT', salarioMax:'150.000 MT',
+    formacaoMin:'Licenciatura em Direito (obrigatória)', formacaoIdeal:'Licenciatura + Estágio na Ordem dos Advogados',
+    provincias:['Maputo','Beira','Nampula'], profissionais:'~4.500',
+    imagens:[
+      {url:'https://picsum.photos/seed/law1/700/220',legenda:'Advogado em consulta jurídica'},
+      {url:'https://picsum.photos/seed/law2/700/220',legenda:'Pesquisa jurídica e legislação'},
+      {url:'https://picsum.photos/seed/court1/700/220',legenda:'Tribunal e administração da justiça'},
+      {url:'https://picsum.photos/seed/contract1/700/220',legenda:'Negociação e contratos'},
+    ],
+    carreiras:[
+      {ic:'fa-gavel', nome:'Advogado/a', desc:'Representação legal e consultoria jurídica'},
+      {ic:'fa-balance-scale', nome:'Magistrado / Juiz', desc:'Administração da justiça nos tribunais'},
+      {ic:'fa-scroll', nome:'Notário / Conservador', desc:'Actos notariais e registo civil'},
+      {ic:'fa-globe', nome:'Consultor de Direitos Humanos', desc:'ONGs, organismos internacionais e sector público'},
+      {ic:'fa-file-contract', nome:'Consultor Jurídico Empresarial', desc:'Contratos, compliance e legislação comercial'},
+    ],
+    competencias:['Argumentação','Pesquisa jurídica','Ética','Português jurídico','Negociação'],
+    tendencia:'Os mega-projectos de recursos naturais geram enorme procura por advogados especializados em direito comercial, ambiental e contratos internacionais.',
+  },
+  {
+    id:'turismo', nome:'Turismo e Hotelaria', faIcon:'fa-umbrella-beach',
+    tag:'Negócios', tagCat:'negocios', cor:'#0284C7', corBg:'#E0F2FE', demanda:60,
+    descBreve:'Hotelaria, ecoturismo, gastronomia e gestão de destinos turísticos.',
+    descCompleta:'Moçambique tem um potencial turístico extraordinário — praias, parques naturais e cultura diversa. Com o crescimento do turismo internacional e a aposta no ecoturismo sustentável, esta área está a ganhar relevância económica.',
+    salarioMin:'12.000 MT', salarioMax:'60.000 MT',
+    formacaoMin:'Curso Técnico de Hotelaria e Turismo', formacaoIdeal:'Licenciatura em Gestão Hoteleira ou Turismo',
+    provincias:['Inhambane','Maputo','Cabo Delgado','Zambezia'], profissionais:'~9.000',
+    imagens:[
+      {url:'https://picsum.photos/seed/hotel1/700/220',legenda:'Gestão hoteleira e hospitalidade'},
+      {url:'https://picsum.photos/seed/chef1/700/220',legenda:'Chef em cozinha profissional'},
+      {url:'https://picsum.photos/seed/safari1/700/220',legenda:'Guia de ecoturismo e safari'},
+      {url:'https://picsum.photos/seed/beach1/700/220',legenda:'Turismo costeiro e actividades náuticas'},
+    ],
+    carreiras:[
+      {ic:'fa-hotel', nome:'Gestor Hoteleiro', desc:'Direcção e operação de unidades hoteleiras'},
+      {ic:'fa-utensils', nome:'Chef / Técnico de Gastronomia', desc:'Cozinha profissional e gestão de restaurantes'},
+      {ic:'fa-binoculars', nome:'Guia de Ecoturismo', desc:'Condução de safaris e turismo de natureza'},
+      {ic:'fa-plane', nome:'Agente de Viagens', desc:'Organização de pacotes e experiências turísticas'},
+      {ic:'fa-water', nome:'Animador Turístico', desc:'Actividades náuticas, desportivas e culturais'},
+    ],
+    competencias:['Línguas estrangeiras','Hospitalidade','Gestão de eventos','Cultura local','Atendimento ao cliente'],
+    tendencia:'O ecoturismo em Moçambique está a crescer 12% ao ano, com destaque para Inhambane, Gorongosa e o arquipélago de Quirimbas como destinos internacionais emergentes.',
+  },
+];
+
+/* ── ESTADO ── */
+let filtroActivo = 'todos';
+let carrosselActual = 0;
+let carrosselTotal = 0;
+
+/* ── TEMA ── */
+function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet('hmz_tema',dark?'dark':'light');aplicarTema(dark);}
+if(lsGet('hmz_tema')==='dark')aplicarTema(true);
+
+/* ── TOAST ── */
+function mostrarToast(msg,tipo=''){
+  const cont=document.getElementById('toast-container');
+  const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;
+  cont.appendChild(t);
+  setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);
+}
+
+/* ── FILTRAR ── */
+function filtrar(cat,btn){
+  filtroActivo=cat;
+  document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+  renderizarAreas();
+}
+
+/* ── RENDERIZAR ÁREAS ── */
+function renderizarAreas(){
+  const grid=document.getElementById('areas-grid');
+  const filtradas=filtroActivo==='todos'?AREAS:AREAS.filter(a=>
+    a.tagCat===filtroActivo||(filtroActivo==='alta'&&a.demanda>=80));
+  document.getElementById('contagem').textContent=
+    filtradas.length+' área'+(filtradas.length!==1?'s':'')+' encontrada'+(filtradas.length!==1?'s':'');
+
+  grid.innerHTML=filtradas.map(a=>`
+    <div class="area-card" onclick="abrirModal('${a.id}')" style="--cor-area:${a.cor}" role="button" tabindex="0" aria-label="Ver detalhes de ${a.nome}">
+      <div class="area-card-header">
+        <div class="area-tag" style="background:${a.corBg};color:${a.cor};">${a.tag}</div>
+        <div class="area-ic-grande" style="background:${a.corBg};color:${a.cor};">
+          <i class="fas ${a.faIcon}"></i>
+        </div>
+        <h3>${a.nome}</h3>
+        <p>${a.descBreve}</p>
+      </div>
+      <div class="area-card-body">
+        <div class="area-meta">
+          <div class="meta-item"><i class="fas fa-money-bill-wave" style="color:${a.cor}"></i><span><strong>${a.salarioMin}</strong> base</span></div>
+          <div class="meta-item"><i class="fas fa-map-marker-alt" style="color:${a.cor}"></i><span><strong>${a.provincias[0]}</strong>${a.provincias.length>1?` +${a.provincias.length-1}`:''}</span></div>
+          <div class="meta-item"><i class="fas fa-users" style="color:${a.cor}"></i><span><strong>${a.profissionais}</strong> prof.</span></div>
+        </div>
+      </div>
+      <div class="area-card-footer">
+        <span class="demanda-lbl">Demanda</span>
+        <div class="demanda-barra"><div class="demanda-fill" style="width:${a.demanda}%;background:${a.cor};"></div></div>
+        <span class="ver-mais" style="color:${a.cor};">Ver detalhes <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── CARROSSEL ── */
+function moverCarrossel(dir){
+  carrosselActual=(carrosselActual+dir+carrosselTotal)%carrosselTotal;
+  const track=document.getElementById('carr-track');
+  if(track) track.style.transform=`translateX(-${carrosselActual*100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('ativo',i===carrosselActual));
+}
+
+function irParaSlide(idx){
+  carrosselActual=idx;
+  const track=document.getElementById('carr-track');
+  if(track) track.style.transform=`translateX(-${carrosselActual*100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('ativo',i===carrosselActual));
+}
+
+function construirCarrossel(imagens,cor){
+  carrosselActual=0;
+  carrosselTotal=imagens.length;
+  return `
+    <div class="carrossel-wrap">
+      <div class="carrossel-track" id="carr-track">
+        ${imagens.map((img,i)=>`
+          <div class="carrossel-slide">
+            <div class="slide-skeleton" id="skel-${i}"><i class="fas fa-image"></i><span>A carregar imagem...</span></div>
+            <img src="${img.url}" alt="${img.legenda}" loading="lazy"
+              onload="document.getElementById('skel-${i}').style.display='none';this.style.display='block';"
+              onerror="document.getElementById('skel-${i}').innerHTML='<i class=\\'fas fa-image\\'></i><span style=\\'font-size:0.78rem;\\'>Imagem não disponível offline</span>';document.getElementById('skel-${i}').className='slide-erro';"
+              style="display:none;">
+            <div class="slide-overlay"></div>
+            <div class="slide-caption"><i class="fas fa-camera" style="margin-right:5px;opacity:0.7;"></i>${img.legenda}</div>
+          </div>`).join('')}
+      </div>
+      <button class="carrossel-btn prev" onclick="event.stopPropagation();moverCarrossel(-1)" aria-label="Anterior">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="carrossel-btn next" onclick="event.stopPropagation();moverCarrossel(1)" aria-label="Próximo">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    <div class="carrossel-dots" style="--cor-modal:${cor}">
+      ${imagens.map((_,i)=>`<button class="dot ${i===0?'ativo':''}" onclick="event.stopPropagation();irParaSlide(${i})" aria-label="Slide ${i+1}"></button>`).join('')}
+    </div>
+  `;
+}
+
+/* ── MODAL ── */
+function abrirModal(id){
+  const a=AREAS.find(x=>x.id===id);
+  if(!a)return;
+
+  const nivelDemanda = a.demanda>=85
+    ? '<i class="fas fa-fire" style="color:#E53935"></i> Muito alta'
+    : a.demanda>=70
+    ? '<i class="fas fa-chart-line" style="color:#D97706"></i> Alta'
+    : '<i class="fas fa-minus" style="color:#555577"></i> Moderada';
+
+  document.getElementById('modal-conteudo').innerHTML=`
+    <div class="modal-hero" style="background:linear-gradient(135deg,${a.cor}EE,${a.cor}88);">
+      <button class="modal-close" onclick="fecharModal()" aria-label="Fechar"><i class="fas fa-times"></i></button>
+      <div class="modal-ic"><i class="fas ${a.faIcon}"></i></div>
+      <h2>${a.nome}</h2>
+      <p>${a.descCompleta}</p>
+    </div>
+
+    ${construirCarrossel(a.imagens, a.cor)}
+
+    <div class="modal-body">
+      <div class="info-section">
+        <h4><i class="fas fa-info-circle" style="color:${a.cor}"></i> Informações Gerais</h4>
+        <div class="info-grid">
+          <div class="info-box"><label>Salário mínimo</label><strong>${a.salarioMin} / mês</strong></div>
+          <div class="info-box"><label>Salário máximo</label><strong>${a.salarioMax} / mês</strong></div>
+          <div class="info-box"><label>Formação mínima</label><strong>${a.formacaoMin}</strong></div>
+          <div class="info-box"><label>Formação ideal</label><strong>${a.formacaoIdeal}</strong></div>
+          <div class="info-box"><label>Profissionais em Moz.</label><strong>${a.profissionais}</strong></div>
+          <div class="info-box"><label>Nível de demanda</label><strong>${nivelDemanda} (${a.demanda}%)</strong></div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h4><i class="fas fa-map-marker-alt" style="color:${a.cor}"></i> Províncias com Mais Oportunidades</h4>
+        <div class="tags-wrap">
+          ${a.provincias.map(p=>`<span class="tag"><i class="fas fa-map-pin"></i> ${p}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h4><i class="fas fa-briefcase" style="color:${a.cor}"></i> Carreiras Disponíveis</h4>
+        <div class="carreiras-list">
+          ${a.carreiras.map(c=>`
+            <div class="carreira-item">
+              <div class="carreira-ic" style="background:${a.corBg};color:${a.cor};"><i class="fas ${c.ic}"></i></div>
+              <div class="carreira-info"><h5>${c.nome}</h5><p>${c.desc}</p></div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h4><i class="fas fa-star" style="color:${a.cor}"></i> Competências Valorizadas</h4>
+        <div class="tags-wrap">
+          ${a.competencias.map(c=>`<span class="tag">${c}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h4><i class="fas fa-chart-line" style="color:${a.cor}"></i> Tendência Futura</h4>
+        <div class="tendencia-box">
+          <i class="fas fa-arrow-trend-up"></i>
+          <p>${a.tendencia}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-roxo" onclick="location.href='explorar.html?cat=Cursos'"><i class="fas fa-graduation-cap"></i> Ver cursos da área</button>
+      <button class="btn btn-azul" onclick="location.href='meu-cv.html'"><i class="fas fa-file-alt"></i> Criar o meu CV</button>
+      <button class="btn btn-outline" onclick="fecharModal()"><i class="fas fa-times"></i> Fechar</button>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('aberto');
+  document.body.style.overflow='hidden';
+}
+
+function fecharModal(event){
+  if(event && event.target!==document.getElementById('modal-overlay'))return;
+  document.getElementById('modal-overlay').classList.remove('aberto');
+  document.body.style.overflow='';
+  carrosselActual=0;
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') fecharModal();
+  if(e.key==='ArrowLeft') moverCarrossel(-1);
+  if(e.key==='ArrowRight') moverCarrossel(1);
+});
+
+/* ── INIT ── */
+renderizarAreas();
+</script>
+</body>
+</html>

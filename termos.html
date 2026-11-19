@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Termos de Uso | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--amarelo:#FFBE00;--verde:#1DB954;--vermelho:#E53935;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+    header{background:var(--azul);height:65px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-voltar{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.88);font-size:0.87rem;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.30);transition:var(--trans);}
+    .btn-voltar:hover{background:rgba(255,255,255,0.18);color:#fff;}
+
+    .hero{background:linear-gradient(135deg,var(--azul-dark),var(--azul));padding:52px 24px;color:#fff;text-align:center;}
+    .hero h1{font-size:1.9rem;font-weight:800;margin-bottom:8px;}
+    .hero p{font-size:0.92rem;opacity:0.85;max-width:500px;margin:0 auto;}
+
+    .layout{display:grid;grid-template-columns:220px 1fr;gap:32px;max-width:1050px;margin:0 auto;padding:40px 24px 60px;flex:1;width:100%;}
+
+    /* ÍNDICE LATERAL */
+    .indice{position:sticky;top:85px;background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:20px;align-self:flex-start;}
+    .indice h3{font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--texto2);margin-bottom:12px;}
+    .indice a{display:block;font-size:0.83rem;color:var(--texto2);padding:6px 8px;border-radius:var(--radius-sm);transition:var(--trans);margin-bottom:2px;border-left:2px solid transparent;}
+    .indice a:hover,.indice a.ativo{color:var(--azul);border-left-color:var(--azul);background:var(--azul-light);}
+
+    /* CONTEÚDO */
+    .conteudo{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:40px;}
+    .ultima-atualizacao{background:var(--azul-light);border:1px solid var(--borda);border-radius:var(--radius-sm);padding:12px 16px;font-size:0.84rem;color:var(--azul);margin-bottom:32px;display:flex;align-items:center;gap:8px;}
+
+    .sec-termos{margin-bottom:40px;}
+    .sec-termos:last-child{margin-bottom:0;}
+    .sec-termos h2{font-size:1.15rem;font-weight:800;color:var(--azul);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--azul-light);display:flex;align-items:center;gap:9px;}
+    .sec-termos h3{font-size:0.97rem;font-weight:700;color:var(--texto);margin:18px 0 8px;}
+    .sec-termos p{font-size:0.90rem;color:var(--texto2);line-height:1.80;margin-bottom:12px;}
+    .sec-termos ul{margin:8px 0 14px 18px;}
+    .sec-termos ul li{font-size:0.89rem;color:var(--texto2);line-height:1.75;margin-bottom:5px;}
+    .sec-termos strong{color:var(--texto);}
+
+    /* CAIXA DE DESTAQUE */
+    .destaque{background:var(--azul-light);border-left:4px solid var(--azul);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;margin:16px 0;font-size:0.87rem;color:var(--texto2);line-height:1.7;}
+    .destaque strong{color:var(--azul);}
+    .destaque-vermelho{background:#FFF5F5;border-left-color:var(--vermelho);}
+    .destaque-vermelho strong{color:var(--vermelho);}
+    body.dark .destaque{background:rgba(0,87,194,0.12);}
+    body.dark .destaque-vermelho{background:rgba(229,57,53,0.10);}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;margin-top:auto;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:760px){.layout{grid-template-columns:1fr;padding:24px 16px 40px;}.indice{position:static;}.conteudo{padding:24px 18px;}.hero h1{font-size:1.5rem;}}
+  
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-style">
+/* HMZ: botão Voltar padrão — mesmo design do botão do header dos dashboards */
+.hmz-back-page{background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28);transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+@media print{.hmz-back-page{display:none!important;}}
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <a href="index.html" class="btn-voltar"><i class="fas fa-arrow-left"></i> Início</a>
+  <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+    </div>
+</header>
+
+<section class="hero">
+  <h1>Termos de Uso e Privacidade</h1>
+  <p>Lê atentamente os termos que regem o uso da plataforma HorizonteMZ.</p>
+</section>
+
+<div class="layout">
+
+  <!-- ÍNDICE -->
+  <nav class="indice">
+    <h3>Índice</h3>
+    <a href="#aceitacao">1. Aceitação</a>
+    <a href="#servico">2. Descrição do serviço</a>
+    <a href="#contas">3. Contas de utilizador</a>
+    <a href="#conteudo">4. Conteúdo publicado</a>
+    <a href="#privacidade">5. Privacidade</a>
+    <a href="#dados">6. Recolha de dados</a>
+    <a href="#cookies">7. Cookies</a>
+    <a href="#responsabilidades">8. Responsabilidades</a>
+    <a href="#propriedade">9. Propriedade intelectual</a>
+    <a href="#terminacao">10. Rescisão</a>
+    <a href="#alteracoes">11. Alterações</a>
+    <a href="#contacto">12. Contacto</a>
+  </nav>
+
+  <!-- CONTEÚDO -->
+  <div class="conteudo">
+    <div class="ultima-atualizacao">
+      <i class="fas fa-calendar-alt"></i>
+      <span>Última actualização: <strong>Janeiro de 2026</strong> — Versão 1.0</span>
+    </div>
+
+    <div class="destaque">
+      <strong>Resumo:</strong> Ao usar o HorizonteMZ, concordas com estes termos. A plataforma é gratuita, os teus dados são protegidos, e apenas podes publicar conteúdo verdadeiro e relevante.
+    </div>
+
+    <div class="sec-termos" id="aceitacao">
+      <h2><i class="fas fa-handshake"></i> 1. Aceitação dos Termos</h2>
+      <p>Ao aceder ou utilizar a plataforma HorizonteMZ ("Plataforma"), concordas em ficar vinculado pelos presentes Termos de Uso e Política de Privacidade. Se não concordares com algum destes termos, não deves utilizar a plataforma.</p>
+      <p>O HorizonteMZ reserva-se o direito de actualizar estes termos periodicamente. Continuando a utilizar a plataforma após qualquer alteração, aceitas os novos termos.</p>
+    </div>
+
+    <div class="sec-termos" id="servico">
+      <h2><i class="fas fa-info-circle"></i> 2. Descrição do Serviço</h2>
+      <p>O HorizonteMZ é uma plataforma digital moçambicana que conecta jovens a oportunidades de aprendizagem, emprego e desenvolvimento profissional. Os serviços incluem:</p>
+      <ul>
+        <li>Publicação e consulta de oportunidades (bolsas, cursos, estágios, workshops, voluntariado)</li>
+        <li>Publicação e consulta de vagas de emprego</li>
+        <li>Geração automática de CV profissional em PDF</li>
+        <li>Ferramenta de orientação profissional</li>
+        <li>Sistema de candidaturas online</li>
+      </ul>
+      <p>O serviço é prestado gratuitamente para utilizadores individuais, instituições e empresas parceiras.</p>
+    </div>
+
+    <div class="sec-termos" id="contas">
+      <h2><i class="fas fa-user"></i> 3. Contas de Utilizador</h2>
+      <h3>Criação de conta</h3>
+      <p>Para aceder a funcionalidades completas da plataforma, é necessário criar uma conta. Ao registares-te, comprometes-te a fornecer informações verdadeiras, completas e actualizadas.</p>
+      <h3>Segurança da conta</h3>
+      <p>És responsável por manter a confidencialidade da tua senha e por todas as actividades que ocorram na tua conta. Notifica imediatamente o HorizonteMZ de qualquer uso não autorizado.</p>
+      <h3>Requisitos de idade</h3>
+      <p>A plataforma destina-se a utilizadores com pelo menos 10 anos de idade. Utilizadores menores de 18 anos devem ter autorização dos seus responsáveis legais.</p>
+      <div class="destaque destaque-vermelho">
+        <strong>Importante:</strong> Não é permitido criar múltiplas contas com o mesmo e-mail ou partilhar credenciais de acesso com terceiros.
+      </div>
+    </div>
+
+    <div class="sec-termos" id="conteudo">
+      <h2><i class="fas fa-file-alt"></i> 4. Conteúdo Publicado</h2>
+      <h3>Responsabilidade pelo conteúdo</h3>
+      <p>Instituições e empresas são totalmente responsáveis pelo conteúdo que publicam na plataforma. Todo o conteúdo deve ser verídico, actual e relevante.</p>
+      <h3>Conteúdo proibido</h3>
+      <p>É estritamente proibido publicar:</p>
+      <ul>
+        <li>Oportunidades ou vagas falsas ou enganosas</li>
+        <li>Conteúdo discriminatório baseado em raça, género, religião ou origem</li>
+        <li>Spam, publicidade não autorizada ou conteúdo irrelevante</li>
+        <li>Informação que viole direitos de terceiros</li>
+        <li>Conteúdo ilegal ou que promova actividades ilegais</li>
+      </ul>
+      <h3>Moderação</h3>
+      <p>Todo o conteúdo publicado está sujeito a revisão pelo administrador do HorizonteMZ antes de ser tornado público. O HorizonteMZ reserva-se o direito de remover qualquer conteúdo que viole estes termos.</p>
+    </div>
+
+    <div class="sec-termos" id="privacidade">
+      <h2><i class="fas fa-shield-alt"></i> 5. Política de Privacidade</h2>
+      <p>O HorizonteMZ respeita e protege a privacidade dos seus utilizadores. Esta política descreve como recolhemos, usamos e protegemos as tuas informações pessoais.</p>
+      <p>Comprometemo-nos a não vender, alugar ou partilhar os teus dados pessoais com terceiros para fins comerciais sem o teu consentimento explícito.</p>
+    </div>
+
+    <div class="sec-termos" id="dados">
+      <h2><i class="fas fa-database"></i> 6. Recolha e Uso de Dados</h2>
+      <h3>Dados que recolhemos</h3>
+      <ul>
+        <li><strong>Dados de registo:</strong> nome, e-mail, telefone, data de nascimento, localização</li>
+        <li><strong>Dados de perfil:</strong> formação académica, experiência profissional, interesses</li>
+        <li><strong>Dados de uso:</strong> oportunidades visualizadas, candidaturas realizadas, pesquisas efectuadas</li>
+      </ul>
+      <h3>Como usamos os dados</h3>
+      <ul>
+        <li>Personalizar a experiência na plataforma e recomendar oportunidades relevantes</li>
+        <li>Facilitar o processo de candidatura</li>
+        <li>Gerar o CV automático do utilizador</li>
+        <li>Melhorar os serviços da plataforma</li>
+        <li>Enviar notificações relevantes (apenas com o teu consentimento)</li>
+      </ul>
+      <div class="destaque">
+        <strong>Nota técnica:</strong> Actualmente, o HorizonteMZ armazena os dados localmente no teu dispositivo através do localStorage do navegador. Os dados não são transmitidos para servidores externos.
+      </div>
+    </div>
+
+    <div class="sec-termos" id="cookies">
+      <h2><i class="fas fa-cookie-bite"></i> 7. Cookies e Armazenamento Local</h2>
+      <p>O HorizonteMZ utiliza o localStorage do navegador para guardar as tuas preferências (como o tema escuro/claro) e dados de sessão. Estes dados ficam no teu dispositivo e podes eliminá-los a qualquer momento através das definições do teu navegador.</p>
+      <p>Não utilizamos cookies de rastreamento de terceiros nem tecnologias de rastreamento invasivas.</p>
+    </div>
+
+    <div class="sec-termos" id="responsabilidades">
+      <h2><i class="fas fa-exclamation-triangle"></i> 8. Limitação de Responsabilidades</h2>
+      <p>O HorizonteMZ actua como intermediário entre utilizadores e organizações. Não somos responsáveis por:</p>
+      <ul>
+        <li>A veracidade ou qualidade das oportunidades publicadas pelas organizações</li>
+        <li>O resultado das candidaturas realizadas</li>
+        <li>Qualquer dano directo ou indirecto resultante do uso da plataforma</li>
+        <li>Interrupções temporárias do serviço por razões técnicas</li>
+      </ul>
+      <p>Apesar da moderação activa, o HorizonteMZ não garante que todo o conteúdo seja absolutamente preciso e actualizado.</p>
+    </div>
+
+    <div class="sec-termos" id="propriedade">
+      <h2><i class="fas fa-copyright"></i> 9. Propriedade Intelectual</h2>
+      <p>O nome "HorizonteMZ", o logótipo, o design e todo o código da plataforma são propriedade intelectual de Elvis António Salomão Chato e da equipa do HorizonteMZ.</p>
+      <p>Ao publicar conteúdo na plataforma, concedes ao HorizonteMZ uma licença não exclusiva para exibir esse conteúdo aos utilizadores da plataforma.</p>
+    </div>
+
+    <div class="sec-termos" id="terminacao">
+      <h2><i class="fas fa-times-circle"></i> 10. Rescisão</h2>
+      <p>O HorizonteMZ reserva-se o direito de suspender ou encerrar contas que violem estes termos, sem aviso prévio. Os utilizadores podem eliminar a sua conta a qualquer momento através das definições do perfil.</p>
+    </div>
+
+    <div class="sec-termos" id="alteracoes">
+      <h2><i class="fas fa-edit"></i> 11. Alterações aos Termos</h2>
+      <p>O HorizonteMZ pode actualizar estes termos periodicamente para reflectir mudanças nos serviços ou na legislação aplicável. As alterações serão publicadas nesta página com a data de actualização. O uso continuado da plataforma após as alterações constitui a aceitação dos novos termos.</p>
+    </div>
+
+    <div class="sec-termos" id="contacto">
+      <h2><i class="fas fa-envelope"></i> 12. Contacto</h2>
+      <p>Para questões relacionadas com estes Termos de Uso ou com a Política de Privacidade, podes contactar-nos através de:</p>
+      <ul>
+        <li><strong>E-mail:</strong> <a href="mailto:contacto@horizontemz.co.mz" style="color:var(--azul);">contacto@horizontemz.co.mz</a></li>
+        <li><strong>Formulário de contacto:</strong> <a href="contacto.html" style="color:var(--azul);">horizontemz.co.mz/contacto</a></li>
+        <li><strong>Localização:</strong> Nacala-Porto, Moçambique</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026 — Nacala-Porto, Moçambique</footer>
+
+<script>
+  const KEYS={tema:'hmz_tema'};
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  // Destacar secção activa no índice
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.querySelectorAll('.indice a').forEach(a=>a.classList.remove('ativo'));
+        const link=document.querySelector(`.indice a[href="#${e.target.id}"]`);
+        if(link)link.classList.add('ativo');
+      }
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('.sec-termos[id]').forEach(s=>observer.observe(s));
+</script>
+</body>
+</html>

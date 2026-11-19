@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recuperar Senha | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--amarelo:#FFBE00;--verde:#16A34A;--laranja:#D97706;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--azul:#4A9EFF;--azul-light:#0D1B3E;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+    header{background:var(--azul);height:65px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}.logo span{color:var(--amarelo);}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;}
+    .wrap{width:100%;max-width:500px;text-align:center;}
+    .ic-topo{width:80px;height:80px;border-radius:24px;background:var(--azul-light);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 24px;}
+    h1{font-size:1.7rem;font-weight:800;color:var(--azul);margin-bottom:10px;}
+    p{font-size:0.92rem;color:var(--texto2);line-height:1.7;margin-bottom:36px;}
+    .cards{display:flex;flex-direction:column;gap:14px;}
+    .tipo-card{background:var(--bg2);border:2px solid var(--borda);border-radius:var(--radius);padding:20px 24px;cursor:pointer;transition:var(--trans);display:flex;align-items:center;gap:16px;text-align:left;}
+    .tipo-card:hover{border-color:var(--azul);transform:translateY(-2px);box-shadow:0 8px 24px var(--sombra);}
+    .tipo-ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+    .tipo-card h3{font-size:1rem;font-weight:800;margin-bottom:4px;}
+    .tipo-card p{font-size:0.84rem;color:var(--texto2);margin-bottom:0;line-height:1.5;}
+    .voltar{margin-top:28px;font-size:0.86rem;color:var(--texto2);}
+    .voltar a{color:var(--azul);font-weight:700;}
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-style">
+/* HMZ: botão Voltar padrão — mesmo design do botão do header dos dashboards */
+.hmz-back-page{background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28);transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+@media print{.hmz-back-page{display:none!important;}}
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="ic-topo"><i class="fas fa-key"></i></div>
+    <h1>Recuperar Senha</h1>
+    <p>Seleciona o tipo de conta para a qual pretendes recuperar a senha de acesso.</p>
+    <div class="cards">
+      <div class="tipo-card" onclick="location.href='recuperar-senha.html'">
+        <div class="tipo-ic" style="background:#EEF4FF;color:#0057C2;"><i class="fas fa-user"></i></div>
+        <div>
+          <h3>Conta de Utilizador</h3>
+          <p>Recupera a senha da tua conta pessoal de utilizador do HorizonteMZ.</p>
+        </div>
+        <i class="fas fa-chevron-right" style="color:var(--texto2);margin-left:auto;"></i>
+      </div>
+      <div class="tipo-card" onclick="location.href='recuperar-senha-inst.html'">
+        <div class="tipo-ic" style="background:#F0FDF4;color:#16A34A;"><i class="fas fa-university"></i></div>
+        <div>
+          <h3>Conta de Instituição</h3>
+          <p>Recupera a senha da conta da tua instituição, ONG ou organização.</p>
+        </div>
+        <i class="fas fa-chevron-right" style="color:var(--texto2);margin-left:auto;"></i>
+      </div>
+      <div class="tipo-card" onclick="location.href='recuperar-senha-emp.html'">
+        <div class="tipo-ic" style="background:#FEF3C7;color:#D97706;"><i class="fas fa-building"></i></div>
+        <div>
+          <h3>Conta de Empresa</h3>
+          <p>Recupera a senha da conta da tua empresa no HorizonteMZ.</p>
+        </div>
+        <i class="fas fa-chevron-right" style="color:var(--texto2);margin-left:auto;"></i>
+      </div>
+    </div>
+    <div class="voltar"><a href="escolha-conta.html"><i class="fas fa-arrow-left"></i> Voltar à escolha de conta</a></div>
+  </div>
+</main>
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+<script>
+  const KEYS={tema:'hmz_tema'};
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+</script>
+</body>
+</html>

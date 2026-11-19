@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recuperar Senha | HorizonteMZ</title>
+  <meta name="description" content="Recupera o acesso à tua conta HorizonteMZ."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:        #0057C2;
+      --azul-dark:   #003F8F;
+      --azul-light:  #EEF4FF;
+      --amarelo:     #FFBE00;
+      --amarelo-dark:#E5AA00;
+      --verde:       #1DB954;
+      --vermelho:    #E53935;
+      --bg:          #F4F7FF;
+      --bg2:         #FFFFFF;
+      --texto:       #1A1A2E;
+      --texto2:      #555577;
+      --borda:       #DDE3F0;
+      --sombra:      rgba(0,87,194,0.10);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --trans:       all 0.25s ease;
+    }
+    body.dark {
+      --azul:        #4A9EFF;
+      --azul-dark:   #2979D9;
+      --azul-light:  #0D1B3E;
+      --bg:          #0D1117;
+      --bg2:         #161B27;
+      --texto:       #E8EEFF;
+      --texto2:      #8899BB;
+      --borda:       #253050;
+      --sombra:      rgba(0,0,0,0.30);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Segoe UI', system-ui, sans-serif;
+      background:var(--bg); color:var(--texto);
+      min-height:100vh; display:flex; flex-direction:column;
+      transition:background 0.3s, color 0.3s;
+    }
+    a { text-decoration:none; color:inherit; }
+
+    /* ── HEADER ── */
+    header {
+      background:var(--azul); height:65px;
+      padding:0 28px; display:flex;
+      align-items:center; justify-content:space-between;
+      box-shadow:0 2px 20px rgba(0,0,0,0.22);
+      position:sticky; top:0; z-index:100;
+    }
+    .logo { font-size:1.45rem; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+    .logo span { color:var(--amarelo); }
+    .h-right { display:flex; align-items:center; gap:10px; }
+    .btn-dark {
+      background:none; border:none; color:#fff;
+      font-size:1.05rem; cursor:pointer;
+      padding:7px; border-radius:var(--radius-sm); transition:var(--trans);
+    }
+    .btn-dark:hover { background:rgba(255,255,255,0.18); }
+    .btn-voltar {
+      display:inline-flex; align-items:center; gap:6px;
+      color:rgba(255,255,255,0.88); font-size:0.87rem;
+      font-weight:600; padding:7px 14px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(255,255,255,0.30); transition:var(--trans);
+    }
+    .btn-voltar:hover { background:rgba(255,255,255,0.18); color:#fff; }
+
+    /* ── MAIN ── */
+    main {
+      flex:1; display:flex; align-items:center;
+      justify-content:center; padding:52px 24px;
+    }
+
+    .form-wrap {
+      width:100%; max-width:480px;
+    }
+
+    /* Ícone central */
+    .topo-ic {
+      width:80px; height:80px; border-radius:50%;
+      background:var(--azul-light);
+      border:2px solid var(--borda);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2rem; color:var(--azul);
+      margin:0 auto 24px;
+      animation:fadeUp 0.4s ease both;
+    }
+
+    .form-topo {
+      text-align:center; margin-bottom:32px;
+      animation:fadeUp 0.4s 0.05s ease both;
+    }
+    .form-topo h1 {
+      font-size:1.75rem; font-weight:800;
+      color:var(--azul); letter-spacing:-0.3px; margin-bottom:8px;
+    }
+    .form-topo p { font-size:0.91rem; color:var(--texto2); line-height:1.65; }
+
+    /* Card */
+    .form-card {
+      background:var(--bg2);
+      border-radius:var(--radius);
+      border:1.5px solid var(--borda);
+      padding:36px;
+      box-shadow:0 4px 24px var(--sombra);
+      animation:fadeUp 0.4s 0.10s ease both;
+    }
+
+    /* Passos */
+    .passo { display:none; }
+    .passo.ativo { display:block; }
+
+    /* Indicador de passos simples */
+    .passos-dots {
+      display:flex; justify-content:center;
+      gap:8px; margin-bottom:28px;
+    }
+    .dot {
+      width:8px; height:8px; border-radius:50%;
+      background:var(--borda); transition:var(--trans);
+    }
+    .dot.ativo { background:var(--azul); width:24px; border-radius:4px; }
+    .dot.feito { background:var(--verde); }
+
+    /* Secção título */
+    .sec-titulo {
+      font-size:1rem; font-weight:800;
+      color:var(--azul); margin-bottom:6px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .sec-sub {
+      font-size:0.86rem; color:var(--texto2);
+      line-height:1.6; margin-bottom:24px;
+    }
+
+    /* Campos */
+    .campo { margin-bottom:20px; }
+    .campo label {
+      display:block; font-size:0.85rem;
+      font-weight:700; margin-bottom:7px; color:var(--texto);
+    }
+    .campo label span.obrig { color:var(--vermelho); margin-left:2px; }
+    .input-wrap { position:relative; }
+    .input-wrap i.ic-esq {
+      position:absolute; left:14px; top:50%;
+      transform:translateY(-50%);
+      color:var(--texto2); font-size:0.92rem;
+      pointer-events:none; transition:var(--trans);
+    }
+    .input-wrap:focus-within i.ic-esq { color:var(--azul); }
+    .input-wrap input {
+      width:100%; padding:12px 14px 12px 42px;
+      border:1.5px solid var(--borda);
+      border-radius:var(--radius-sm);
+      font-size:0.93rem; background:var(--bg);
+      color:var(--texto); font-family:inherit;
+      transition:var(--trans); outline:none;
+    }
+    .input-wrap input:focus {
+      border-color:var(--azul);
+      box-shadow:0 0 0 3px rgba(0,87,194,0.12);
+      background:var(--bg2);
+    }
+    .campo.erro .input-wrap input {
+      border-color:var(--vermelho);
+      box-shadow:0 0 0 3px rgba(229,57,53,0.10);
+    }
+    .campo.valido .input-wrap input { border-color:var(--verde); }
+    .msg-erro {
+      display:none; font-size:0.79rem; color:var(--vermelho);
+      margin-top:5px; align-items:center; gap:5px;
+    }
+    .campo.erro .msg-erro { display:flex; }
+
+    /* Botão olho */
+    .btn-olho {
+      position:absolute; right:12px; top:50%;
+      transform:translateY(-50%);
+      background:none; border:none; color:var(--texto2);
+      cursor:pointer; font-size:0.95rem; padding:4px;
+      transition:var(--trans);
+    }
+    .btn-olho:hover { color:var(--azul); }
+
+    /* Força senha */
+    .forca-wrap { margin-top:8px; }
+    .forca-barras { display:flex; gap:4px; margin-bottom:5px; }
+    .forca-barra {
+      flex:1; height:4px; border-radius:2px;
+      background:var(--borda); transition:var(--trans);
+    }
+    .forca-barra.fraca      { background:#E53935; }
+    .forca-barra.media      { background:#FF9800; }
+    .forca-barra.forte      { background:#4CAF50; }
+    .forca-barra.muitoforte { background:#1DB954; }
+    .forca-label { font-size:0.77rem; font-weight:700; }
+    .forca-fraca      { color:#E53935; }
+    .forca-media      { color:#FF9800; }
+    .forca-forte      { color:#4CAF50; }
+    .forca-muitoforte { color:#1DB954; }
+
+    /* Código de verificação */
+    .codigo-grid {
+      display:flex; gap:10px; justify-content:center;
+      margin-bottom:6px;
+    }
+    .codigo-input {
+      width:52px; height:60px;
+      border:2px solid var(--borda);
+      border-radius:var(--radius-sm);
+      text-align:center; font-size:1.5rem;
+      font-weight:800; color:var(--azul);
+      background:var(--bg); font-family:inherit;
+      outline:none; transition:var(--trans);
+      caret-color:var(--azul);
+    }
+    .codigo-input:focus {
+      border-color:var(--azul);
+      box-shadow:0 0 0 3px rgba(0,87,194,0.15);
+      background:var(--bg2);
+    }
+    .codigo-input.preenchido { border-color:var(--verde); }
+    .codigo-input.erro-dig   { border-color:var(--vermelho); }
+
+    /* Reenviar código */
+    .reenviar-wrap {
+      text-align:center; margin-top:14px;
+      font-size:0.84rem; color:var(--texto2);
+    }
+    .btn-reenviar {
+      background:none; border:none;
+      color:var(--azul); font-weight:700;
+      cursor:pointer; font-size:0.84rem;
+      font-family:inherit; transition:var(--trans);
+    }
+    .btn-reenviar:hover { text-decoration:underline; }
+    .btn-reenviar:disabled { color:var(--texto2); cursor:not-allowed; }
+    #timer-reenviar { font-weight:700; color:var(--azul); }
+
+    /* Alerta */
+    .alerta {
+      display:none; padding:12px 16px;
+      border-radius:var(--radius-sm);
+      font-size:0.87rem; margin-bottom:20px;
+      align-items:center; gap:10px; border:1px solid;
+    }
+    .alerta.erro    { background:#FFF5F5; border-color:#FFCDD2; color:#C62828; }
+    .alerta.sucesso { background:#F0FFF4; border-color:#C8E6C9; color:#1B5E20; }
+    .alerta.info    { background:var(--azul-light); border-color:var(--borda); color:var(--azul); }
+    body.dark .alerta.erro    { background:#2d1a1a; border-color:#5c2222; color:#ff8a80; }
+    body.dark .alerta.sucesso { background:#1a2d1a; border-color:#225c22; color:#80ff9e; }
+    body.dark .alerta.info    { background:#0d1b3e; border-color:#253050; color:#4a9eff; }
+    .alerta.visivel { display:flex; }
+
+    /* Botões */
+    .btn {
+      display:inline-flex; align-items:center;
+      justify-content:center; gap:8px;
+      padding:12px 24px; border-radius:var(--radius-sm);
+      font-size:0.93rem; font-weight:700;
+      border:none; cursor:pointer;
+      font-family:inherit; transition:var(--trans);
+      width:100%; text-decoration:none;
+    }
+    .btn-azul { background:var(--azul); color:#fff; }
+    .btn-azul:hover:not(:disabled) {
+      background:var(--azul-dark);
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(0,87,194,0.25);
+    }
+    .btn-azul:disabled { opacity:0.60; cursor:not-allowed; transform:none; }
+    .btn-outline {
+      background:transparent;
+      border:1.5px solid var(--borda); color:var(--texto2);
+      margin-top:10px;
+    }
+    .btn-outline:hover { border-color:var(--azul); color:var(--azul); }
+
+    .spinner {
+      display:none; width:16px; height:16px;
+      border:2px solid rgba(255,255,255,0.35);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .btn-azul.loading .spinner { display:block; }
+    .btn-azul.loading .btn-txt { display:none; }
+
+    /* Email mascarado */
+    .email-box {
+      background:var(--azul-light);
+      border:1px solid var(--borda);
+      border-radius:var(--radius-sm);
+      padding:14px 18px;
+      display:flex; align-items:center; gap:12px;
+      margin-bottom:24px; font-size:0.9rem;
+      color:var(--azul); font-weight:600;
+    }
+    .email-box i { font-size:1.1rem; flex-shrink:0; }
+
+    /* Ecrã de sucesso */
+    .sucesso-ecrã {
+      display:none; flex-direction:column;
+      align-items:center; text-align:center; padding:10px 0;
+    }
+    .sucesso-ecrã.visivel { display:flex; }
+    .sucesso-ic {
+      width:88px; height:88px; border-radius:50%;
+      background:#F0FFF4; border:3px solid var(--verde);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.5rem; color:var(--verde); margin-bottom:24px;
+      animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { transform:scale(0); opacity:0; }
+      to   { transform:scale(1); opacity:1; }
+    }
+    .sucesso-ecrã h2 {
+      font-size:1.5rem; font-weight:800;
+      color:var(--azul); margin-bottom:10px;
+    }
+    .sucesso-ecrã p {
+      color:var(--texto2); font-size:0.91rem;
+      line-height:1.65; max-width:340px; margin-bottom:28px;
+    }
+
+    /* Rodapé form */
+    .form-rodape {
+      text-align:center; margin-top:20px;
+      font-size:0.85rem; color:var(--texto2);
+    }
+    .form-rodape a { color:var(--azul); font-weight:700; }
+    .form-rodape a:hover { text-decoration:underline; }
+
+    /* Toast */
+    #toast-container {
+      position:fixed; bottom:24px; right:24px;
+      z-index:9999; display:flex;
+      flex-direction:column; gap:10px; pointer-events:none;
+    }
+    .toast {
+      background:var(--bg2); border:1px solid var(--borda);
+      border-left:4px solid var(--azul); color:var(--texto);
+      padding:13px 18px; border-radius:var(--radius-sm);
+      font-size:0.88rem; box-shadow:0 8px 24px rgba(0,0,0,0.15);
+      animation:toastIn 0.3s ease; pointer-events:all; max-width:320px;
+    }
+    .toast.sucesso { border-left-color:var(--verde); }
+    .toast.erro    { border-left-color:var(--vermelho); }
+
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes toastIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes toastOut{ from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(40px)} }
+
+    /* Footer */
+    footer {
+      background:#0D1B3E; color:rgba(255,255,255,0.50);
+      text-align:center; padding:18px 24px; font-size:0.82rem;
+    }
+    footer strong { color:rgba(255,255,255,0.80); }
+
+    /* Responsividade */
+    @media (max-width:520px) {
+      .form-card { padding:24px 18px; }
+      .form-topo h1 { font-size:1.45rem; }
+      .codigo-input { width:42px; height:52px; font-size:1.2rem; }
+      main { padding:36px 16px; }
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+  <div class="form-wrap">
+
+    <!-- Ícone e título -->
+    <div class="topo-ic"><i class="fas fa-key"></i></div>
+    <div class="form-topo">
+      <h1 id="titulo-passo">Recuperar senha</h1>
+      <p id="desc-passo">Não te preocupes. Introduz o teu e-mail e enviaremos um código de verificação.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="form-card">
+
+      <!-- Dots de progresso -->
+      <div class="passos-dots">
+        <div class="dot ativo" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+      </div>
+
+      <!-- Alerta geral -->
+      <div class="alerta" id="alerta-geral">
+        <i class="fas fa-info-circle"></i>
+        <span id="alerta-msg"></span>
+      </div>
+
+      <!-- ── PASSO 1: Introduzir e-mail ── -->
+      <div class="passo ativo" id="passo1">
+        <div class="sec-titulo"><i class="fas fa-envelope"></i> Verificar e-mail</div>
+        <div class="sec-sub">Introduz o endereço de e-mail associado à tua conta HorizonteMZ.</div>
+
+        <div class="campo" id="campo-email">
+          <label for="email">Endereço de e-mail <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope ic-esq"></i>
+            <input type="email" id="email" placeholder="exemplo@email.com"
+                   maxlength="120" autocomplete="email" inputmode="email"/>
+          </div>
+          <div class="msg-erro" id="erro-email">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-email"></span>
+          </div>
+        </div>
+
+        <button class="btn btn-azul" id="btn-p1" onclick="enviarCodigo()">
+          <span class="spinner"></span>
+          <span class="btn-txt"><i class="fas fa-paper-plane"></i> Enviar código de verificação</span>
+        </button>
+
+        <a href="login-utilizador.html" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Voltar ao login
+        </a>
+      </div>
+
+      <!-- ── PASSO 2: Introduzir código ── -->
+      <div class="passo" id="passo2">
+        <div class="sec-titulo"><i class="fas fa-shield-alt"></i> Verificar código</div>
+        <div class="sec-sub">Introduz o código de 6 dígitos enviado para:</div>
+
+        <!-- Email mascarado -->
+        <div class="email-box" id="email-box">
+          <i class="fas fa-envelope"></i>
+          <span id="email-mascarado"></span>
+        </div>
+
+        <!-- Grid de inputs do código -->
+        <div class="codigo-grid" id="codigo-grid">
+          <input class="codigo-input" id="c0" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"/>
+          <input class="codigo-input" id="c1" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"/>
+          <input class="codigo-input" id="c2" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"/>
+          <input class="codigo-input" id="c3" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"/>
+          <input class="codigo-input" id="c4" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"/>
+          <input class="codigo-input" id="c5" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"/>
+        </div>
+
+        <!-- Reenviar -->
+        <div class="reenviar-wrap">
+          <span>Não recebeste? </span>
+          <button class="btn-reenviar" id="btn-reenviar" onclick="reenviarCodigo()" disabled>
+            Reenviar código
+          </button>
+          <span id="timer-wrap"> em <span id="timer-reenviar">60</span>s</span>
+        </div>
+
+        <button class="btn btn-azul" id="btn-p2" onclick="verificarCodigo()" style="margin-top:20px;">
+          <span class="spinner"></span>
+          <span class="btn-txt"><i class="fas fa-check"></i> Verificar código</span>
+        </button>
+
+        <button class="btn btn-outline" onclick="voltarPasso1()" style="margin-top:10px;">
+          <i class="fas fa-arrow-left"></i> Alterar e-mail
+        </button>
+      </div>
+
+      <!-- ── PASSO 3: Nova senha ── -->
+      <div class="passo" id="passo3">
+        <div class="sec-titulo"><i class="fas fa-lock"></i> Nova senha</div>
+        <div class="sec-sub">Define uma nova senha segura para a tua conta.</div>
+
+        <!-- Nova senha -->
+        <div class="campo" id="campo-nova">
+          <label for="nova-senha">Nova senha <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="nova-senha" placeholder="Mínimo 8 caracteres"
+                   maxlength="100" autocomplete="new-password"
+                   oninput="avaliarForca(this.value)"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('nova-senha','olho1')" aria-label="Mostrar senha">
+              <i class="fas fa-eye" id="olho1"></i>
+            </button>
+          </div>
+          <div class="forca-wrap">
+            <div class="forca-barras">
+              <div class="forca-barra" id="fb1"></div>
+              <div class="forca-barra" id="fb2"></div>
+              <div class="forca-barra" id="fb3"></div>
+              <div class="forca-barra" id="fb4"></div>
+            </div>
+            <span class="forca-label" id="forca-label"></span>
+          </div>
+          <div class="msg-erro" id="erro-nova">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-nova"></span>
+          </div>
+        </div>
+
+        <!-- Confirmar nova senha -->
+        <div class="campo" id="campo-confirmar">
+          <label for="confirmar-senha">Confirmar nova senha <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="confirmar-senha" placeholder="Repete a nova senha"
+                   maxlength="100" autocomplete="new-password"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('confirmar-senha','olho2')" aria-label="Mostrar confirmação">
+              <i class="fas fa-eye" id="olho2"></i>
+            </button>
+          </div>
+          <div class="msg-erro" id="erro-confirmar">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-confirmar"></span>
+          </div>
+        </div>
+
+        <button class="btn btn-azul" id="btn-p3" onclick="redefinirSenha()">
+          <span class="spinner"></span>
+          <span class="btn-txt"><i class="fas fa-save"></i> Redefinir senha</span>
+        </button>
+      </div>
+
+      <!-- ── ECRÃ DE SUCESSO ── -->
+      <div class="sucesso-ecrã" id="sec-sucesso">
+        <div class="sucesso-ic"><i class="fas fa-check"></i></div>
+        <h2>Senha redefinida!</h2>
+        <p>A tua senha foi actualizada com sucesso. Podes entrar na tua conta com a nova senha.</p>
+        <a href="login-utilizador.html" class="btn btn-azul" style="max-width:280px; width:100%;">
+          <i class="fas fa-sign-in-alt"></i> Entrar na conta
+        </a>
+      </div>
+
+    </div><!-- /form-card -->
+
+    <div class="form-rodape" id="form-rodape">
+      <p>Lembras-te da senha? <a href="login-utilizador.html">Voltar ao login</a></p>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 &nbsp;|&nbsp;
+  <a href="termos.html" style="color:rgba(255,255,255,0.55);transition:color 0.2s;"
+     onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a>
+</footer>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+  /* ─── CHAVES ─── */
+  const KEYS = {
+    tema:         'hmz_tema',
+    utilizadores: 'hmz_utilizadores',
+    codigoRec:    'hmz_codigo_recuperacao',
+  };
+
+  /* ─── ESTADO ─── */
+  let emailRecuperacao = '';
+  let codigoGerado     = '';
+  let timerReenviar    = null;
+  let passoAtual       = 1;
+
+  /* ─── UTILITÁRIOS ─── */
+  function lsGet(key, def = null) {
+    try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
+    catch { return def; }
+  }
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch(e) { console.warn('Erro localStorage:', e); }
+  }
+
+  /* ─── MODO ESCURO ─── */
+  function aplicarTema(dark) {
+    document.body.classList.toggle('dark', dark);
+    document.getElementById('dark-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  function toggleDark() {
+    const dark = !document.body.classList.contains('dark');
+    lsSet(KEYS.tema, dark ? 'dark' : 'light');
+    aplicarTema(dark);
+  }
+  if (lsGet(KEYS.tema) === 'dark') aplicarTema(true);
+
+  /* ─── TOAST ─── */
+  function mostrarToast(msg, tipo = '') {
+    const cont  = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className   = 'toast ' + tipo;
+    toast.textContent = msg;
+    cont.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  /* ─── ALERTA ─── */
+  function mostrarAlerta(msg, tipo = 'erro') {
+    const el  = document.getElementById('alerta-geral');
+    const txt = document.getElementById('alerta-msg');
+    el.className    = 'alerta ' + tipo + ' visivel';
+    txt.textContent = msg;
+  }
+  function esconderAlerta() {
+    document.getElementById('alerta-geral').className = 'alerta';
+  }
+
+  /* ─── MARCAÇÃO DE CAMPOS ─── */
+  function marcarErro(campoId, msg) {
+    const c = document.getElementById(campoId);
+    if (!c) return;
+    c.classList.add('erro'); c.classList.remove('valido');
+    const t = document.getElementById('txt-erro-' + campoId.replace('campo-',''));
+    if (t) t.textContent = msg;
+  }
+  function marcarValido(campoId) {
+    const c = document.getElementById(campoId);
+    if (!c) return;
+    c.classList.remove('erro'); c.classList.add('valido');
+  }
+  function limpar(campoId) {
+    const c = document.getElementById(campoId);
+    if (c) c.classList.remove('erro','valido');
+  }
+
+  /* ─── VALIDAÇÃO DE EMAIL ─── */
+  function validarEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  }
+
+  /* ─── MASCARAR EMAIL ─── */
+  function mascararEmail(email) {
+    const [user, dominio] = email.split('@');
+    const vis = user.length > 3 ? user.substring(0,3) : user.substring(0,1);
+    const asts = '*'.repeat(Math.max(user.length - vis.length, 3));
+    return vis + asts + '@' + dominio;
+  }
+
+  /* ─── GERAR CÓDIGO 6 DÍGITOS ─── */
+  function gerarCodigo() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  /* ─── ACTUALIZAR DOTS ─── */
+  function actualizarDots(passo) {
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById('dot' + i);
+      dot.className = 'dot';
+      if (i < passo) dot.classList.add('feito');
+      else if (i === passo) dot.classList.add('ativo');
+    }
+  }
+
+  /* ─── ACTUALIZAR TÍTULO ─── */
+  const titulos = ['Recuperar senha', 'Verificar código', 'Nova senha'];
+  const descs   = [
+    'Não te preocupes. Introduz o teu e-mail e enviaremos um código de verificação.',
+    'Verifica a tua caixa de entrada e introduz o código de 6 dígitos.',
+    'Define uma nova senha segura para proteger a tua conta.',
+  ];
+  function actualizarTitulo(passo) {
+    document.getElementById('titulo-passo').textContent = titulos[passo - 1];
+    document.getElementById('desc-passo').textContent   = descs[passo - 1];
+  }
+
+  /* ─── IR PARA PASSO ─── */
+  function irPasso(novo) {
+    document.getElementById('passo' + passoAtual).classList.remove('ativo');
+    document.getElementById('passo' + novo).classList.add('ativo');
+    passoAtual = novo;
+    actualizarDots(novo);
+    actualizarTitulo(novo);
+    esconderAlerta();
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  /* ─── PASSO 1: ENVIAR CÓDIGO ─── */
+  function enviarCodigo() {
+    esconderAlerta();
+    limpar('campo-email');
+
+    const email = document.getElementById('email').value.trim();
+
+    if (!email) {
+      marcarErro('campo-email', 'O e-mail é obrigatório.');
+      return;
+    }
+    if (!validarEmail(email)) {
+      marcarErro('campo-email', 'Introduz um endereço de e-mail válido.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-p1');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    setTimeout(() => {
+      const utilizadores = lsGet(KEYS.utilizadores, []);
+      const user = utilizadores.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+      btn.classList.remove('loading'); btn.disabled = false;
+
+      if (!user) {
+        marcarErro('campo-email', 'Não existe conta com este endereço de e-mail.');
+        return;
+      }
+
+      marcarValido('campo-email');
+      emailRecuperacao = email.toLowerCase();
+      codigoGerado     = gerarCodigo();
+
+      // Guardar código com expiração (10 minutos)
+      lsSet(KEYS.codigoRec, {
+        email:     emailRecuperacao,
+        codigo:    codigoGerado,
+        expira:    Date.now() + 10 * 60 * 1000,
+      });
+
+      // Mostrar código na consola (simula envio de email)
+      console.log('%c[HMZ] Código de recuperação: ' + codigoGerado, 'color:#0057C2; font-size:14px; font-weight:bold;');
+
+      // Preencher email mascarado
+      document.getElementById('email-mascarado').textContent = mascararEmail(email);
+
+      // Ir para passo 2
+      irPasso(2);
+      iniciarTimerReenviar();
+      mostrarToast('Código enviado! (Ver consola do browser — F12)', 'sucesso');
+
+      // Focar no primeiro input do código
+      setTimeout(() => { document.getElementById('c0').focus(); }, 300);
+
+    }, 1000);
+  }
+
+  /* ─── TIMER DE REENVIO ─── */
+  function iniciarTimerReenviar() {
+    const btnR   = document.getElementById('btn-reenviar');
+    const timerEl= document.getElementById('timer-reenviar');
+    const wrapEl = document.getElementById('timer-wrap');
+    let seg = 60;
+
+    btnR.disabled = true;
+    wrapEl.style.display = 'inline';
+    timerEl.textContent  = seg;
+
+    clearInterval(timerReenviar);
+    timerReenviar = setInterval(() => {
+      seg--;
+      timerEl.textContent = seg;
+      if (seg <= 0) {
+        clearInterval(timerReenviar);
+        btnR.disabled        = false;
+        wrapEl.style.display = 'none';
+      }
+    }, 1000);
+  }
+
+  /* ─── REENVIAR CÓDIGO ─── */
+  function reenviarCodigo() {
+    codigoGerado = gerarCodigo();
+    lsSet(KEYS.codigoRec, {
+      email:  emailRecuperacao,
+      codigo: codigoGerado,
+      expira: Date.now() + 10 * 60 * 1000,
+    });
+    console.log('%c[HMZ] Novo código de recuperação: ' + codigoGerado, 'color:#0057C2; font-size:14px; font-weight:bold;');
+
+    // Limpar inputs
+    for (let i = 0; i < 6; i++) {
+      const inp = document.getElementById('c' + i);
+      inp.value = '';
+      inp.className = 'codigo-input';
+    }
+    document.getElementById('c0').focus();
+    iniciarTimerReenviar();
+    esconderAlerta();
+    mostrarToast('Novo código enviado! (Ver consola — F12)', 'sucesso');
+  }
+
+  /* ─── VOLTAR PARA PASSO 1 ─── */
+  function voltarPasso1() {
+    clearInterval(timerReenviar);
+    for (let i = 0; i < 6; i++) {
+      const inp = document.getElementById('c' + i);
+      inp.value = ''; inp.className = 'codigo-input';
+    }
+    irPasso(1);
+  }
+
+  /* ─── INPUTS DO CÓDIGO ─── */
+  function inicializarInputsCodigo() {
+    for (let i = 0; i < 6; i++) {
+      const inp = document.getElementById('c' + i);
+
+      inp.addEventListener('input', function() {
+        // Aceitar apenas números
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value) {
+          this.classList.add('preenchido');
+          this.classList.remove('erro-dig');
+          // Avançar para o próximo
+          if (i < 5) document.getElementById('c' + (i + 1)).focus();
+        } else {
+          this.classList.remove('preenchido');
+        }
+      });
+
+      inp.addEventListener('keydown', function(e) {
+        // Backspace — voltar ao anterior
+        if (e.key === 'Backspace' && !this.value && i > 0) {
+          document.getElementById('c' + (i - 1)).focus();
+        }
+        // Setas
+        if (e.key === 'ArrowRight' && i < 5) {
+          e.preventDefault();
+          document.getElementById('c' + (i + 1)).focus();
+        }
+        if (e.key === 'ArrowLeft' && i > 0) {
+          e.preventDefault();
+          document.getElementById('c' + (i - 1)).focus();
+        }
+      });
+
+      inp.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const texto = (e.clipboardData || window.clipboardData).getData('text');
+        const digits = texto.replace(/[^0-9]/g, '').substring(0, 6);
+        for (let j = 0; j < digits.length; j++) {
+          const target = document.getElementById('c' + (i + j));
+          if (target) {
+            target.value = digits[j];
+            target.classList.add('preenchido');
+          }
+        }
+        // Focar no próximo vazio
+        const nextIdx = Math.min(i + digits.length, 5);
+        document.getElementById('c' + nextIdx).focus();
+      });
+    }
+  }
+
+  /* ─── PASSO 2: VERIFICAR CÓDIGO ─── */
+  function verificarCodigo() {
+    esconderAlerta();
+
+    // Recolher código
+    let codigoIntroduzido = '';
+    for (let i = 0; i < 6; i++) {
+      codigoIntroduzido += document.getElementById('c' + i).value;
+    }
+
+    if (codigoIntroduzido.length < 6) {
+      mostrarAlerta('Introduz todos os 6 dígitos do código.');
+      // Marcar inputs vazios como erro
+      for (let i = 0; i < 6; i++) {
+        const inp = document.getElementById('c' + i);
+        if (!inp.value) inp.classList.add('erro-dig');
+      }
+      return;
+    }
+
+    const btn = document.getElementById('btn-p2');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    setTimeout(() => {
+      const rec = lsGet(KEYS.codigoRec);
+
+      btn.classList.remove('loading'); btn.disabled = false;
+
+      // Verificar expiração
+      if (!rec || Date.now() > rec.expira) {
+        mostrarAlerta('O código expirou. Por favor solicita um novo código.');
+        for (let i = 0; i < 6; i++) document.getElementById('c' + i).classList.add('erro-dig');
+        return;
+      }
+
+      // Verificar código
+      if (codigoIntroduzido !== rec.codigo) {
+        mostrarAlerta('Código incorrecto. Verifica e tenta novamente.');
+        for (let i = 0; i < 6; i++) document.getElementById('c' + i).classList.add('erro-dig');
+        return;
+      }
+
+      // Código correcto!
+      clearInterval(timerReenviar);
+      irPasso(3);
+      mostrarToast('Código verificado com sucesso!', 'sucesso');
+      setTimeout(() => { document.getElementById('nova-senha').focus(); }, 300);
+
+    }, 800);
+  }
+
+  /* ─── TOGGLE SENHA ─── */
+  function toggleSenha(inputId, iconId) {
+    const inp  = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    const show = inp.type === 'password';
+    inp.type   = show ? 'text' : 'password';
+    icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+  }
+
+  /* ─── FORÇA DA SENHA ─── */
+  function avaliarForca(senha) {
+    let pontos = 0;
+    if (senha.length >= 8)  pontos++;
+    if (senha.length >= 12) pontos++;
+    if (/[A-Z]/.test(senha) && /[a-z]/.test(senha)) pontos++;
+    if (/[0-9]/.test(senha)) pontos++;
+    if (/[^A-Za-z0-9]/.test(senha)) pontos++;
+
+    const nivel   = Math.min(Math.max(Math.ceil(pontos * 4 / 5), senha.length > 0 ? 1 : 0), 4);
+    const clases  = ['fraca','media','forte','muitoforte'];
+    const labels  = ['Fraca','Média','Forte','Muito forte'];
+    const lclasses= ['forca-fraca','forca-media','forca-forte','forca-muitoforte'];
+
+    ['fb1','fb2','fb3','fb4'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.className = 'forca-barra';
+      if (i < nivel) el.classList.add(clases[nivel - 1]);
+    });
+
+    const lbl = document.getElementById('forca-label');
+    if (!senha.length) { lbl.textContent = ''; return; }
+    lbl.textContent = labels[nivel - 1] || '';
+    lbl.className   = 'forca-label ' + (lclasses[nivel - 1] || '');
+  }
+
+  /* ─── PASSO 3: REDEFINIR SENHA ─── */
+  function redefinirSenha() {
+    esconderAlerta();
+    limpar('campo-nova'); limpar('campo-confirmar');
+
+    const nova      = document.getElementById('nova-senha').value;
+    const confirmar = document.getElementById('confirmar-senha').value;
+    let   valido    = true;
+
+    if (!nova || nova.length < 8) {
+      marcarErro('campo-nova', 'A senha deve ter pelo menos 8 caracteres.');
+      valido = false;
+    } else { marcarValido('campo-nova'); }
+
+    if (!confirmar) {
+      marcarErro('campo-confirmar', 'Confirma a nova senha.');
+      valido = false;
+    } else if (nova !== confirmar) {
+      marcarErro('campo-confirmar', 'As senhas não coincidem.');
+      valido = false;
+    } else if (nova.length >= 8) { marcarValido('campo-confirmar'); }
+
+    if (!valido) return;
+
+    const btn = document.getElementById('btn-p3');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    setTimeout(() => {
+      // Actualizar senha no localStorage
+      const utilizadores = lsGet(KEYS.utilizadores, []);
+      const idx = utilizadores.findIndex(u => u.email.toLowerCase() === emailRecuperacao);
+
+      if (idx === -1) {
+        btn.classList.remove('loading'); btn.disabled = false;
+        mostrarAlerta('Erro ao actualizar a senha. Tenta novamente.');
+        return;
+      }
+
+      utilizadores[idx].senha = nova;
+      lsSet(KEYS.utilizadores, utilizadores);
+
+      // Limpar código de recuperação
+      lsSet(KEYS.codigoRec, null);
+
+      btn.classList.remove('loading');
+
+      // Mostrar sucesso
+      document.getElementById('passo3').classList.remove('ativo');
+      document.getElementById('sec-sucesso').classList.add('visivel');
+      document.getElementById('form-rodape').style.display = 'none';
+      document.querySelector('.passos-dots').style.display = 'none';
+      document.getElementById('titulo-passo').textContent  = 'Tudo pronto!';
+      document.getElementById('desc-passo').textContent    = 'A tua senha foi redefinida com sucesso.';
+
+      mostrarToast('Senha redefinida com sucesso!', 'sucesso');
+
+    }, 1000);
+  }
+
+  /* ─── INICIALIZAR ─── */
+  document.addEventListener('DOMContentLoaded', function() {
+    inicializarInputsCodigo();
+    // Focar no email
+    setTimeout(() => { document.getElementById('email').focus(); }, 300);
+  });
+
+  /* ─── LIMPAR ERROS AO DIGITAR ─── */
+  document.getElementById('email').addEventListener('input', function() {
+    limpar('campo-email'); esconderAlerta();
+  });
+</script>
+</body>
+</html>

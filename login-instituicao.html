@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – Instituição | HorizonteMZ</title>
+  <meta name="description" content="Entra na tua conta de instituição no HorizonteMZ."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:        #0057C2;
+      --azul-dark:   #003F8F;
+      --azul-light:  #EEF4FF;
+      --amarelo:     #FFBE00;
+      --amarelo-dark:#E5AA00;
+      --verde:       #16A34A;
+      --verde-light: #F0FDF4;
+      --vermelho:    #E53935;
+      --bg:          #F4F7FF;
+      --bg2:         #FFFFFF;
+      --texto:       #1A1A2E;
+      --texto2:      #555577;
+      --borda:       #DDE3F0;
+      --sombra:      rgba(0,87,194,0.10);
+      --sombra-hover:rgba(0,87,194,0.20);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --trans:       all 0.25s ease;
+    }
+    body.dark {
+      --azul:        #4A9EFF;
+      --azul-dark:   #2979D9;
+      --azul-light:  #0D1B3E;
+      --verde:       #22C55E;
+      --verde-light: #0f2d1a;
+      --bg:          #0D1117;
+      --bg2:         #161B27;
+      --texto:       #E8EEFF;
+      --texto2:      #8899BB;
+      --borda:       #253050;
+      --sombra:      rgba(0,0,0,0.30);
+      --sombra-hover:rgba(0,0,0,0.50);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Segoe UI', system-ui, sans-serif;
+      background:var(--bg); color:var(--texto);
+      min-height:100vh; display:flex; flex-direction:column;
+      transition:background 0.3s, color 0.3s;
+    }
+    a { text-decoration:none; color:inherit; }
+
+    /* ── HEADER ── */
+    header {
+      background:var(--azul); height:65px;
+      padding:0 28px; display:flex;
+      align-items:center; justify-content:space-between;
+      box-shadow:0 2px 20px rgba(0,0,0,0.22);
+      position:sticky; top:0; z-index:100;
+    }
+    .logo { font-size:1.45rem; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+    .logo span { color:var(--amarelo); }
+    .h-right { display:flex; align-items:center; gap:10px; }
+    .btn-dark {
+      background:none; border:none; color:#fff;
+      font-size:1.05rem; cursor:pointer;
+      padding:7px; border-radius:var(--radius-sm); transition:var(--trans);
+    }
+    .btn-dark:hover { background:rgba(255,255,255,0.18); }
+    .btn-voltar {
+      display:inline-flex; align-items:center; gap:6px;
+      color:rgba(255,255,255,0.88); font-size:0.87rem;
+      font-weight:600; padding:7px 14px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(255,255,255,0.30); transition:var(--trans);
+    }
+    .btn-voltar:hover { background:rgba(255,255,255,0.18); color:#fff; }
+
+    /* ── LAYOUT ── */
+    main {
+      flex:1; display:grid;
+      grid-template-columns:1fr 1fr;
+      min-height:calc(100vh - 65px - 56px);
+    }
+
+    /* Painel esquerdo */
+    .painel-esq {
+      background:linear-gradient(145deg, #14532D, #16A34A);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:52px 40px; color:#fff;
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .painel-esq::before {
+      content:''; position:absolute;
+      width:320px; height:320px; border-radius:50%;
+      background:rgba(255,255,255,0.05);
+      top:-80px; left:-80px;
+    }
+    .painel-esq::after {
+      content:''; position:absolute;
+      width:220px; height:220px; border-radius:50%;
+      background:rgba(255,255,255,0.06);
+      bottom:-60px; right:-60px;
+    }
+    .esq-icon {
+      width:88px; height:88px; border-radius:24px;
+      background:rgba(255,255,255,0.15);
+      border:2px solid rgba(255,255,255,0.25);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.4rem; margin-bottom:28px;
+      position:relative; z-index:1;
+      animation:float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-10px); }
+    }
+    .painel-esq h2 {
+      font-size:1.7rem; font-weight:800;
+      margin-bottom:12px; position:relative; z-index:1;
+      letter-spacing:-0.3px;
+    }
+    .painel-esq h2 span { color:var(--amarelo); }
+    .painel-esq p {
+      font-size:0.92rem; opacity:0.85;
+      line-height:1.7; max-width:320px;
+      position:relative; z-index:1; margin-bottom:36px;
+    }
+    .esq-features {
+      display:flex; flex-direction:column; gap:14px;
+      width:100%; max-width:300px;
+      position:relative; z-index:1;
+    }
+    .esq-feat {
+      display:flex; align-items:center; gap:12px;
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.18);
+      border-radius:10px; padding:10px 16px;
+      text-align:left; font-size:0.85rem;
+    }
+    .esq-feat i { color:var(--amarelo); font-size:1rem; flex-shrink:0; }
+
+    /* Painel direito */
+    .painel-dir {
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:52px 48px; background:var(--bg2);
+    }
+    .form-box {
+      width:100%; max-width:420px;
+      animation:fadeUp 0.45s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Cabeçalho do form */
+    .form-topo { margin-bottom:32px; }
+    .badge-tipo {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--verde-light); color:var(--verde);
+      border:1px solid rgba(22,163,74,0.25);
+      padding:5px 14px; border-radius:50px;
+      font-size:0.78rem; font-weight:700; margin-bottom:14px;
+    }
+    .form-topo h1 {
+      font-size:1.7rem; font-weight:800;
+      color:var(--verde); letter-spacing:-0.3px; margin-bottom:6px;
+    }
+    .form-topo p { font-size:0.88rem; color:var(--texto2); line-height:1.6; }
+
+    /* Campos */
+    .campo { margin-bottom:20px; }
+    .campo label {
+      display:block; font-size:0.85rem;
+      font-weight:700; margin-bottom:7px; color:var(--texto);
+    }
+    .campo label span.obrig { color:var(--vermelho); margin-left:2px; }
+    .input-wrap { position:relative; }
+    .input-wrap i.ic-esq {
+      position:absolute; left:14px; top:50%;
+      transform:translateY(-50%);
+      color:var(--texto2); font-size:0.92rem;
+      pointer-events:none; transition:var(--trans);
+    }
+    .input-wrap:focus-within i.ic-esq { color:var(--verde); }
+    .input-wrap input {
+      width:100%; padding:12px 14px 12px 42px;
+      border:1.5px solid var(--borda);
+      border-radius:var(--radius-sm);
+      font-size:0.93rem; background:var(--bg);
+      color:var(--texto); font-family:inherit;
+      transition:var(--trans); outline:none;
+    }
+    .input-wrap input:focus {
+      border-color:var(--verde);
+      box-shadow:0 0 0 3px rgba(22,163,74,0.12);
+      background:var(--bg2);
+    }
+    .btn-olho {
+      position:absolute; right:12px; top:50%;
+      transform:translateY(-50%);
+      background:none; border:none; color:var(--texto2);
+      cursor:pointer; font-size:0.95rem; padding:4px;
+      transition:var(--trans);
+    }
+    .btn-olho:hover { color:var(--verde); }
+    .campo.erro .input-wrap input {
+      border-color:var(--vermelho);
+      box-shadow:0 0 0 3px rgba(229,57,53,0.10);
+    }
+    .campo.valido .input-wrap input { border-color:var(--verde); }
+    .msg-erro {
+      display:none; font-size:0.79rem; color:var(--vermelho);
+      margin-top:5px; align-items:center; gap:5px;
+    }
+    .campo.erro .msg-erro { display:flex; }
+
+    /* Extras */
+    .linha-extras {
+      display:flex; align-items:center;
+      justify-content:space-between; margin-bottom:24px;
+    }
+    .check-label {
+      display:flex; align-items:center; gap:8px;
+      font-size:0.84rem; color:var(--texto2); cursor:pointer;
+    }
+    .check-label input[type="checkbox"] {
+      width:16px; height:16px;
+      accent-color:var(--verde); cursor:pointer;
+    }
+    .link-esqueci {
+      font-size:0.84rem; color:var(--verde);
+      font-weight:600; transition:var(--trans);
+    }
+    .link-esqueci:hover { text-decoration:underline; }
+
+    /* Botão submit */
+    .btn-submit {
+      width:100%; padding:13px;
+      background:var(--verde); color:#fff;
+      border:none; border-radius:var(--radius-sm);
+      font-size:0.97rem; font-weight:700;
+      cursor:pointer; font-family:inherit;
+      transition:var(--trans);
+      display:flex; align-items:center;
+      justify-content:center; gap:8px; margin-bottom:20px;
+    }
+    .btn-submit:hover:not(:disabled) {
+      background:#14532D;
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(22,163,74,0.30);
+    }
+    .btn-submit:disabled { opacity:0.65; cursor:not-allowed; transform:none; }
+    .spinner {
+      display:none; width:16px; height:16px;
+      border:2px solid rgba(255,255,255,0.35);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .btn-submit.loading .spinner { display:block; }
+    .btn-submit.loading .btn-txt { display:none; }
+
+    /* Alerta */
+    .alerta {
+      display:none; padding:12px 16px;
+      border-radius:var(--radius-sm);
+      font-size:0.87rem; margin-bottom:20px;
+      align-items:center; gap:10px; border:1px solid;
+    }
+    .alerta.erro    { background:#FFF5F5; border-color:#FFCDD2; color:#C62828; }
+    .alerta.sucesso { background:#F0FFF4; border-color:#C8E6C9; color:#1B5E20; }
+    .alerta.aviso   { background:#FFFDE7; border-color:#FFF59D; color:#F57F17; }
+    body.dark .alerta.erro    { background:#2d1a1a; border-color:#5c2222; color:#ff8a80; }
+    body.dark .alerta.sucesso { background:#1a2d1a; border-color:#225c22; color:#80ff9e; }
+    body.dark .alerta.aviso   { background:#2d2700; border-color:#5c4e00; color:#ffd740; }
+    .alerta.visivel { display:flex; }
+
+    /* Bloqueio */
+    .bloqueio-aviso {
+      display:none; background:#FFF3E0;
+      border:1px solid #FFE0B2; border-radius:var(--radius-sm);
+      padding:12px 16px; font-size:0.85rem; color:#E65100;
+      margin-bottom:16px; align-items:center; gap:10px;
+    }
+    .bloqueio-aviso.visivel { display:flex; }
+    body.dark .bloqueio-aviso { background:#2d1f0a; border-color:#5c3a10; color:#ffb74d; }
+
+    /* Separador */
+    .separador {
+      display:flex; align-items:center; gap:12px;
+      margin:20px 0; font-size:0.82rem; color:var(--texto2);
+    }
+    .separador::before, .separador::after {
+      content:''; flex:1; height:1px; background:var(--borda);
+    }
+
+    /* Rodapé form */
+    .form-rodape {
+      text-align:center; font-size:0.85rem; color:var(--texto2);
+      padding-top:16px; border-top:1px solid var(--borda);
+    }
+    .form-rodape a { color:var(--verde); font-weight:700; transition:var(--trans); }
+    .form-rodape a:hover { text-decoration:underline; }
+
+    /* ── MODAL ADMIN ── */
+    .modal-overlay {
+      display:none; position:fixed;
+      inset:0; background:rgba(0,0,0,0.65);
+      z-index:2000; align-items:center;
+      justify-content:center; padding:20px;
+      backdrop-filter:blur(4px);
+    }
+    .modal-overlay.visivel { display:flex; }
+
+    .modal {
+      background:var(--bg2);
+      border-radius:var(--radius);
+      padding:36px; width:100%;
+      max-width:400px;
+      box-shadow:0 24px 64px rgba(0,0,0,0.35);
+      border:1.5px solid var(--borda);
+      animation:modalIn 0.35s cubic-bezier(0.34,1.2,0.64,1) both;
+    }
+    @keyframes modalIn {
+      from { transform:scale(0.85); opacity:0; }
+      to   { transform:scale(1); opacity:1; }
+    }
+
+    .modal-ic {
+      width:64px; height:64px; border-radius:18px;
+      background:#1a1a2e; border:2px solid #333355;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.8rem; margin:0 auto 20px; color:var(--amarelo);
+    }
+    .modal h2 {
+      text-align:center; font-size:1.3rem;
+      font-weight:800; margin-bottom:6px; color:var(--texto);
+    }
+    .modal p {
+      text-align:center; font-size:0.86rem;
+      color:var(--texto2); margin-bottom:24px; line-height:1.6;
+    }
+
+    .modal-campo { margin-bottom:16px; }
+    .modal-campo label {
+      display:block; font-size:0.84rem;
+      font-weight:700; margin-bottom:6px; color:var(--texto);
+    }
+    .modal-campo .input-wrap input:focus {
+      border-color:var(--amarelo);
+      box-shadow:0 0 0 3px rgba(255,190,0,0.15);
+    }
+    .modal-campo .input-wrap:focus-within i.ic-esq { color:var(--amarelo); }
+
+    .modal-aviso {
+      display:none; background:#1a1a2e;
+      border:1px solid #333355; border-radius:var(--radius-sm);
+      padding:10px 14px; font-size:0.82rem;
+      color:var(--amarelo); margin-bottom:16px;
+      align-items:center; gap:8px;
+    }
+    .modal-aviso.visivel { display:flex; }
+
+    .btn-admin {
+      width:100%; padding:12px; background:#1a1a2e;
+      color:var(--amarelo); border:none;
+      border-radius:var(--radius-sm); font-size:0.95rem;
+      font-weight:800; cursor:pointer; font-family:inherit;
+      transition:var(--trans); display:flex;
+      align-items:center; justify-content:center; gap:8px;
+    }
+    .btn-admin:hover:not(:disabled) {
+      background:#111122;
+      box-shadow:0 6px 20px rgba(0,0,0,0.40);
+    }
+    .btn-admin:disabled { opacity:0.60; cursor:not-allowed; }
+    .btn-admin.loading .spinner { display:block; }
+    .btn-admin.loading .btn-txt { display:none; }
+    .btn-admin .spinner { border-color:rgba(255,190,0,0.3); border-top-color:var(--amarelo); }
+
+    .btn-fechar-modal {
+      width:100%; padding:10px; background:transparent;
+      border:1.5px solid var(--borda); color:var(--texto2);
+      border-radius:var(--radius-sm); font-size:0.88rem;
+      font-weight:600; cursor:pointer; font-family:inherit;
+      transition:var(--trans); margin-top:10px;
+    }
+    .btn-fechar-modal:hover { border-color:var(--vermelho); color:var(--vermelho); }
+
+    /* Tentativas admin */
+    .tentativas-admin {
+      text-align:center; font-size:0.8rem;
+      color:var(--texto2); margin-top:10px;
+    }
+    .tentativas-admin span { color:var(--vermelho); font-weight:700; }
+
+    /* Toast */
+    #toast-container {
+      position:fixed; bottom:24px; right:24px;
+      z-index:9999; display:flex;
+      flex-direction:column; gap:10px; pointer-events:none;
+    }
+    .toast {
+      background:var(--bg2); border:1px solid var(--borda);
+      border-left:4px solid var(--azul); color:var(--texto);
+      padding:13px 18px; border-radius:var(--radius-sm);
+      font-size:0.88rem; box-shadow:0 8px 24px rgba(0,0,0,0.15);
+      animation:toastIn 0.3s ease; pointer-events:all; max-width:320px;
+    }
+    .toast.sucesso { border-left-color:#16A34A; }
+    .toast.erro    { border-left-color:var(--vermelho); }
+    @keyframes toastIn  { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes toastOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(40px)} }
+
+    /* Footer */
+    footer {
+      background:#0D1B3E; color:rgba(255,255,255,0.50);
+      text-align:center; padding:18px 24px; font-size:0.82rem;
+    }
+    footer strong { color:rgba(255,255,255,0.80); }
+
+    /* Responsividade */
+    @media (max-width:820px) {
+      main { grid-template-columns:1fr; }
+      .painel-esq { display:none; }
+      .painel-dir { padding:40px 24px; min-height:calc(100vh - 65px - 56px); }
+    }
+    @media (max-width:440px) {
+      .painel-dir { padding:32px 18px; }
+      .linha-extras { flex-direction:column; align-items:flex-start; gap:10px; }
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- Painel esquerdo -->
+  <div class="painel-esq">
+    <div class="esq-icon"><i class="fas fa-university"></i></div>
+    <h2>Área de <span>Instituições</span></h2>
+    <p>Publica oportunidades, gere candidatos e acompanha o impacto da tua organização em Moçambique.</p>
+    <div class="esq-features">
+      <div class="esq-feat"><i class="fas fa-plus-circle"></i><span>Publicar bolsas, cursos e workshops</span></div>
+      <div class="esq-feat"><i class="fas fa-users"></i><span>Ver perfis de candidatos</span></div>
+      <div class="esq-feat"><i class="fas fa-chart-bar"></i><span>Métricas e estatísticas em tempo real</span></div>
+      <div class="esq-feat"><i class="fas fa-shield-alt"></i><span>Badge de instituição verificada</span></div>
+    </div>
+  </div>
+
+  <!-- Painel direito -->
+  <div class="painel-dir">
+    <div class="form-box">
+
+      <div class="form-topo">
+        <div class="badge-tipo"><i class="fas fa-university"></i> Instituição</div>
+        <h1>Entrar na conta</h1>
+        <p>Acede ao painel da tua instituição e gere as tuas oportunidades publicadas.</p>
+      </div>
+
+      <!-- Bloqueio -->
+      <div class="bloqueio-aviso" id="bloqueio-aviso">
+        <i class="fas fa-lock"></i>
+        <span>Conta temporariamente bloqueada. Tenta novamente em <strong id="countdown">0</strong>s.</span>
+      </div>
+
+      <!-- Alerta -->
+      <div class="alerta" id="alerta-geral">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="alerta-msg"></span>
+      </div>
+
+      <!-- Formulário -->
+      <form id="form-login" novalidate autocomplete="on">
+
+        <!-- Email -->
+        <div class="campo" id="campo-email">
+          <label for="email">E-mail da instituição <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope ic-esq"></i>
+            <input type="email" id="email" name="email"
+                   placeholder="instituicao@email.com"
+                   autocomplete="email" maxlength="120" inputmode="email"/>
+          </div>
+          <div class="msg-erro" id="erro-email">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-email"></span>
+          </div>
+        </div>
+
+        <!-- Senha -->
+        <div class="campo" id="campo-senha">
+          <label for="senha">Senha <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="senha" name="senha"
+                   placeholder="A tua senha"
+                   autocomplete="current-password" maxlength="100"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha()" aria-label="Mostrar senha">
+              <i class="fas fa-eye" id="olho-icon"></i>
+            </button>
+          </div>
+          <div class="msg-erro" id="erro-senha">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-senha"></span>
+          </div>
+        </div>
+
+        <!-- Extras -->
+        <div class="linha-extras">
+          <label class="check-label">
+            <input type="checkbox" id="lembrar"/> Lembrar-me
+          </label>
+          <a href="recuperar-senha-inst.html" class="link-esqueci">Esqueci a senha</a>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <span class="spinner"></span>
+          <span class="btn-txt"><i class="fas fa-sign-in-alt"></i> Entrar</span>
+        </button>
+
+      </form>
+
+      <div class="separador">ou</div>
+
+      <div class="form-rodape">
+        <p>Ainda não tens conta? <a href="registo-instituicao.html">Registar instituição</a></p>
+        <p style="margin-top:10px;">
+          Outro tipo de conta? <a href="escolha-conta.html">Voltar à escolha</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 &nbsp;|&nbsp;
+  <a href="termos.html" style="color:rgba(255,255,255,0.55);transition:color 0.2s;"
+     onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a>
+</footer>
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="modal-admin" role="dialog" aria-modal="true" aria-labelledby="admin-titulo">
+  <div class="modal">
+    <div class="modal-ic"><i class="fas fa-user-shield"></i></div>
+    <h2 id="admin-titulo">Acesso Administrativo</h2>
+    <p>Área restrita. A senha de administrador é configurada localmente neste navegador na primeira utilização.</p>
+
+    <div class="modal-aviso" id="modal-aviso">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span id="modal-aviso-msg"></span>
+    </div>
+
+    <div class="modal-campo">
+      <label for="admin-senha">Senha de administrador</label>
+      <div class="input-wrap">
+        <i class="fas fa-key ic-esq"></i>
+        <input type="password" id="admin-senha"
+               placeholder="Senha secreta"
+               maxlength="50" autocomplete="off"
+               onkeypress="if(event.key==='Enter') verificarAdmin()"/>
+        <button type="button" class="btn-olho"
+                onclick="toggleAdminSenha()" aria-label="Mostrar senha admin">
+          <i class="fas fa-eye" id="olho-admin"></i>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn-admin" id="btn-admin" onclick="verificarAdmin()">
+      <span class="spinner"></span>
+      <span class="btn-txt"><i class="fas fa-unlock-alt"></i> Aceder como Admin</span>
+    </button>
+
+    <div class="tentativas-admin" id="tentativas-admin" style="display:none;">
+      <span id="tent-restantes">3</span> tentativa(s) restante(s)
+    </div>
+
+    <button class="btn-fechar-modal" onclick="fecharModalAdmin()">
+      <i class="fas fa-times"></i> Cancelar
+    </button>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+  /* ─── CHAVES ─── */
+  const KEYS = {
+    tema:        'hmz_tema',
+    sessaoUtil:  'hmz_sessao_utilizador',
+    sessaoInst:  'hmz_sessao_instituicao',
+    sessaoEmp:   'hmz_sessao_empresa',
+    sessaoAdmin: 'hmz_sessao_admin',
+    instituicoes:'hmz_instituicoes',
+    tentInst:    'hmz_tentativas_inst',
+    bloqInst:    'hmz_bloqueio_inst',
+    tentAdmin:   'hmz_tentativas_admin',
+    bloqAdmin:   'hmz_bloqueio_admin',
+  };
+
+  /* Palavra-chave secreta e senha admin */
+  const PALAVRA_ANORAK  = 'ANORAK';
+  const ADMIN_HASH_KEY  = 'hmz_admin_password_hash';
+  const MAX_TENT        = 5;
+  const MAX_TENT_ADMIN  = 3;
+  const BLOQ_SEG        = 60;
+  const BLOQ_ADMIN_SEG  = 300; // 5 minutos
+
+  let timerBloqueio = null;
+
+  /* ─── UTILITÁRIOS ─── */
+  function lsGet(key, def = null) {
+    try { const v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : def; }
+    catch { return def; }
+  }
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch(e) { console.warn('Erro localStorage:', e); }
+  }
+
+  /* ─── MODO ESCURO ─── */
+  function aplicarTema(dark) {
+    document.body.classList.toggle('dark', dark);
+    document.getElementById('dark-icon').className = dark ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  function toggleDark() {
+    const dark = !document.body.classList.contains('dark');
+    lsSet(KEYS.tema, dark ? 'dark' : 'light');
+    aplicarTema(dark);
+  }
+  if (lsGet(KEYS.tema) === 'dark') aplicarTema(true);
+
+  /* ─── TOAST ─── */
+  function mostrarToast(msg, tipo = '') {
+    const cont  = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className   = 'toast ' + tipo;
+    toast.textContent = msg;
+    cont.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
+  }
+
+  /* ─── ALERTA ─── */
+  function mostrarAlerta(msg, tipo = 'erro') {
+    const el  = document.getElementById('alerta-geral');
+    const txt = document.getElementById('alerta-msg');
+    el.className    = 'alerta ' + tipo + ' visivel';
+    txt.textContent = msg;
+  }
+  function esconderAlerta() {
+    document.getElementById('alerta-geral').className = 'alerta';
+  }
+
+  /* ─── MARCAÇÃO DE CAMPOS ─── */
+  function marcarErro(campoId, msg) {
+    const c = document.getElementById(campoId);
+    if (!c) return;
+    c.classList.add('erro'); c.classList.remove('valido');
+    const t = document.getElementById('txt-erro-' + campoId.replace('campo-',''));
+    if (t) t.textContent = msg;
+  }
+  function marcarValido(campoId) {
+    const c = document.getElementById(campoId);
+    if (!c) return;
+    c.classList.remove('erro'); c.classList.add('valido');
+  }
+  function limpar(campoId) {
+    const c = document.getElementById(campoId);
+    if (c) c.classList.remove('erro','valido');
+  }
+
+  function validarEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  }
+
+  /* ─── TOGGLE SENHA ─── */
+  function toggleSenha() {
+    const inp  = document.getElementById('senha');
+    const icon = document.getElementById('olho-icon');
+    const show = inp.type === 'password';
+    inp.type   = show ? 'text' : 'password';
+    icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+  }
+  function toggleAdminSenha() {
+    const inp  = document.getElementById('admin-senha');
+    const icon = document.getElementById('olho-admin');
+    const show = inp.type === 'password';
+    inp.type   = show ? 'text' : 'password';
+    icon.className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+  }
+
+  /* ─── BLOQUEIO INSTITUIÇÃO ─── */
+  function verificarBloqueioInst() {
+    const ate   = lsGet(KEYS.bloqInst, 0);
+    const agora = Date.now();
+    if (ate > agora) {
+      activarBloqueioUI(Math.ceil((ate - agora) / 1000));
+      return true;
+    }
+    return false;
+  }
+  function activarBloqueioUI(seg) {
+    const aviso = document.getElementById('bloqueio-aviso');
+    const btn   = document.getElementById('btn-submit');
+    const el    = document.getElementById('countdown');
+    aviso.classList.add('visivel');
+    btn.disabled = true;
+    el.textContent = seg;
+    clearInterval(timerBloqueio);
+    timerBloqueio = setInterval(() => {
+      seg--;
+      el.textContent = seg;
+      if (seg <= 0) {
+        clearInterval(timerBloqueio);
+        aviso.classList.remove('visivel');
+        btn.disabled = false;
+        lsSet(KEYS.tentInst, 0);
+        lsSet(KEYS.bloqInst, 0);
+      }
+    }, 1000);
+  }
+  function registarTentFalhada() {
+    let t = lsGet(KEYS.tentInst, 0) + 1;
+    lsSet(KEYS.tentInst, t);
+    if (t >= MAX_TENT) {
+      const ate = Date.now() + BLOQ_SEG * 1000;
+      lsSet(KEYS.bloqInst, ate);
+      lsSet(KEYS.tentInst, 0);
+      activarBloqueioUI(BLOQ_SEG);
+    } else {
+      mostrarAlerta(`Credenciais incorrectas. ${MAX_TENT - t} tentativa(s) restante(s).`);
+    }
+  }
+
+  /* ─── DETECÇÃO DO CÓDIGO ANORAK ─── */
+  document.getElementById('email').addEventListener('input', function() {
+    limpar('campo-email');
+    esconderAlerta();
+    // Detectar ANORAK (case-insensitive)
+    if (this.value.trim().toUpperCase() === PALAVRA_ANORAK) {
+      this.value = '';
+      abrirModalAdmin();
+    }
+  });
+
+  /* ─── MODAL ADMIN ─── */
+  function abrirModalAdmin() {
+    // Verificar bloqueio admin
+    const ate   = lsGet(KEYS.bloqAdmin, 0);
+    const agora = Date.now();
+    if (ate > agora) {
+      const restam = Math.ceil((ate - agora) / 1000);
+      mostrarToast(`Acesso admin bloqueado por ${restam}s.`, 'erro');
+      return;
+    }
+
+    document.getElementById('modal-admin').classList.add('visivel');
+    document.getElementById('admin-senha').value = '';
+    document.getElementById('modal-aviso').classList.remove('visivel');
+    document.getElementById('tentativas-admin').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => { document.getElementById('admin-senha').focus(); }, 300);
+  }
+
+  function fecharModalAdmin() {
+    document.getElementById('modal-admin').classList.remove('visivel');
+    document.getElementById('admin-senha').value = '';
+    document.body.style.overflow = '';
+  }
+
+  // Fechar modal ao clicar fora
+  document.getElementById('modal-admin').addEventListener('click', function(e) {
+    if (e.target === this) fecharModalAdmin();
+  });
+
+  // Fechar com ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') fecharModalAdmin();
+  });
+
+  async function hashAdminPassword(value){
+    const data=new TextEncoder().encode(value);
+    const hash=await crypto.subtle.digest('SHA-256',data);
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  async function garantirSenhaAdminConfigurada(){
+    if(lsGet(ADMIN_HASH_KEY)) return true;
+    const senha=prompt('Primeira configuração do administrador: cria uma senha com pelo menos 10 caracteres.');
+    if(!senha || senha.length<10){mostrarToast('A senha deve ter pelo menos 10 caracteres.','erro');return false;}
+    const confirmacao=prompt('Repete a nova senha de administrador.');
+    if(confirmacao!==senha){mostrarToast('As senhas não coincidem.','erro');return false;}
+    lsSet(ADMIN_HASH_KEY,await hashAdminPassword(senha));
+    mostrarToast('Senha de administrador configurada neste navegador.','sucesso');
+    return true;
+  }
+
+  /* ─── VERIFICAR SENHA ADMIN ─── */
+  async function verificarAdmin() {
+    const senha   = document.getElementById('admin-senha').value;
+    const avisoEl = document.getElementById('modal-aviso');
+    const avisoMsg= document.getElementById('modal-aviso-msg');
+    const tentEl  = document.getElementById('tentativas-admin');
+    const rentEl  = document.getElementById('tent-restantes');
+    const btn     = document.getElementById('btn-admin');
+
+    if (!senha) {
+      avisoEl.classList.add('visivel');
+      avisoMsg.textContent = 'Introduz a senha de administrador.';
+      return;
+    }
+
+    if(!(await garantirSenhaAdminConfigurada())) return;
+    btn.classList.add('loading'); btn.disabled = true;
+    const hashDigitada=await hashAdminPassword(senha);
+
+    setTimeout(() => {
+      btn.classList.remove('loading'); btn.disabled = false;
+
+      if (hashDigitada === lsGet(ADMIN_HASH_KEY)) {
+        // ✅ Acesso concedido
+        lsSet(KEYS.tentAdmin, 0);
+        lsSet(KEYS.bloqAdmin, 0);
+
+        // Limpar outras sessões
+        lsSet(KEYS.sessaoUtil, null);
+        lsSet(KEYS.sessaoInst, null);
+        lsSet(KEYS.sessaoEmp, null);
+
+        // Criar sessão admin
+        lsSet(KEYS.sessaoAdmin, {
+          nome:    'Administrador',
+          loginEm: new Date().toISOString(),
+        });
+
+        fecharModalAdmin();
+        mostrarToast('Acesso admin concedido! A redirigir...', 'sucesso');
+        setTimeout(() => { window.location.href = 'admin.html'; }, 900);
+
+      } else {
+        // ❌ Senha errada
+        let t = lsGet(KEYS.tentAdmin, 0) + 1;
+        lsSet(KEYS.tentAdmin, t);
+
+        const restam = MAX_TENT_ADMIN - t;
+
+        if (t >= MAX_TENT_ADMIN) {
+          // Bloquear por 5 minutos
+          lsSet(KEYS.bloqAdmin, Date.now() + BLOQ_ADMIN_SEG * 1000);
+          lsSet(KEYS.tentAdmin, 0);
+          fecharModalAdmin();
+          mostrarToast('Acesso admin bloqueado por 5 minutos.', 'erro');
+        } else {
+          avisoEl.classList.add('visivel');
+          avisoMsg.textContent = 'Senha incorrecta.';
+          tentEl.style.display = 'block';
+          rentEl.textContent   = restam;
+          document.getElementById('admin-senha').value = '';
+          document.getElementById('admin-senha').focus();
+        }
+      }
+    }, 800);
+  }
+
+  /* ─── SUBMIT LOGIN INSTITUIÇÃO ─── */
+  document.getElementById('form-login').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (verificarBloqueioInst()) return;
+
+    const email = document.getElementById('email').value.trim();
+    const senha = document.getElementById('senha').value;
+    let   valido = true;
+
+    esconderAlerta();
+    limpar('campo-email'); limpar('campo-senha');
+
+    if (!email) {
+      marcarErro('campo-email', 'O e-mail é obrigatório.');
+      valido = false;
+    } else if (!validarEmail(email)) {
+      marcarErro('campo-email', 'Introduz um e-mail válido.');
+      valido = false;
+    } else { marcarValido('campo-email'); }
+
+    if (!senha) {
+      marcarErro('campo-senha', 'A senha é obrigatória.');
+      valido = false;
+    } else if (senha.length < 6) {
+      marcarErro('campo-senha', 'A senha deve ter pelo menos 6 caracteres.');
+      valido = false;
+    } else { marcarValido('campo-senha'); }
+
+    if (!valido) return;
+
+    const btn = document.getElementById('btn-submit');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    setTimeout(() => {
+      const instituicoes = lsGet(KEYS.instituicoes, []);
+      const inst = instituicoes.find(i =>
+        i.email.toLowerCase() === email.toLowerCase()
+      );
+
+      btn.classList.remove('loading'); btn.disabled = false;
+
+      if (!inst) {
+        marcarErro('campo-email', 'Não existe conta de instituição com este e-mail.');
+        registarTentFalhada();
+        return;
+      }
+
+      if (inst.senha !== senha) {
+        marcarErro('campo-senha', 'Senha incorrecta.');
+        registarTentFalhada();
+        return;
+      }
+
+      // Verificar se está aprovada
+      if (!inst.aprovada) {
+        mostrarAlerta(
+          'A tua conta ainda está em análise pelo administrador. Receberás uma notificação quando for aprovada.',
+          'aviso'
+        );
+        return;
+      }
+
+      // Conta suspensa pelo administrador: não pode reactivar-se pelo login.
+      if(inst.suspensaAdmin===true){
+        mostrarAlerta('Esta conta foi suspensa pelo administrador. Contacta o suporte para mais informações.','erro');
+        return;
+      }
+
+      // Compatibilidade com dados antigos: "suspensa" era usada para a desactivação voluntária.
+      if(inst.desativada===true || (inst.suspensa===true && inst.suspensaAdmin!==true)){
+        inst.desativada=false;
+        inst.suspensa=false;
+        const instIdx=instituicoes.findIndex(i=>i.id===inst.id);
+        if(instIdx!==-1){
+          instituicoes[instIdx].desativada=false;
+          instituicoes[instIdx].suspensa=false;
+        }
+        const ops=lsGet(KEYS.oportunidades,[]);
+        ops.forEach(o=>{
+          if(o.instituicaoId===inst.id && o.suspensaPorConta){
+            o.pausada=false;
+            delete o.suspensaPorConta;
+          }
+        });
+        lsSet(KEYS.oportunidades,ops);
+        lsSet(KEYS.instituicoes,instituicoes);
+      }
+      lsSet(KEYS.tentInst, 0);
+      lsSet(KEYS.bloqInst, 0);
+
+      const sessao = {
+        id:      inst.id,
+        nome:    inst.nome,
+        email:   inst.email,
+        logo:    inst.logo || null,
+        loginEm: new Date().toISOString(),
+        lembrar: document.getElementById('lembrar').checked,
+      };
+      lsSet(KEYS.sessaoInst, sessao);
+
+      // Actualizar último login
+      const idx = instituicoes.findIndex(i => i.id === inst.id);
+      if (idx !== -1) {
+        instituicoes[idx].ultimoLogin = new Date().toISOString();
+        lsSet(KEYS.instituicoes, instituicoes);
+      }
+
+      mostrarAlerta(`Bem-vinda, ${inst.nome}! A redirigir...`, 'sucesso');
+      setTimeout(() => { window.location.href = 'dashboard-instituicao.html'; }, 1000);
+
+    }, 900);
+  });
+
+  /* ─── LIMPAR ERROS AO DIGITAR ─── */
+  document.getElementById('senha').addEventListener('input', function() {
+    limpar('campo-senha'); esconderAlerta();
+  });
+
+  /* ─── VERIFICAR SESSÃO EXISTENTE ─── */
+  document.addEventListener('DOMContentLoaded', function() {
+    if (lsGet(KEYS.sessaoInst)) {
+      mostrarToast('Já tens sessão activa. A redirigir...', 'sucesso');
+      setTimeout(() => { window.location.href = 'dashboard-instituicao.html'; }, 1200);
+      return;
+    }
+    verificarBloqueioInst();
+    setTimeout(() => { document.getElementById('email').focus(); }, 300);
+  });
+</script>
+</body>
+</html>

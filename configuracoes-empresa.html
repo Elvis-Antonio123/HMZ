@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configurações | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --laranja:#D97706;--laranja-dark:#92400E;--laranja-light:#FEF3C7;
+      --azul:#0057C2;--azul-light:#EEF4FF;
+      --amarelo:#FFBE00;--verde:#1DB954;--vermelho:#E53935;
+      --bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;
+      --borda:#DDE3F0;--sombra:rgba(217,119,6,0.08);
+      --header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;
+    }
+    body.dark{--laranja:#F59E0B;--laranja-dark:#78350F;--laranja-light:#2d1f0a;--azul:#4A9EFF;--azul-light:#0D1B3E;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+    header{background:linear-gradient(135deg,var(--laranja-dark),var(--laranja));height:var(--header-h);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.20);}
+    .logo{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:#FEF3C7;}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-h{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);font-size:0.84rem;font-weight:700;border:none;cursor:pointer;transition:var(--trans);color:rgba(255,255,255,0.88);background:rgba(255,255,255,0.15);font-family:inherit;}
+    .btn-h:hover{background:rgba(255,255,255,0.28);color:#fff;}
+    .hero{background:linear-gradient(135deg,var(--laranja-dark),var(--laranja));padding:40px 24px 36px;color:#fff;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.05);top:-80px;right:-60px;}
+    .hero-inner{position:relative;z-index:1;max-width:860px;margin:0 auto;display:flex;align-items:center;gap:20px;}
+    .hero-ic{width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+    .hero-txt h1{font-size:1.55rem;font-weight:800;margin-bottom:4px;}
+    .hero-txt p{font-size:0.88rem;opacity:0.85;line-height:1.6;}
+    .layout{max-width:860px;margin:0 auto;padding:32px 24px 80px;display:grid;grid-template-columns:220px 1fr;gap:24px;}
+    .cfg-nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:calc(var(--header-h) + 20px);align-self:start;}
+    .cfg-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);font-size:0.87rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);border:none;background:none;font-family:inherit;text-align:left;width:100%;}
+    .cfg-nav-item:hover{background:var(--laranja-light);color:var(--laranja);}
+    .cfg-nav-item.ativo{background:var(--laranja-light);color:var(--laranja);}
+    .cfg-nav-item i{width:16px;text-align:center;font-size:0.9rem;}
+    .cfg-nav-div{height:1px;background:var(--borda);margin:6px 0;}
+    .cfg-nav-item.perigo:hover,.cfg-nav-item.perigo.ativo{background:#FFF5F5;color:var(--vermelho);}
+    .cfg-conteudo{display:flex;flex-direction:column;gap:20px;}
+    .sec{display:none;animation:fadeUp 0.3s ease both;}
+    .sec.ativa{display:flex;flex-direction:column;gap:20px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);overflow:hidden;}
+    .card-header{padding:18px 22px;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:10px;}
+    .card-header-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+    .card-header h3{font-size:0.97rem;font-weight:800;color:var(--texto);}
+    .card-header p{font-size:0.80rem;color:var(--texto2);margin-top:2px;}
+    .card-body{padding:22px;}
+    .campo{margin-bottom:18px;}
+    .campo:last-child{margin-bottom:0;}
+    .campo label{display:block;font-size:0.84rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .input-wrap{position:relative;}
+    .input-wrap i.ic-esq{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.9rem;pointer-events:none;}
+    .input-wrap:focus-within i.ic-esq{color:var(--laranja);}
+    .input-wrap input{width:100%;padding:10px 14px 10px 40px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.90rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;transition:var(--trans);}
+    .input-wrap input:focus{border-color:var(--laranja);box-shadow:0 0 0 3px rgba(217,119,6,0.10);background:var(--bg2);}
+    .input-wrap .btn-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--texto2);cursor:pointer;font-size:0.9rem;padding:4px;}
+    .input-wrap .btn-eye:hover{color:var(--laranja);}
+    .toggle-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--borda);}
+    .toggle-row:last-child{border-bottom:none;padding-bottom:0;}
+    .toggle-row:first-child{padding-top:0;}
+    .toggle-info h4{font-size:0.88rem;font-weight:700;margin-bottom:3px;}
+    .toggle-info p{font-size:0.78rem;color:var(--texto2);line-height:1.5;}
+    .toggle{position:relative;width:44px;height:24px;flex-shrink:0;margin-top:2px;}
+    .toggle input{opacity:0;width:0;height:0;}
+    .toggle-slider{position:absolute;inset:0;background:var(--borda);border-radius:12px;cursor:pointer;transition:var(--trans);}
+    .toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:var(--trans);box-shadow:0 1px 4px rgba(0,0,0,0.20);}
+    .toggle input:checked+.toggle-slider{background:var(--laranja);}
+    .toggle input:checked+.toggle-slider::before{transform:translateX(20px);}
+    .select-field{width:100%;padding:10px 14px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.90rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;cursor:pointer;transition:var(--trans);}
+    .select-field:focus{border-color:var(--laranja);box-shadow:0 0 0 3px rgba(217,119,6,0.10);}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);}
+    .btn-laranja{background:var(--laranja);color:#fff;}
+    .btn-laranja:hover{background:var(--laranja-dark);transform:translateY(-1px);}
+    .btn-outline{background:transparent;border:1.5px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--laranja);color:var(--laranja);}
+    .btn-vermelho{background:var(--vermelho);color:#fff;}
+    .btn-vermelho:hover{opacity:0.88;}
+    .btn-vermelho-outline{background:transparent;border:1.5px solid var(--vermelho);color:var(--vermelho);}
+    .btn-vermelho-outline:hover{background:var(--vermelho);color:#fff;}
+    .btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;}
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.86rem;margin-bottom:16px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.sucesso{background:#F0FFF4;border-color:#C8E6C9;color:#1B5E20;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    body.dark .alerta.sucesso{background:#1a2d1a;border-color:#225c22;color:#80ff9e;}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    .alerta.visivel{display:flex;}
+    .perigo-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid #FFCDD2;}
+    .perigo-card .card-header{background:#FFF5F5;border-bottom-color:#FFCDD2;}
+    body.dark .perigo-card{border-color:#5c2222;}
+    body.dark .perigo-card .card-header{background:#2d1a1a;border-bottom-color:#5c2222;}
+    .perigo-item{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid #FFCDD2;}
+    body.dark .perigo-item{border-bottom-color:#5c2222;}
+    .perigo-item:last-child{border-bottom:none;}
+    .perigo-item-info h4{font-size:0.88rem;font-weight:700;margin-bottom:3px;color:var(--vermelho);}
+    .perigo-item-info p{font-size:0.78rem;color:var(--texto2);line-height:1.5;}
+    /* BADGE EMPRESA */
+    .emp-badge-row{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--laranja-light);border-radius:var(--radius-sm);margin-bottom:16px;}
+    .emp-badge-row i{color:var(--laranja);font-size:1rem;}
+    .emp-badge-row p{font-size:0.84rem;color:var(--laranja-dark);font-weight:600;}
+    body.dark .emp-badge-row p{color:var(--laranja);}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.60);z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+    .modal-overlay.visivel{display:flex;}
+    .modal{background:var(--bg2);border-radius:var(--radius);padding:32px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,0.35);border:1.5px solid var(--borda);animation:modalIn 0.3s ease both;}
+    @keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;color:var(--vermelho);}
+    .modal p{font-size:0.86rem;color:var(--texto2);line-height:1.65;margin-bottom:20px;}
+    .modal-campo{margin-bottom:16px;}
+    .modal-campo label{display:block;font-size:0.83rem;font-weight:700;margin-bottom:6px;}
+    .modal-campo input{width:100%;padding:10px 14px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.90rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;transition:var(--trans);}
+    .modal-campo input:focus{border-color:var(--vermelho);box-shadow:0 0 0 3px rgba(229,57,53,0.10);}
+    .modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--laranja);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    .toast.sucesso{border-left-color:var(--verde);}
+    .toast.erro{border-left-color:var(--vermelho);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;margin-top:40px;}
+    footer strong{color:rgba(255,255,255,0.80);}
+    @media(max-width:700px){.layout{grid-template-columns:1fr;gap:16px;}.cfg-nav{flex-direction:row;flex-wrap:wrap;position:static;gap:6px;}.cfg-nav-div{display:none;}.cfg-nav-item{flex:1;min-width:100px;justify-content:center;font-size:0.78rem;padding:8px 6px;}.cfg-nav-item span{display:none;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <button class="btn-dark" onclick="toggleDark()"><i class="fas fa-moon" id="dark-icon"></i></button>
+    <button class="btn-h" onclick="history.back()"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-ic"><i class="fas fa-cog"></i></div>
+    <div class="hero-txt">
+      <h1>Configurações da Empresa</h1>
+      <p>Gere a conta, segurança, notificações e preferências da tua empresa no HorizonteMZ.</p>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+  <nav class="cfg-nav">
+    <button class="cfg-nav-item ativo" onclick="irSec('conta')"><i class="fas fa-building"></i> <span>Conta</span></button>
+    <button class="cfg-nav-item" onclick="irSec('senha')"><i class="fas fa-lock"></i> <span>Senha</span></button>
+    <button class="cfg-nav-item" onclick="irSec('notificacoes')"><i class="fas fa-bell"></i> <span>Notificações</span></button>
+    <button class="cfg-nav-item" onclick="irSec('visibilidade')"><i class="fas fa-eye"></i> <span>Visibilidade</span></button>
+    <button class="cfg-nav-item" onclick="irSec('recrutamento')"><i class="fas fa-users"></i> <span>Recrutamento</span></button>
+    <button class="cfg-nav-item" onclick="irSec('preferencias')"><i class="fas fa-sliders-h"></i> <span>Preferências</span></button>
+    <div class="cfg-nav-div"></div>
+    <button class="cfg-nav-item perigo" onclick="irSec('perigo')"><i class="fas fa-exclamation-triangle"></i> <span>Zona de perigo</span></button>
+  </nav>
+
+  <div class="cfg-conteudo">
+
+    <!-- CONTA -->
+    <div class="sec ativa" id="sec-conta">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-envelope"></i></div>
+          <div><h3>Alterar Email</h3><p>Email de acesso e contacto institucional</p></div>
+        </div>
+        <div class="card-body">
+          <div class="alerta" id="alerta-email"><i class="fas fa-check-circle"></i><span id="alerta-email-msg"></span></div>
+          <div class="campo"><label>Email actual</label><div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email-atual" readonly style="opacity:0.65;cursor:not-allowed;"/></div></div>
+          <div class="campo"><label>Novo email</label><div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email-novo" placeholder="novoemail@empresa.com"/></div></div>
+          <div class="campo"><label>Confirmar novo email</label><div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email-confirmar" placeholder="Repete o novo email"/></div></div>
+          <div class="btn-row"><button class="btn btn-laranja" onclick="alterarEmail()"><i class="fas fa-save"></i> Guardar email</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#D4EDDA;color:#155724;"><i class="fas fa-check-circle"></i></div>
+          <div><h3>Estado da Conta</h3><p>Informações sobre o registo da empresa</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Tipo de conta</h4><p>Empresa — painel de recrutamento</p></div>
+            <span style="font-size:0.82rem;font-weight:700;color:var(--laranja);">Empresa</span>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Estado de aprovação</h4><p>A tua empresa foi aprovada pelo admin do HMZ</p></div>
+            <span id="estado-aprovacao" style="font-size:0.82rem;font-weight:700;">—</span>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Registada desde</h4><p>Data de criação da conta da empresa</p></div>
+            <span id="data-registo" style="font-size:0.82rem;color:var(--texto2);">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SENHA -->
+    <div class="sec" id="sec-senha">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-lock"></i></div>
+          <div><h3>Alterar Senha</h3><p>Usa uma senha forte para proteger a conta da empresa</p></div>
+        </div>
+        <div class="card-body">
+          <div class="alerta" id="alerta-senha"><i class="fas fa-check-circle"></i><span id="alerta-senha-msg"></span></div>
+          <div class="campo"><label>Senha actual</label><div class="input-wrap"><i class="fas fa-lock ic-esq"></i><input type="password" id="senha-atual" placeholder="Senha actual"/><button class="btn-eye" onclick="verSenha('senha-atual',this)"><i class="fas fa-eye"></i></button></div></div>
+          <div class="campo"><label>Nova senha</label><div class="input-wrap"><i class="fas fa-key ic-esq"></i><input type="password" id="senha-nova" placeholder="Mínimo 8 caracteres" oninput="avaliarForca(this.value)"/><button class="btn-eye" onclick="verSenha('senha-nova',this)"><i class="fas fa-eye"></i></button></div>
+            <div id="forca-wrap" style="margin-top:8px;display:none;">
+              <div style="display:flex;gap:4px;margin-bottom:4px;"><div id="f1" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div><div id="f2" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div><div id="f3" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div><div id="f4" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div></div>
+              <div id="forca-label" style="font-size:0.75rem;color:var(--texto2);"></div>
+            </div>
+          </div>
+          <div class="campo"><label>Confirmar nova senha</label><div class="input-wrap"><i class="fas fa-key ic-esq"></i><input type="password" id="senha-confirmar" placeholder="Repete a nova senha"/><button class="btn-eye" onclick="verSenha('senha-confirmar',this)"><i class="fas fa-eye"></i></button></div></div>
+          <div class="btn-row"><button class="btn btn-laranja" onclick="alterarSenha()"><i class="fas fa-lock"></i> Actualizar senha</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICAÇÕES -->
+    <div class="sec" id="sec-notificacoes">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-bell"></i></div>
+          <div><h3>Notificações de Recrutamento</h3><p>Alertas relacionados com as tuas vagas e candidatos</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Nova candidatura recebida</h4><p>Sabe em tempo real quando alguém se candidata a uma vaga</p></div>
+            <label class="toggle"><input type="checkbox" id="not-candidatura" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Resumo diário de candidaturas</h4><p>Recebe um resumo diário de todas as candidaturas às 9h</p></div>
+            <label class="toggle"><input type="checkbox" id="not-resumo" onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Vaga aprovada pelo admin</h4><p>Notificação quando uma vaga publicada é aprovada</p></div>
+            <label class="toggle"><input type="checkbox" id="not-aprovacao" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Prazo de vaga a expirar</h4><p>Alerta 3 dias antes do prazo de uma vaga terminar</p></div>
+            <label class="toggle"><input type="checkbox" id="not-prazo" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Novidades e actualizações do HMZ</h4><p>Informações sobre novos recursos da plataforma</p></div>
+            <label class="toggle"><input type="checkbox" id="not-novidades" onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISIBILIDADE -->
+    <div class="sec" id="sec-visibilidade">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-eye"></i></div>
+          <div><h3>Visibilidade da Empresa</h3><p>Controla como a tua empresa aparece na plataforma</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Perfil da empresa público</h4><p>Os utilizadores podem ver a página da tua empresa e as vagas activas</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-publico" checked onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Aparecer nos resultados de pesquisa</h4><p>A empresa aparece quando utilizadores pesquisam empregadores</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-pesquisa" checked onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Mostrar número de funcionários</h4><p>A dimensão da empresa fica visível no perfil público</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-dim" onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Mostrar website no perfil</h4><p>O link para o website da empresa fica visível publicamente</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-website" checked onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Mostrar email de contacto</h4><p>Candidatos podem ver o email de contacto da empresa</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-email" onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row" style="margin-top:14px;border-top:1px solid var(--borda);padding-top:16px;">
+            <div class="toggle-info"><h4>Sobre a empresa</h4><p>Mostra a descrição da empresa no perfil público</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-descricao" checked onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Contacto telefónico</h4><p>Mostra o contacto da empresa no perfil público</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-tel" onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>NUIT</h4><p>Mostra o NUIT no perfil público</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-nuit" onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Ano de fundação</h4><p>Mostra o ano de fundação da empresa</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-ano" checked onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Redes sociais</h4><p>Mostra os links sociais da empresa</p></div>
+            <label class="toggle"><input type="checkbox" id="vis-redes" checked onchange="guardarVis()"><span class="toggle-slider"></span></label>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+            <button type="button" class="btn-primario" onclick="verComoPublico()"><i class="fas fa-eye"></i> Ver como público</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECRUTAMENTO (extra empresa) -->
+    <div class="sec" id="sec-recrutamento">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-users"></i></div>
+          <div><h3>Preferências de Recrutamento</h3><p>Define como a empresa gere candidatos e vagas</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Aceitar candidaturas espontâneas</h4><p>Permite que utilizadores se candidatem mesmo sem vaga específica</p></div>
+            <label class="toggle"><input type="checkbox" id="rec-espontaneas" onchange="guardarRec()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Exigir carta de motivação</h4><p>Candidatos são obrigados a enviar carta de motivação</p></div>
+            <label class="toggle"><input type="checkbox" id="rec-carta" onchange="guardarRec()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Notificar candidato sobre estado</h4><p>O sistema envia automaticamente emails de actualização de estado</p></div>
+            <label class="toggle"><input type="checkbox" id="rec-notif-cand" checked onchange="guardarRec()"><span class="toggle-slider"></span></label>
+          </div>
+          <div style="margin-top:4px;">
+            <div class="campo">
+              <label>Nível de escolaridade mínimo padrão para vagas</label>
+              <select class="select-field" id="rec-escolaridade" onchange="guardarRec()">
+                <option value="">Sem requisito mínimo</option>
+                <option>Ensino básico</option>
+                <option>Ensino secundário (10ª classe)</option>
+                <option>Ensino secundário (12ª classe)</option>
+                <option>Técnico médio</option>
+                <option>Licenciatura</option>
+                <option>Mestrado ou superior</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label>Província de recrutamento padrão</label>
+              <select class="select-field" id="rec-provincia" onchange="guardarRec()">
+                <option value="">Todo o país</option>
+                <option>Maputo</option><option>Gaza</option><option>Inhambane</option>
+                <option>Sofala</option><option>Manica</option><option>Tete</option>
+                <option>Zambézia</option><option>Nampula</option><option>Cabo Delgado</option>
+                <option>Niassa</option><option>Maputo Cidade</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREFERÊNCIAS -->
+    <div class="sec" id="sec-preferencias">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-sliders-h"></i></div>
+          <div><h3>Aparência</h3><p>Personaliza a experiência visual da plataforma</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Modo escuro</h4><p>Reduz o brilho para ambientes com pouca luz</p></div>
+            <label class="toggle"><input type="checkbox" id="pref-dark" onchange="toggleDarkPref(this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--azul-light);color:var(--azul);"><i class="fas fa-download"></i></div>
+          <div><h3>Dados da Empresa</h3><p>Exporta os dados da conta da empresa</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Exportar dados da empresa</h4><p>Download de vagas, candidaturas e configurações em formato JSON</p></div>
+            <button class="btn btn-outline" onclick="exportarDados()" style="font-size:0.82rem;padding:7px 14px;white-space:nowrap;"><i class="fas fa-download"></i> Exportar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZONA DE PERIGO -->
+    <div class="sec" id="sec-perigo">
+      <div class="card perigo-card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#FFF5F5;color:var(--vermelho);"><i class="fas fa-exclamation-triangle"></i></div>
+          <div><h3 style="color:var(--vermelho);">Zona de Perigo</h3><p>Acções irreversíveis — procede com cuidado</p></div>
+        </div>
+        <div class="perigo-item">
+          <div class="perigo-item-info">
+            <h4><i class="fas fa-pause-circle"></i> Suspender conta temporariamente</h4>
+            <p>A empresa fica invisível na plataforma e as vagas são suspensas. As candidaturas existentes são preservadas. Podes reactivar fazendo login.</p>
+          </div>
+          <button class="btn btn-vermelho-outline" onclick="suspenderConta()" style="white-space:nowrap;font-size:0.83rem;"><i class="fas fa-pause-circle"></i> Suspender</button>
+        </div>
+        <div class="perigo-item">
+          <div class="perigo-item-info">
+            <h4><i class="fas fa-trash-alt"></i> Eliminar conta permanentemente</h4>
+            <p>Todos os dados da empresa, vagas publicadas e candidaturas recebidas serão apagados definitivamente. Esta acção não pode ser revertida.</p>
+          </div>
+          <button class="btn btn-vermelho" onclick="abrirModalEliminar()" style="white-space:nowrap;font-size:0.83rem;"><i class="fas fa-trash-alt"></i> Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+
+<div class="modal-overlay" id="modal-eliminar">
+  <div class="modal">
+    <h3><i class="fas fa-exclamation-triangle"></i> Eliminar conta da empresa</h3>
+    <p>Esta acção é <strong>irreversível</strong>. Todas as vagas e candidaturas associadas serão eliminadas. Para confirmar, escreve o nome da empresa abaixo.</p>
+    <div class="modal-campo"><label>Nome da empresa</label><input type="text" id="conf-nome-eliminar" placeholder="Nome exacto da empresa"/></div>
+    <div class="modal-campo"><label>Escreve <strong>ELIMINAR</strong> para confirmar</label><input type="text" id="conf-texto-eliminar" placeholder="ELIMINAR"/></div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="fecharModal()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-vermelho" onclick="confirmarEliminar()"><i class="fas fa-trash-alt"></i> Eliminar conta</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<script>
+  const KEYS={tema:'hmz_tema',sessao:'hmz_sessao_empresa',emps:'hmz_empresas',vagas:'hmz_vagas',cands:'hmz_candidaturas_emp',config:'hmz_config_emp'};
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';const cb=document.getElementById('pref-dark');if(cb)cb.checked=dark;}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  function toggleDarkPref(val){lsSet(KEYS.tema,val?'dark':'light');aplicarTema(val);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+  function toast(msg,tipo=''){const c=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+  function irSec(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ativa'));document.querySelectorAll('.cfg-nav-item').forEach(b=>b.classList.remove('ativo'));document.getElementById('sec-'+id).classList.add('ativa');const btn=document.querySelector(`.cfg-nav-item[onclick*="'${id}'"]`);if(btn)btn.classList.add('ativo');window.scrollTo({top:0,behavior:'smooth'});}
+  function verSenha(id,btn){const inp=document.getElementById(id);const m=inp.type==='password';inp.type=m?'text':'password';btn.innerHTML=m?'<i class="fas fa-eye-slash"></i>':'<i class="fas fa-eye"></i>';}
+  function avaliarForca(v){const w=document.getElementById('forca-wrap');if(!v){w.style.display='none';return;}w.style.display='block';let s=0;if(v.length>=8)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;const c=['#E53935','#F59E0B','#16A34A','#0057C2'],l=['Muito fraca','Fraca','Boa','Forte'];for(let i=1;i<=4;i++)document.getElementById('f'+i).style.background=i<=s?c[s-1]:'';document.getElementById('forca-label').textContent=l[s-1]||'';document.getElementById('forca-label').style.color=c[s-1]||'';}
+  function mostrarAlerta(el,msg,txt,tipo){el.className='alerta '+tipo+' visivel';msg.textContent=txt;setTimeout(()=>{el.className='alerta';},5000);}
+  function alterarEmail(){
+    const novo=document.getElementById('email-novo').value.trim(),conf=document.getElementById('email-confirmar').value.trim();
+    const el=document.getElementById('alerta-email'),msg=document.getElementById('alerta-email-msg');
+    if(!novo||!conf){mostrarAlerta(el,msg,'Preenche ambos os campos.','erro');return;}
+    if(novo!==conf){mostrarAlerta(el,msg,'Os emails não coincidem.','erro');return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(novo)){mostrarAlerta(el,msg,'Email inválido.','erro');return;}
+    const s=lsGet(KEYS.sessao),emps=lsGet(KEYS.emps,[]),idx=emps.findIndex(e=>String(e.id)===String(s?.id));
+    if(idx!==-1){emps[idx].email=novo;lsSet(KEYS.emps,emps);s.email=novo;lsSet(KEYS.sessao,s);}
+    document.getElementById('email-atual').value=novo;document.getElementById('email-novo').value='';document.getElementById('email-confirmar').value='';
+    mostrarAlerta(el,msg,'Email actualizado!','sucesso');toast('Email actualizado!','sucesso');
+  }
+  function alterarSenha(){
+    const atual=document.getElementById('senha-atual').value,nova=document.getElementById('senha-nova').value,conf=document.getElementById('senha-confirmar').value;
+    const el=document.getElementById('alerta-senha'),msg=document.getElementById('alerta-senha-msg');
+    if(!atual||!nova||!conf){mostrarAlerta(el,msg,'Preenche todos os campos.','erro');return;}
+    if(nova.length<8){mostrarAlerta(el,msg,'Mínimo 8 caracteres.','erro');return;}
+    if(nova!==conf){mostrarAlerta(el,msg,'As senhas não coincidem.','erro');return;}
+    const s=lsGet(KEYS.sessao),emps=lsGet(KEYS.emps,[]),u=emps.find(e=>e.id===s?.id);
+    if(!s||!u){mostrarAlerta(el,msg,'Sessão ou conta não encontrada.','erro');return;}
+    if(u.senha!==atual){mostrarAlerta(el,msg,'Senha actual incorrecta.','erro');return;}
+    const idx=emps.findIndex(e=>e.id===s.id);
+    if(idx===-1){mostrarAlerta(el,msg,'Não foi possível actualizar a senha.','erro');return;}
+    emps[idx].senha=nova;lsSet(KEYS.emps,emps);
+    document.getElementById('senha-atual').value='';document.getElementById('senha-nova').value='';document.getElementById('senha-confirmar').value='';
+    document.getElementById('forca-wrap').style.display='none';mostrarAlerta(el,msg,'Senha actualizada!','sucesso');toast('Senha actualizada!','sucesso');
+  }
+  function guardarNotif(){const cfg=lsGet(KEYS.config,{});cfg.notif={candidatura:document.getElementById('not-candidatura').checked,resumo:document.getElementById('not-resumo').checked,aprovacao:document.getElementById('not-aprovacao').checked,prazo:document.getElementById('not-prazo').checked,novidades:document.getElementById('not-novidades').checked};lsSet(KEYS.config,cfg);toast('Notificações guardadas.','sucesso');}
+  function guardarVis(){const vis={publico:document.getElementById('vis-publico').checked,pesquisa:document.getElementById('vis-pesquisa').checked,dim:document.getElementById('vis-dim').checked,website:document.getElementById('vis-website').checked,email:document.getElementById('vis-email').checked,descricao:document.getElementById('vis-descricao').checked,tel:document.getElementById('vis-tel').checked,nuit:document.getElementById('vis-nuit').checked,ano:document.getElementById('vis-ano').checked,redes:document.getElementById('vis-redes').checked};const cfg=lsGet(KEYS.config,{});cfg.vis=vis;lsSet(KEYS.config,cfg);const s=lsGet(KEYS.sessao),emps=lsGet(KEYS.emps,[]),idx=emps.findIndex(e=>String(e.id)===String(s?.id));if(idx!==-1){emps[idx].perfilPublico=vis;lsSet(KEYS.emps,emps);}toast('Visibilidade guardada.','sucesso');}function verComoPublico(){const s=lsGet(KEYS.sessao);if(!s?.id){toast('Sessão não encontrada.','erro');return;}guardarVis();window.location.href='perfil-empresa.html?id='+encodeURIComponent(s.id);}
+  function guardarRec(){const cfg=lsGet(KEYS.config,{});cfg.rec={espontaneas:document.getElementById('rec-espontaneas').checked,carta:document.getElementById('rec-carta').checked,notifCand:document.getElementById('rec-notif-cand').checked,escolaridade:document.getElementById('rec-escolaridade').value,provincia:document.getElementById('rec-provincia').value};lsSet(KEYS.config,cfg);toast('Preferências de recrutamento guardadas.','sucesso');}
+  function exportarDados(){const s=lsGet(KEYS.sessao),emps=lsGet(KEYS.emps,[]),emp=emps.find(e=>e.id===s?.id)||{};const vagas=lsGet(KEYS.vagas,[]).filter(v=>String(v.empresaId||v.empresaID||v.ownerId)===String(s?.id));const idsVagas=new Set(vagas.map(v=>v.id));const candidaturas=lsGet(KEYS.cands,[]).filter(c=>idsVagas.has(c.vagaId));const dados={empresa:emp,vagas,candidaturas,configuracoes:lsGet(KEYS.config,{}),exportadoEm:new Date().toISOString()};const blob=new Blob([JSON.stringify(dados,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hmz_dados_empresa.json';a.click();toast('Dados exportados!','sucesso');}
+  function suspenderConta(){const s=lsGet(KEYS.sessao),emps=lsGet(KEYS.emps,[]),idx=emps.findIndex(e=>String(e.id)===String(s?.id));if(idx!==-1){emps[idx].desativada=true;emps[idx].suspensa=false;lsSet(KEYS.emps,emps);}const vagas=lsGet(KEYS.vagas,[]);vagas.forEach(v=>{if(String(v.empresaId||v.empresaID||v.ownerId)===String(s?.id)&&!v.pausada&&!v.fechada){v.pausada=true;v.suspensaPorConta=true;}});lsSet(KEYS.vagas,vagas);toast('Conta suspensa. Faz login para reactivar.');setTimeout(()=>{lsSet(KEYS.sessao,null);window.location.href='index.html';},1500);}
+  function abrirModalEliminar(){document.getElementById('modal-eliminar').classList.add('visivel');document.body.style.overflow='hidden';}
+  function fecharModal(){document.getElementById('modal-eliminar').classList.remove('visivel');document.body.style.overflow='';}
+  function confirmarEliminar(){
+    const txt=document.getElementById('conf-texto-eliminar').value.trim();
+    const nomeConfirmado=(document.getElementById('conf-nome-eliminar')||{}).value||'';
+    const sessao=lsGet(KEYS.sessao);
+    const contaActual=lsGet(KEYS.emps,[]).find(x=>String(x.id)===String(sessao?.id));
+    if(contaActual && nomeConfirmado.trim().toLowerCase()!==(contaActual.nome||contaActual.nomeInstituicao||contaActual.designacao||'').trim().toLowerCase()){toast('Escreve o nome exacto da conta.','erro');return;}
+    if(txt!=='ELIMINAR'){toast('Escreve ELIMINAR para confirmar.','erro');return;}
+    const s=lsGet(KEYS.sessao);
+    const vagasAntes=lsGet(KEYS.vagas,[]);
+    const idsRemovidos=new Set(vagasAntes.filter(v=>String(v.empresaId||v.empresaID||v.ownerId)===String(s?.id)).map(v=>v.id));
+    lsSet(KEYS.emps,lsGet(KEYS.emps,[]).filter(e=>String(e.id)!==String(s?.id)));
+    lsSet(KEYS.vagas,vagasAntes.filter(v=>!idsRemovidos.has(v.id)));
+    lsSet(KEYS.cands,lsGet(KEYS.cands,[]).filter(c=>!idsRemovidos.has(c.vagaId)));
+    lsSet(KEYS.sessao,null);lsSet(KEYS.config,{});fecharModal();toast('Conta eliminada.');
+    setTimeout(()=>{window.location.href='index.html';},1500);
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    const s=lsGet(KEYS.sessao);if(!s){window.location.href='login-empresa.html';return;}
+    const contaAtual=lsGet(KEYS.emps,[]).find(x=>String(x.id)===String(s.id));
+    if(!contaAtual){lsSet(KEYS.sessao,null);window.location.href='login-empresa.html';return;}
+    const emps=lsGet(KEYS.emps,[]),emp=emps.find(e=>String(e.id)===String(s.id))||{};
+    document.getElementById('email-atual').value=emp.email||s.email||'';
+    document.getElementById('estado-aprovacao').textContent=emp.aprovada?'✅ Aprovada':'⏳ Pendente';
+    document.getElementById('estado-aprovacao').style.color=emp.aprovada?'var(--verde)':'var(--laranja)';
+    document.getElementById('data-registo').textContent=emp.criadoEm?new Date(emp.criadoEm).toLocaleDateString('pt-MZ',{day:'2-digit',month:'long',year:'numeric'}):'—';
+    const cfg=lsGet(KEYS.config,{});
+    if(cfg.notif){Object.entries(cfg.notif).forEach(([k,v])=>{const el=document.getElementById('not-'+k);if(el)el.checked=v;});}
+    if(cfg.vis){Object.entries(cfg.vis).forEach(([k,v])=>{const el=document.getElementById('vis-'+k);if(el)el.checked=v;});}const sess=lsGet(KEYS.sessao),emps2=lsGet(KEYS.emps,[]),emp2=emps2.find(e=>e.id===sess?.id);if(emp2?.perfilPublico){Object.entries(emp2.perfilPublico).forEach(([k,v])=>{const el=document.getElementById('vis-'+k);if(el)el.checked=v;});}
+    if(cfg.rec){['espontaneas','carta','notif-cand'].forEach(k=>{const el=document.getElementById('rec-'+k);if(el)el.checked=cfg.rec[k.replace('-','')]!==false;});if(cfg.rec.escolaridade)document.getElementById('rec-escolaridade').value=cfg.rec.escolaridade;if(cfg.rec.provincia)document.getElementById('rec-provincia').value=cfg.rec.provincia;}
+    document.getElementById('pref-dark').checked=lsGet(KEYS.tema)==='dark';
+  });
+  document.getElementById('modal-eliminar').addEventListener('click',function(e){if(e.target===this)fecharModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharModal();});
+</script>
+</body>
+</html>

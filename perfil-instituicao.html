@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil da Instituição | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--amarelo:#FFBE00;--verde:#1DB954;--verde-light:#F0FDF4;--verde-dark:#16A34A;--vermelho:#E53935;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(22,163,74,0.08);--sombra-hover:rgba(22,163,74,0.16);--header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--azul:#4A9EFF;--azul-light:#0D1B3E;--verde:#22C55E;--verde-light:#0f2d1a;--verde-dark:#166534;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);--sombra-hover:rgba(0,0,0,0.40);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+
+    header{background:var(--verde-dark);height:var(--header-h);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-h{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);font-size:0.84rem;font-weight:700;border:none;cursor:pointer;transition:var(--trans);text-decoration:none;font-family:inherit;background:rgba(255,255,255,0.15);color:#fff;}
+    .btn-h:hover{background:rgba(255,255,255,0.28);}
+
+    .breadcrumb{background:var(--bg2);border-bottom:1px solid var(--borda);padding:12px 28px;}
+    .breadcrumb-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:8px;font-size:0.83rem;color:var(--texto2);}
+    .breadcrumb-inner a{color:var(--verde-dark);font-weight:600;}
+    .breadcrumb-inner i{font-size:0.7rem;opacity:0.6;}
+
+    .main-layout{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:flex-start;}
+
+    /* HERO */
+    .inst-hero{background:linear-gradient(135deg,var(--verde-dark),var(--verde));border-radius:var(--radius);padding:36px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;}
+    .inst-hero::before{content:'';position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.06);top:-80px;right:-60px;}
+    .hero-inner{position:relative;z-index:1;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+    .inst-logo-grande{width:88px;height:88px;border-radius:22px;background:rgba(255,255,255,0.20);border:3px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;flex-shrink:0;}
+    .inst-info h1{font-size:1.6rem;font-weight:800;margin-bottom:6px;letter-spacing:-0.3px;}
+    .inst-info p{font-size:0.90rem;opacity:0.88;margin-bottom:12px;}
+    .inst-badges{display:flex;flex-wrap:wrap;gap:8px;}
+    .inst-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);padding:4px 12px;border-radius:50px;font-size:0.79rem;font-weight:600;}
+    .inst-badge.verificada{background:rgba(255,190,0,0.25);border-color:rgba(255,190,0,0.40);color:#FEF3C7;}
+
+    /* CONTENT CARDS */
+    .content-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:28px;margin-bottom:20px;}
+    .sec-titulo{font-size:1rem;font-weight:800;color:var(--verde-dark);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:8px;}
+    .desc-texto{font-size:0.92rem;line-height:1.8;color:var(--texto);}
+
+    /* ÁREAS */
+    .areas-wrap{display:flex;flex-wrap:wrap;gap:10px;}
+    .area-badge{display:inline-flex;align-items:center;gap:7px;background:var(--verde-light);color:var(--verde-dark);border:1px solid rgba(22,163,74,0.25);padding:6px 14px;border-radius:50px;font-size:0.83rem;font-weight:600;}
+    body.dark .area-badge{background:rgba(22,163,74,0.12);color:var(--verde);}
+
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+    .stat-item{background:var(--bg2);border-radius:var(--radius-sm);border:1.5px solid var(--borda);padding:18px;text-align:center;}
+    .stat-item-num{font-size:1.8rem;font-weight:800;color:var(--verde-dark);line-height:1;margin-bottom:4px;}
+    .stat-item-lbl{font-size:0.78rem;color:var(--texto2);}
+
+    /* OPORTUNIDADES */
+    .ops-lista{display:flex;flex-direction:column;gap:12px;}
+    .op-item{background:var(--bg);border-radius:var(--radius-sm);border:1.5px solid var(--borda);padding:14px 16px;cursor:pointer;transition:var(--trans);display:flex;gap:14px;align-items:flex-start;}
+    .op-item:hover{border-color:var(--verde-dark);box-shadow:0 4px 14px var(--sombra);}
+    .op-ic{width:40px;height:40px;border-radius:10px;background:var(--verde-light);color:var(--verde-dark);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .op-info h4{font-size:0.90rem;font-weight:700;margin-bottom:3px;}
+    .op-info p{font-size:0.79rem;color:var(--texto2);}
+    .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+    .badge-verde{background:#D4EDDA;color:#155724;}
+    .badge-azul{background:#CCE5FF;color:#004085;}
+    .badge-amarelo{background:#FFF3CD;color:#856404;}
+    .badge-cinza{background:#E2E3E5;color:#383D41;}
+    body.dark .badge-verde{background:#1a3d28;color:#7ddb9e;}
+    body.dark .badge-azul{background:#0d2d4a;color:#7ab8f5;}
+    body.dark .badge-amarelo{background:#3d2e00;color:#f0c040;}
+    body.dark .badge-cinza{background:#2a2a3a;color:#aaaacc;}
+
+    /* SIDEBAR */
+    .sidebar-perfil{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(var(--header-h)+20px);}
+    .info-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:22px;}
+    .info-card h3{font-size:0.90rem;font-weight:800;color:var(--verde-dark);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--borda);}
+    .info-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+    .info-row:last-child{margin-bottom:0;}
+    .info-ic{width:34px;height:34px;border-radius:9px;background:var(--verde-light);color:var(--verde-dark);display:flex;align-items:center;justify-content:center;font-size:0.88rem;flex-shrink:0;}
+    .info-row h4{font-size:0.82rem;font-weight:700;margin-bottom:2px;color:var(--texto2);}
+    .info-row p{font-size:0.85rem;color:var(--texto);}
+    .info-row a{color:var(--verde-dark);font-weight:600;}
+    .info-row a:hover{text-decoration:underline;}
+
+    .btn-cand-inst{width:100%;padding:13px;background:var(--verde-dark);color:#fff;border:none;border-radius:var(--radius-sm);font-size:0.97rem;font-weight:700;cursor:pointer;font-family:inherit;transition:var(--trans);display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-cand-inst:hover{background:var(--verde);transform:translateY(-1px);}
+
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--verde);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:900px){.main-layout{grid-template-columns:1fr;}.sidebar-perfil{position:static;}.stats-row{grid-template-columns:1fr 1fr 1fr;}.hero-inner{flex-direction:column;text-align:center;}}
+    @media(max-width:480px){.stats-row{grid-template-columns:1fr 1fr;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Início</a>
+    <i class="fas fa-chevron-right"></i>
+    <a href="explorar.html">Oportunidades</a>
+    <i class="fas fa-chevron-right"></i>
+    <span id="bc-nome" style="color:var(--texto);">Instituição</span>
+  </div>
+</div>
+
+<div class="main-layout">
+
+  <!-- CONTEÚDO -->
+  <div>
+    <!-- HERO -->
+    <div class="inst-hero" id="inst-hero">
+      <div class="hero-inner">
+        <div class="inst-logo-grande" id="inst-logo-ic">I</div>
+        <div class="inst-info">
+          <h1 id="inst-nome">Nome da Instituição</h1>
+          <p id="inst-tipo">Tipo de instituição</p>
+          <div class="inst-badges">
+            <span class="inst-badge"><i class="fas fa-map-marker-alt"></i> <span id="inst-prov">Moçambique</span></span>
+            <span class="inst-badge" id="badge-verificada" style="display:none;"><i class="fas fa-check-circle"></i> Verificada pelo HMZ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-item-num" id="st-ops">0</div><div class="stat-item-lbl">Oportunidades publicadas</div></div>
+      <div class="stat-item"><div class="stat-item-num" id="st-ativas">0</div><div class="stat-item-lbl">Oportunidades activas</div></div>
+      <div class="stat-item"><div class="stat-item-num" id="st-cands">0</div><div class="stat-item-lbl">Candidaturas recebidas</div></div>
+    </div>
+
+    <!-- MISSÃO -->
+    <div class="content-card" id="card-missao" style="display:none;">
+      <div class="sec-titulo"><i class="fas fa-bullseye"></i> Missão e Descrição</div>
+      <div class="desc-texto" id="inst-missao"></div>
+    </div>
+
+    <!-- ÁREAS -->
+    <div class="content-card" id="card-areas" style="display:none;">
+      <div class="sec-titulo"><i class="fas fa-layer-group"></i> Áreas de Actuação</div>
+      <div class="areas-wrap" id="areas-wrap"></div>
+    </div>
+
+    <!-- OPORTUNIDADES ACTIVAS -->
+    <div class="content-card">
+      <div class="sec-titulo"><i class="fas fa-list"></i> Oportunidades Activas</div>
+      <div class="ops-lista" id="ops-lista"></div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-perfil">
+    <button class="btn-cand-inst" onclick="location.href='explorar.html'">
+      <i class="fas fa-search"></i> Ver todas as oportunidades
+    </button>
+
+    <div class="info-card">
+      <h3><i class="fas fa-info-circle"></i> Informações</h3>
+      <div class="info-row"><div class="info-ic"><i class="fas fa-tag"></i></div><div><h4>Tipo</h4><p id="si-tipo">—</p></div></div>
+      <div class="info-row"><div class="info-ic"><i class="fas fa-map-marker-alt"></i></div><div><h4>Localização</h4><p id="si-local">—</p></div></div>
+      <div class="info-row" id="si-web-row" style="display:none;"><div class="info-ic"><i class="fas fa-globe"></i></div><div><h4>Website</h4><p><a id="si-web" href="#" target="_blank">—</a></p></div></div>
+      <div class="info-row" id="si-tel-row" style="display:none;"><div class="info-ic"><i class="fas fa-phone"></i></div><div><h4>Contacto</h4><p id="si-tel">—</p></div></div>
+      <div class="info-row"><div class="info-ic"><i class="fas fa-calendar"></i></div><div><h4>Membro desde</h4><p id="si-desde">—</p></div></div>
+    </div>
+
+    <div class="info-card" id="si-alcance-card" style="display:none;">
+      <h3><i class="fas fa-map"></i> Alcance Geográfico</h3>
+      <div style="font-size:0.88rem;color:var(--texto);font-weight:600;" id="si-alcance"></div>
+    </div>
+
+    <div class="info-card" id="si-redes-card" style="display:none;">
+      <h3><i class="fas fa-share-alt"></i> Redes Sociais</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="si-redes"></div>
+    </div>
+  </div>
+</div>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+<div id="toast-container" aria-live="polite"></div>
+
+<script>
+  const KEYS={tema:'hmz_tema',instituicoes:'hmz_instituicoes',oportunidades:'hmz_oportunidades',candidaturas:'hmz_candidaturas'};
+  const CATS_IC={
+    'Bolsas':'graduation-cap','Cursos':'book-open','Formação':'book-open','Estágios':'briefcase','Emprego':'briefcase',
+    'Concursos':'trophy','Eventos':'calendar-days','Voluntariado':'hands-helping','Workshops':'chalkboard-teacher','Outro':'tag'
+  };
+  const CATS_BADGE={};
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function iniciais(nome){if(!nome)return'I';const p=nome.split(' ');return(p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+  function truncar(txt,max){return txt&&txt.length>max?txt.substring(0,max)+'...':txt||'';}
+  function formatarData(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('pt-MZ',{month:'long',year:'numeric'});}
+
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  function mostrarToast(msg,tipo=''){const cont=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;cont.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+
+
+  function carregarPerfil(){
+    const params=new URLSearchParams(window.location.search);
+    const id=params.get('id');
+    const insts=lsGet(KEYS.instituicoes,[]);
+    const inst=id?insts.find(i=>i.id===id):null;
+    if(!inst||inst.suspensa){window.location.href='index.html';return;}
+    const vis=Object.assign({publico:true,pesquisa:true,website:true,email:false,cands:false,missao:true,areas:true,tel:false,redes:true,alcance:true},inst.perfilPublico||{});
+    if(vis.publico===false && id!==lsGet('hmz_sessao_instituicao',{})?.id){document.body.innerHTML='<div style="min-height:100vh;display:grid;place-items:center;padding:30px;font-family:inherit;"><div style="text-align:center;max-width:520px;"><i class="fas fa-lock" style="font-size:3rem;color:var(--verde);"></i><h2>Perfil não disponível</h2><p style="color:var(--texto2);">Esta instituição optou por manter o perfil público indisponível.</p><button type="button" class="hmz-back-page" onclick="history.back()"><i class="fas fa-arrow-left"></i> Voltar</button></div></div>';return;}
+
+    document.title=inst.nome+' | HorizonteMZ';
+    document.getElementById('bc-nome').textContent=truncar(inst.nome,30);
+
+    // Hero
+    document.getElementById('inst-logo-ic').textContent=iniciais(inst.nome);
+    document.getElementById('inst-nome').textContent=inst.nome;
+    document.getElementById('inst-tipo').textContent=inst.tipo||'Instituição';
+    document.getElementById('inst-prov').textContent=inst.cidade?inst.cidade+', '+inst.provincia:inst.provincia||'Moçambique';
+    if(inst.verificada)document.getElementById('badge-verificada').style.display='inline-flex';
+
+    // Sidebar info
+    document.getElementById('si-tipo').textContent=inst.tipo||'—';
+    document.getElementById('si-local').textContent=inst.cidade?inst.cidade+', '+inst.provincia:inst.provincia||'—';
+    document.getElementById('si-desde').textContent=formatarData(inst.criadoEm);
+    if(vis.website&&inst.website){document.getElementById('si-web-row').style.display='flex';document.getElementById('si-web').textContent=inst.website.replace('https://','');document.getElementById('si-web').href=inst.website;}
+    if(vis.tel&&inst.tel){document.getElementById('si-tel-row').style.display='flex';document.getElementById('si-tel').textContent=inst.tel;}
+    if(vis.alcance&&inst.alcance){document.getElementById('si-alcance-card').style.display='block';document.getElementById('si-alcance').textContent=inst.alcance;}
+    if(vis.email&&inst.email){const row=document.createElement('div');row.className='info-row';row.innerHTML='<div class="info-ic"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p></p></div>';row.querySelector('p').textContent=inst.email;document.querySelector('.sidebar-perfil .info-card')?.appendChild(row);}
+
+    // Redes sociais
+    const redes=[];
+    if(inst.facebook)redes.push(`<a href="${inst.facebook}" target="_blank" style="display:flex;align-items:center;gap:8px;color:var(--texto2);font-size:0.86rem;transition:var(--trans);" onmouseover="this.style.color='#1877F2'" onmouseout="this.style.color='var(--texto2)'"><i class="fab fa-facebook" style="color:#1877F2;font-size:1.1rem;"></i>Facebook</a>`);
+    if(inst.linkedin)redes.push(`<a href="${inst.linkedin}" target="_blank" style="display:flex;align-items:center;gap:8px;color:var(--texto2);font-size:0.86rem;transition:var(--trans);" onmouseover="this.style.color='#0A66C2'" onmouseout="this.style.color='var(--texto2)'"><i class="fab fa-linkedin" style="color:#0A66C2;font-size:1.1rem;"></i>LinkedIn</a>`);
+    if(vis.redes&&redes.length){document.getElementById('si-redes-card').style.display='block';document.getElementById('si-redes').innerHTML=redes.join('');}
+
+    // Missão
+    if(vis.missao&&inst.missao){document.getElementById('card-missao').style.display='block';document.getElementById('inst-missao').textContent=inst.missao;}
+
+    // Áreas
+    if(vis.areas&&inst.areas&&inst.areas.length){document.getElementById('card-areas').style.display='block';document.getElementById('areas-wrap').innerHTML=inst.areas.map(a=>`<span class="area-badge"><i class="fas fa-tag"></i>${a}</span>`).join('');}
+
+    // Oportunidades
+    const ops=lsGet(KEYS.oportunidades,[]).filter(o=>{
+      const pertence=String(o.instituicaoId||'')===String(inst.id||'') || String(o.instituicao||'').trim().toLowerCase()===String(inst.nome||'').trim().toLowerCase() || String(o.instituicaoNome||'').trim().toLowerCase()===String(inst.nome||'').trim().toLowerCase();
+      return pertence && o.aprovada===true && o.pausada!==true;
+    });
+    const cands=lsGet(KEYS.candidaturas,[]);
+    document.getElementById('st-ops').textContent=ops.length;
+    document.getElementById('st-ativas').textContent=ops.filter(o=>!o.pausada).length;
+    const totalCands=cands.filter(c=>ops.some(o=>o.id===c.oportunidadeId)).length;document.getElementById('st-cands').textContent=vis.cands?totalCands:'—';document.querySelector('#st-cands')?.closest('.stat-item')?.style.setProperty('display',vis.cands?'':'none');
+
+    const lista=document.getElementById('ops-lista');
+    if(!ops.length){lista.innerHTML='<p style="font-size:0.86rem;color:var(--texto2);text-align:center;padding:20px;">Nenhuma oportunidade activa de momento.</p>';return;}
+    lista.innerHTML=ops.slice(0,6).map(o=>`
+      <div class="op-item" onclick="location.href='detalhe.html?id=${o.id}'" role="button" tabindex="0">
+        <div class="op-ic"><i class="fas fa-${CATS_IC[o.categoria]||'tag'}"></i></div>
+        <div class="op-info" style="flex:1;">
+          <h4>${truncar(o.titulo,55)}</h4>
+          <p>${o.categoria||''} · ${o.tipo||''} ${o.prazo?'· Prazo: '+new Date(o.prazo).toLocaleDateString('pt-MZ',{day:'2-digit',month:'short'}):''}</p>
+        </div>
+        <span class="badge ${CATS_BADGE[o.categoria]||'badge-cinza'}">${o.categoria||'—'}</span>
+      </div>`).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded',carregarPerfil);
+</script>
+</body>
+</html>

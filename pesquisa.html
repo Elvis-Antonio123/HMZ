@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pesquisa | HorizonteMZ</title>
+  <meta name="description" content="Pesquisa avançada de oportunidades e vagas de emprego no HorizonteMZ."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--amarelo:#FFBE00;--amarelo-dark:#E5AA00;--laranja:#D97706;--laranja-light:#FEF3C7;--verde:#1DB954;--vermelho:#E53935;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);--sombra-hover:rgba(0,87,194,0.16);--header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--laranja:#F59E0B;--laranja-light:#2d1f0a;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);--sombra-hover:rgba(0,0,0,0.40);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+
+    header{background:var(--azul);height:var(--header-h);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}.logo span{color:var(--amarelo);}
+    .h-nav{display:flex;gap:2px;}
+    .nav-link{color:rgba(255,255,255,0.88);padding:8px 12px;border-radius:var(--radius-sm);font-size:0.87rem;font-weight:500;transition:var(--trans);}
+    .nav-link:hover,.nav-link.ativo{background:rgba(255,255,255,0.18);color:#fff;}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-h{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);font-size:0.84rem;font-weight:700;border:none;cursor:pointer;transition:var(--trans);text-decoration:none;font-family:inherit;}
+    .btn-h-outline{background:rgba(255,255,255,0.15);color:#fff;}
+    .btn-h-outline:hover{background:rgba(255,255,255,0.28);}
+    .btn-burger{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);}
+
+    /* HERO PESQUISA */
+    .hero-pesquisa{background:linear-gradient(135deg,var(--azul-dark),var(--azul));padding:48px 24px 40px;color:#fff;text-align:center;}
+    .hero-pesquisa h1{font-size:1.9rem;font-weight:800;margin-bottom:10px;letter-spacing:-0.3px;}
+    .hero-pesquisa h1 span{color:var(--amarelo);}
+    .hero-pesquisa p{font-size:0.94rem;opacity:0.88;margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.7;}
+    .busca-principal{max-width:680px;margin:0 auto;display:flex;gap:10px;}
+    .busca-input-wrap{flex:1;display:flex;align-items:center;background:#fff;border-radius:var(--radius-sm);padding:0 16px;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+    .busca-input-wrap i{color:var(--texto2);font-size:1rem;}
+    .busca-input-wrap input{border:none;outline:none;font-size:0.97rem;padding:14px 0;width:100%;color:var(--texto);font-family:inherit;background:transparent;}
+    body.dark .busca-input-wrap{background:var(--bg2);}
+    .btn-buscar{background:var(--amarelo);color:#1a1a2e;border:none;border-radius:var(--radius-sm);padding:14px 24px;font-size:0.97rem;font-weight:800;cursor:pointer;font-family:inherit;transition:var(--trans);white-space:nowrap;}
+    .btn-buscar:hover{background:var(--amarelo-dark);}
+
+    /* TABS TIPO */
+    .tipo-tabs{max-width:900px;margin:0 auto;padding:0 24px;}
+    .tabs-bar{display:flex;gap:8px;padding:20px 0 0;border-bottom:2px solid var(--borda);overflow-x:auto;}
+    .tab-btn{padding:10px 20px;font-size:0.90rem;font-weight:700;color:var(--texto2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:var(--trans);white-space:nowrap;display:flex;align-items:center;gap:7px;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;}
+    .tab-btn:hover{color:var(--azul);}
+    .tab-btn.ativo{color:var(--azul);border-bottom-color:var(--azul);}
+    .tab-count{background:var(--azul);color:#fff;font-size:0.70rem;font-weight:800;padding:1px 7px;border-radius:10px;}
+
+    /* MAIN */
+    .main-content{max-width:900px;margin:0 auto;padding:24px 24px 60px;}
+
+    /* SUGESTÕES */
+    .sugestoes-wrap{margin-bottom:24px;}
+    .sugestoes-titulo{font-size:0.82rem;font-weight:700;color:var(--texto2);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+    .sugestoes-chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .sug-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1.5px solid var(--borda);border-radius:50px;padding:5px 14px;font-size:0.82rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);}
+    .sug-chip:hover{border-color:var(--azul);color:var(--azul);}
+
+    /* FILTROS RÁPIDOS */
+    .filtros-rapidos{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+    .filtro-sel{padding:8px 12px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg2);color:var(--texto);font-family:inherit;font-size:0.85rem;outline:none;cursor:pointer;}
+    .sort-sel{padding:8px 12px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg2);color:var(--texto);font-family:inherit;font-size:0.85rem;outline:none;cursor:pointer;}
+    .res-info{font-size:0.86rem;color:var(--texto2);margin-left:auto;}
+    .res-info strong{color:var(--texto);}
+
+    /* CARDS */
+    .resultados-lista{display:flex;flex-direction:column;gap:14px;}
+    .result-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);overflow:hidden;transition:var(--trans);cursor:pointer;display:flex;}
+    .result-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px var(--sombra-hover);}
+    .result-topo{padding:18px 20px;color:#fff;width:180px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between;}
+    .result-topo.op{background:var(--azul);}
+    .result-topo.vaga{background:linear-gradient(135deg,#92400E,var(--laranja));}
+    .result-topo small{font-size:0.74rem;opacity:0.85;display:flex;align-items:center;gap:5px;margin-bottom:6px;}
+    .result-topo h3{font-size:0.88rem;font-weight:700;line-height:1.35;}
+    .result-tipo-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:10px;font-size:0.70rem;font-weight:700;margin-top:8px;width:fit-content;}
+    .result-corpo{padding:16px 20px;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+    .result-corpo p{font-size:0.84rem;color:var(--texto2);margin-bottom:12px;line-height:1.55;}
+    .result-meta{display:flex;align-items:center;flex-wrap:wrap;gap:7px;}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+    .badge-verde{background:#D4EDDA;color:#155724;}
+    .badge-azul{background:#CCE5FF;color:#004085;}
+    .badge-amarelo{background:#FFF3CD;color:#856404;}
+    .badge-cinza{background:#E2E3E5;color:#383D41;}
+    .badge-laranja{background:#FEF3C7;color:#92400E;}
+    body.dark .badge-verde{background:#1a3d28;color:#7ddb9e;}
+    body.dark .badge-azul{background:#0d2d4a;color:#7ab8f5;}
+    body.dark .badge-amarelo{background:#3d2e00;color:#f0c040;}
+    body.dark .badge-cinza{background:#2a2a3a;color:#aaaacc;}
+    body.dark .badge-laranja{background:#2d1f0a;color:#fcd34d;}
+    .meta-data{font-size:0.76rem;color:var(--texto2);display:flex;align-items:center;gap:4px;}
+
+    /* EMPTY */
+    .empty-state{text-align:center;padding:64px 24px;background:var(--bg2);border-radius:var(--radius);border:1.5px dashed var(--borda);}
+    .empty-ic{width:80px;height:80px;border-radius:50%;background:var(--azul-light);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 20px;}
+    .empty-state h3{font-size:1.1rem;font-weight:800;margin-bottom:8px;}
+    .empty-state p{font-size:0.88rem;color:var(--texto2);line-height:1.6;max-width:340px;margin:0 auto 24px;}
+
+    /* SUGESTÃO QUANDO SEM QUERY */
+    .inicio-pesquisa{text-align:center;padding:52px 24px;}
+    .inicio-ic{width:90px;height:90px;border-radius:24px;background:var(--azul-light);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 20px;}
+    .inicio-pesquisa h2{font-size:1.4rem;font-weight:800;margin-bottom:10px;}
+    .inicio-pesquisa p{font-size:0.92rem;color:var(--texto2);margin-bottom:28px;line-height:1.7;}
+    .cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;max-width:680px;margin:0 auto;}
+    .cat-card{background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:16px;text-align:center;cursor:pointer;transition:var(--trans);}
+    .cat-card:hover{border-color:var(--azul);transform:translateY(-2px);box-shadow:0 6px 18px var(--sombra);}
+    .cat-card i{font-size:1.5rem;margin-bottom:8px;display:block;}
+    .cat-card span{font-size:0.84rem;font-weight:700;}
+
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--azul);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:900px){.h-nav{display:none;}}
+    @media(max-width:640px){.result-card{flex-direction:column;}.result-topo{width:100%;}.busca-principal{flex-direction:column;}.hero-pesquisa h1{font-size:1.5rem;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+
+<style id="hmz-standard-back-style">
+/* HMZ: botão Voltar padrão — mesmo design do botão do header dos dashboards */
+.hmz-back-page{background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28);transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+@media print{.hmz-back-page{display:none!important;}}
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <nav class="h-nav">
+    <a href="index.html" class="nav-link">Início</a>
+    <a href="explorar.html" class="nav-link">Oportunidades</a>
+    <a href="empregos.html" class="nav-link">Emprego</a>
+    <a href="orientacao.html" class="nav-link">Orientação</a>
+    <a href="sobre.html" class="nav-link">Sobre</a>
+  </nav>
+  <div class="h-dir">
+    <a href="escolha-conta.html" class="btn-h btn-h-outline"><i class="fas fa-user"></i> Entrar</a>
+    <button class="btn-burger" onclick="location.href='index.html'" aria-label="Início"><i class="fas fa-home"></i></button>
+  <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero-pesquisa">
+  <h1>Pesquisa <span>Avançada</span></h1>
+  <p>Pesquisa em todas as oportunidades e vagas de emprego do HorizonteMZ num só lugar.</p>
+  <div class="busca-principal">
+    <div class="busca-input-wrap">
+      <i class="fas fa-search"></i>
+      <input type="text" id="busca-txt" placeholder="Pesquisar oportunidades, vagas, empresas..." onkeypress="if(event.key==='Enter')pesquisar()" autofocus/>
+    </div>
+    <button class="btn-buscar" onclick="pesquisar()"><i class="fas fa-search"></i> Pesquisar</button>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tipo-tabs">
+  <div class="tabs-bar">
+    <button class="tab-btn ativo" onclick="mudarTab(this,'todos')" id="tab-todos">
+      <i class="fas fa-th"></i> Todos <span class="tab-count" id="tc-todos">0</span>
+    </button>
+    <button class="tab-btn" onclick="mudarTab(this,'oportunidades')" id="tab-oportunidades">
+      <i class="fas fa-graduation-cap"></i> Oportunidades <span class="tab-count" id="tc-ops">0</span>
+    </button>
+    <button class="tab-btn" onclick="mudarTab(this,'vagas')" id="tab-vagas">
+      <i class="fas fa-briefcase"></i> Vagas de Emprego <span class="tab-count" id="tc-vagas">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+  <!-- SUGESTÕES (visível antes de pesquisar) -->
+  <div id="sugestoes-recentes" class="sugestoes-wrap">
+    <div class="sugestoes-titulo"><i class="fas fa-history"></i> Pesquisas populares</div>
+    <div class="sugestoes-chips">
+      <span class="sug-chip" onclick="pesquisarTermo('Bolsas')"><i class="fas fa-graduation-cap"></i> Bolsas</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Tecnologia')"><i class="fas fa-laptop-code"></i> Tecnologia</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Saúde')"><i class="fas fa-heartbeat"></i> Saúde</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Estágio')"><i class="fas fa-building"></i> Estágio</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Maputo')"><i class="fas fa-map-marker-alt"></i> Maputo</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Engenharia')"><i class="fas fa-cog"></i> Engenharia</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Voluntariado')"><i class="fas fa-hands-helping"></i> Voluntariado</span>
+      <span class="sug-chip" onclick="pesquisarTermo('Remoto')"><i class="fas fa-laptop-house"></i> Remoto</span>
+    </div>
+  </div>
+
+  <!-- FILTROS RÁPIDOS (visível após pesquisar) -->
+  <div id="filtros-rapidos" class="filtros-rapidos" style="display:none;">
+    <select class="filtro-sel" id="filtro-prov" onchange="renderizar()">
+      <option value="">Todas as províncias</option>
+      <option>Maputo Cidade</option><option>Nampula</option><option>Sofala</option>
+      <option>Gaza</option><option>Inhambane</option><option>Zambézia</option>
+      <option>Tete</option><option>Manica</option><option>Cabo Delgado</option><option>Niassa</option>
+    </select>
+    <select class="sort-sel" id="sort-sel" onchange="renderizar()">
+      <option value="recente">Mais recentes</option>
+      <option value="prazo">Prazo a expirar</option>
+      <option value="az">A → Z</option>
+    </select>
+    <div class="res-info">A mostrar <strong id="res-count">0</strong> resultados para <strong id="res-query" style="color:var(--azul);"></strong></div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div id="resultados-wrap">
+    <!-- Estado inicial -->
+    <div id="estado-inicial" class="inicio-pesquisa">
+      <div class="inicio-ic"><i class="fas fa-search"></i></div>
+      <h2>O que procuras hoje?</h2>
+      <p>Usa a barra de pesquisa acima para encontrar oportunidades de aprendizagem ou vagas de emprego em Moçambique.</p>
+      <div class="cats-grid">
+        <div class="cat-card" onclick="pesquisarTermo('Bolsas')"><i class="fas fa-graduation-cap" style="color:#0057C2;"></i><span>Bolsas de Estudo</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Cursos')"><i class="fas fa-book-open" style="color:#1DB954;"></i><span>Cursos</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Estágio')"><i class="fas fa-building" style="color:#F59E0B;"></i><span>Estágios</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Emprego')"><i class="fas fa-briefcase" style="color:#D97706;"></i><span>Emprego</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Workshop')"><i class="fas fa-chalkboard-teacher" style="color:#7C3AED;"></i><span>Workshops</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Voluntariado')"><i class="fas fa-hands-helping" style="color:#1DB954;"></i><span>Voluntariado</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Concurso')"><i class="fas fa-trophy" style="color:#F59E0B;"></i><span>Concursos</span></div>
+        <div class="cat-card" onclick="pesquisarTermo('Remoto')"><i class="fas fa-laptop-house" style="color:#0057C2;"></i><span>Trabalho Remoto</span></div>
+      </div>
+    </div>
+    <div id="lista-resultados" style="display:none;"></div>
+  </div>
+</div>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026 — Moçambique</footer>
+<div id="toast-container" aria-live="polite"></div>
+
+<script>
+  const KEYS={tema:'hmz_tema',oportunidades:'hmz_oportunidades',vagas:'hmz_vagas'};
+  let queryAtual='';let tabAtual='todos';
+  let todosResultados=[];let resultadosFiltrados=[];
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function truncar(txt,max){return txt&&txt.length>max?txt.substring(0,max)+'...':txt||'';}
+  function diasAte(iso){if(!iso)return null;return Math.ceil((new Date(iso)-new Date())/(1000*60*60*24));}
+
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  /* DADOS EXEMPLO */
+  const EXEMPLOS_OPS=[];
+  const EXEMPLOS_VAGAS=[];
+
+  function carregarTodos(){
+    const ops=lsGet(KEYS.oportunidades,[]).filter(o=>o.aprovada&&!o.pausada).map(o=>({...o,tipo_res:'op'}));
+    const vagas=lsGet(KEYS.vagas,[]).filter(v=>v.aprovada&&!v.fechada&&!v.pausada).map(v=>({...v,tipo_res:'vaga'}));
+    const baseOps=ops.length?ops:EXEMPLOS_OPS;
+    const baseVagas=vagas.length?vagas:EXEMPLOS_VAGAS;
+    todosResultados=[...baseOps,...baseVagas];
+  }
+
+  function pesquisarTermo(termo){document.getElementById('busca-txt').value=termo;queryAtual=termo;executarPesquisa();}
+  function pesquisar(){queryAtual=document.getElementById('busca-txt').value.trim();executarPesquisa();}
+
+  function executarPesquisa(){
+    if(!queryAtual){return;}
+    document.getElementById('estado-inicial').style.display='none';
+    document.getElementById('lista-resultados').style.display='block';
+    document.getElementById('filtros-rapidos').style.display='flex';
+    document.getElementById('sugestoes-recentes').style.display='none';
+    document.getElementById('res-query').textContent='"'+queryAtual+'"';
+    // Atualizar URL
+    const url=new URL(window.location);url.searchParams.set('q',queryAtual);window.history.replaceState({},'',url);
+    renderizar();
+  }
+
+  function mudarTab(btn,tipo){
+    tabAtual=tipo;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    renderizar();
+  }
+
+  function renderizar(){
+    const q=queryAtual.toLowerCase();
+    const prov=document.getElementById('filtro-prov')?.value||'';
+    const sort=document.getElementById('sort-sel')?.value||'recente';
+
+    let ops=todosResultados.filter(r=>r.tipo_res==='op').filter(r=>{
+      if(!q)return true;
+      return(r.titulo||'').toLowerCase().includes(q)||(r.descricao||'').toLowerCase().includes(q)||(r.instituicao||'').toLowerCase().includes(q)||(r.categoria||'').toLowerCase().includes(q);
+    });
+    let vagas=todosResultados.filter(r=>r.tipo_res==='vaga').filter(r=>{
+      if(!q)return true;
+      return(r.titulo||'').toLowerCase().includes(q)||(r.descricao||'').toLowerCase().includes(q)||(r.empresa||'').toLowerCase().includes(q)||(r.area||'').toLowerCase().includes(q)||(r.tipo||'').toLowerCase().includes(q);
+    });
+
+    if(prov){ops=ops.filter(r=>r.provincia===prov||!r.provincia);vagas=vagas.filter(r=>r.provincia===prov||!r.provincia);}
+
+    // Ordenar
+    const sortFn=(a,b)=>{
+      if(sort==='recente')return new Date(b.criadoEm||0)-new Date(a.criadoEm||0);
+      if(sort==='prazo')return(diasAte(a.prazo)||9999)-(diasAte(b.prazo)||9999);
+      if(sort==='az')return(a.titulo||'').localeCompare(b.titulo||'');
+      return 0;
+    };
+    ops.sort(sortFn);vagas.sort(sortFn);
+
+    // Tab counts
+    document.getElementById('tc-todos').textContent=ops.length+vagas.length;
+    document.getElementById('tc-ops').textContent=ops.length;
+    document.getElementById('tc-vagas').textContent=vagas.length;
+
+    let lista=[];
+    if(tabAtual==='todos')lista=[...ops,...vagas].sort(sortFn);
+    else if(tabAtual==='oportunidades')lista=ops;
+    else lista=vagas;
+
+    document.getElementById('res-count').textContent=lista.length;
+    resultadosFiltrados=lista;
+
+    const cont=document.getElementById('lista-resultados');
+    if(!lista.length){
+      cont.innerHTML=`<div class="empty-state"><div class="empty-ic"><i class="fas fa-search"></i></div><h3>Sem resultados para "${queryAtual}"</h3><p>Tenta pesquisar com outras palavras ou explora as categorias disponíveis.</p><a href="explorar.html" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:var(--azul);color:#fff;border-radius:var(--radius-sm);font-weight:700;font-size:0.88rem;"><i class="fas fa-th"></i> Ver todas as oportunidades</a></div>`;
+      return;
+    }
+
+    const vagaTipoBadge={'Emprego a tempo inteiro':'badge-azul','Estágio profissional':'badge-verde','Trabalho remoto':'badge-cinza','Freelance / Projecto':'badge-cinza'};
+
+    cont.innerHTML=`<div class="resultados-lista">${lista.map(r=>{
+      const isOp=r.tipo_res==='op';
+      const dias=diasAte(r.prazo);
+      const prazoLabel=dias===null?'':dias<0?`<span style="color:var(--vermelho);font-size:0.75rem;">Expirado</span>`:dias<=7?`<span style="color:var(--vermelho);font-size:0.75rem;font-weight:700;"><i class="fas fa-fire"></i> ${dias}d</span>`:`<span class="meta-data"><i class="fas fa-calendar-alt"></i>${new Date(r.prazo).toLocaleDateString('pt-MZ',{day:'2-digit',month:'short'})}</span>`;
+      const link=isOp?`detalhe.html?id=${r.id}`:`detalhe-vaga.html?id=${r.id}`;
+      return`<div class="result-card" onclick="location.href='${link}'" role="button" tabindex="0">
+        <div class="result-topo ${isOp?'op':'vaga'}">
+          <div>
+            <small><i class="fas fa-${isOp?'university':'building'}"></i> ${truncar(isOp?r.instituicao||'':r.empresa||'',22)}</small>
+            <h3>${truncar(r.titulo,55)}</h3>
+          </div>
+          <span class="result-tipo-badge"><i class="fas fa-${isOp?'graduation-cap':'briefcase'}"></i> ${isOp?'Oportunidade':'Vaga de Emprego'}</span>
+        </div>
+        <div class="result-corpo">
+          <p>${truncar(r.descricao,100)}</p>
+          <div class="result-meta">
+            ${isOp?`<span class="badge ${catBadge[r.categoria]||'badge-cinza'}">${r.categoria||'—'}</span>`:`<span class="badge ${vagaTipoBadge[r.tipo]||'badge-cinza'}">${truncar(r.tipo||'—',20)}</span>`}
+            ${isOp&&r.tipo?`<span class="badge badge-verde">${r.tipo}</span>`:''}
+            ${!isOp&&r.salario?`<span style="font-size:0.73rem;color:var(--verde);font-weight:700;display:flex;align-items:center;gap:3px;"><i class="fas fa-money-bill-wave"></i>${truncar(r.salario,18)}</span>`:''}
+            ${r.provincia?`<span class="meta-data"><i class="fas fa-map-marker-alt"></i>${r.provincia}</span>`:''}
+            ${prazoLabel}
+          </div>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    carregarTodos();
+    const params=new URLSearchParams(window.location.search);
+    const q=params.get('q');
+    if(q){document.getElementById('busca-txt').value=q;queryAtual=q;executarPesquisa();}
+  });
+</script>
+</body>
+</html>

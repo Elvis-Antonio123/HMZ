@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Perfil público | HorizonteMZ</title>
+<meta name="description" content="Perfil público de um utilizador do HorizonteMZ."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--verde:#16A34A;--verde-light:#F0FFF4;--amarelo:#FFBE00;--roxo:#7C3AED;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(0,87,194,.08);--sombra-hover:rgba(0,87,194,.16);--header-h:65px;--radius:14px;--radius-sm:8px;--trans:all .25s ease;}
+body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--verde:#22C55E;--verde-light:#0f2d1a;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,.25);--sombra-hover:rgba(0,0,0,.40)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{overflow-x:hidden}body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background .25s,color .25s;overflow-x:hidden}a{text-decoration:none;color:inherit}
+header{background:var(--azul);height:var(--header-h);padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.20)}
+.logo{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-.5px}.logo span{color:var(--amarelo)}.h-dir{display:flex;align-items:center;gap:8px}.btn-dark{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:#fff;padding:7px 9px;border-radius:var(--radius-sm);cursor:pointer;font-size:1rem}.btn-dark:hover{background:rgba(255,255,255,.22)}.btn-voltar{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.20);color:#fff;padding:7px 13px;border-radius:var(--radius-sm);cursor:pointer;font:600 .82rem 'Inter',sans-serif;display:inline-flex;align-items:center;gap:6px}.btn-voltar:hover{background:rgba(255,255,255,.28)}
+.breadcrumb{background:var(--bg2);border-bottom:1px solid var(--borda)}.breadcrumb-inner{max-width:1240px;margin:auto;padding:11px 28px;display:flex;align-items:center;gap:8px;color:var(--texto2);font-size:.78rem}.breadcrumb-inner a:hover{color:var(--azul)}
+.main-layout{max-width:1240px;margin:24px auto 50px;padding:0 28px;display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}.main-col,.sidebar-perfil{min-width:0}
+.perfil-hero{background:linear-gradient(135deg,var(--azul-dark),var(--azul));border-radius:var(--radius);color:#fff;overflow:hidden;box-shadow:0 10px 28px rgba(0,87,194,.18);position:relative}.perfil-hero::after{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.07);right:-90px;top:-110px}.hero-inner{position:relative;z-index:1;padding:28px;display:flex;align-items:center;gap:20px;min-width:0}.hero-avatar{width:88px;height:88px;border-radius:18px;background:rgba(255,255,255,.16);border:3px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 88px;font-size:1.8rem;font-weight:800}.hero-avatar img{width:100%;height:100%;object-fit:cover}.hero-info{min-width:0;flex:1}.hero-info h1{font-size:clamp(1.35rem,2.5vw,1.8rem);font-weight:800;line-height:1.2;overflow-wrap:anywhere;margin-bottom:8px}.hero-sub{font-size:.86rem;opacity:.9;line-height:1.55;margin-bottom:10px;overflow-wrap:anywhere}.hero-badges{display:flex;flex-wrap:wrap;gap:7px}.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);padding:6px 9px;border-radius:999px;font-size:.74rem;font-weight:600;max-width:100%;overflow-wrap:anywhere}.hero-action{flex-shrink:0}
+.stats-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius);margin-top:16px;overflow:hidden}.stat-item{text-align:center;padding:17px 10px;border-right:1px solid var(--borda)}.stat-item:last-child{border-right:0}.stat-item-num{font-size:1.35rem;font-weight:800;color:var(--azul);line-height:1.1}.stat-item-lbl{font-size:.72rem;color:var(--texto2);margin-top:5px}
+.content-card,.info-card{background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius);padding:20px;box-shadow:0 6px 20px var(--sombra);margin-top:18px;min-width:0}.sec-titulo{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:15px}.sec-titulo i{color:var(--azul);width:18px;text-align:center}.desc-texto{color:var(--texto2);font-size:.87rem;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{display:inline-flex;align-items:center;gap:6px;background:var(--azul-light);color:var(--azul);border-radius:999px;padding:7px 11px;font-size:.78rem;font-weight:700;max-width:100%;overflow-wrap:anywhere}.empty{color:var(--texto2);font-size:.84rem;line-height:1.6}.info-card h3{font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:14px}.info-card h3 i{color:var(--azul)}.info-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--borda);min-width:0}.info-row:last-child{border-bottom:0;padding-bottom:0}.info-ic{width:30px;height:30px;border-radius:8px;background:var(--azul-light);color:var(--azul);display:flex;align-items:center;justify-content:center;flex:0 0 30px;font-size:.78rem}.info-text{min-width:0}.info-text h4{font-size:.73rem;color:var(--texto2);font-weight:600;margin-bottom:2px}.info-text p,.info-text a{font-size:.82rem;font-weight:700;overflow-wrap:anywhere;word-break:break-word}.info-text a:hover{color:var(--azul)}.notice{background:var(--bg2);border:1px dashed var(--borda);border-radius:var(--radius);padding:14px 15px;color:var(--texto2);font-size:.77rem;line-height:1.55;margin-top:18px}.notice i{color:var(--verde);margin-right:6px}.btn-public{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--azul);color:#fff;border:0;border-radius:var(--radius-sm);padding:10px 14px;font:700 .82rem 'Inter',sans-serif;cursor:pointer;transition:var(--trans)}.btn-public:hover{background:var(--azul-dark);transform:translateY(-1px)}
+.notfound{max-width:620px;margin:70px auto;text-align:center;background:var(--bg2);padding:38px;border-radius:var(--radius);border:1.5px solid var(--borda);box-shadow:0 8px 25px var(--sombra)}.notfound i{font-size:2rem;color:var(--azul);margin-bottom:15px}.notfound h2{font-size:1.2rem}.notfound p{color:var(--texto2);margin-top:9px;line-height:1.6}
+@media(max-width:900px){.main-layout{grid-template-columns:minmax(0,1fr);padding:0 20px}.sidebar-perfil{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}.sidebar-perfil .info-card,.sidebar-perfil .notice{margin-top:14px}.breadcrumb-inner{padding:11px 20px}}
+@media(max-width:620px){header{padding:0 14px}.breadcrumb-inner{padding:10px 14px;font-size:.72rem}.main-layout{margin-top:16px;padding:0 14px}.hero-inner{padding:22px;align-items:flex-start}.hero-avatar{width:72px;height:72px;flex-basis:72px;border-radius:15px}.hero-info h1{font-size:1.28rem}.hero-badge{font-size:.7rem}.stats-row{grid-template-columns:1fr}.stat-item{border-right:0;border-bottom:1px solid var(--borda)}.stat-item:last-child{border-bottom:0}.sidebar-perfil{display:block}.content-card,.info-card{padding:17px}.btn-voltar{padding:7px 10px;font-size:.78rem}.logo{font-size:1.15rem}}
+@media(max-width:430px){.hero-inner{flex-direction:column}.hero-action{width:100%}.hero-action .btn-public{width:100%}.h-dir{gap:5px}}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <button class="hmz-back-page" type="button" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+<div class="breadcrumb"><div class="breadcrumb-inner"><a href="index.html">Início</a><i class="fas fa-chevron-right"></i><span>Perfil público</span></div></div>
+<main class="main-layout" id="app"></main>
+<script>
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch(e){return d}}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function iniciais(n){if(!n)return'?';const p=String(n).trim().split(/\s+/);return((p[0]?.[0]||'')+(p.length>1?p[p.length-1][0]:'')).toUpperCase()}
+function toggleDark(){const dark=!document.body.classList.contains('dark');localStorage.setItem('hmz_tema',JSON.stringify(dark?'dark':'light'));applyTheme(dark)}
+function applyTheme(dark){document.body.classList.toggle('dark',dark);const i=document.getElementById('dark-icon');if(i)i.className=dark?'fas fa-sun':'fas fa-moon'}
+function chips(arr,icon='fa-circle'){arr=Array.isArray(arr)?arr.filter(Boolean):[];return arr.length?`<div class="chips">${arr.map(x=>`<span class="chip"><i class="fas ${icon}"></i>${esc(x)}</span>`).join('')}</div>`:'<p class="empty">Não informado.</p>'}
+function info(icon,label,value,link=false){if(!value)return'';const val=link?`<a href="${esc(value)}" target="_blank" rel="noopener">${esc(value)}</a>`:`<p>${esc(value)}</p>`;return`<div class="info-row"><div class="info-ic"><i class="fas ${icon}"></i></div><div class="info-text"><h4>${label}</h4>${val}</div></div>`}
+(function(){
+  applyTheme(lsGet('hmz_tema','')==='dark');
+  const id=new URLSearchParams(location.search).get('id');
+  const users=lsGet('hmz_utilizadores',[]);const u=id?users.find(x=>String(x.id)===String(id)):null;const app=document.getElementById('app');
+  if(!id||!u||u.desativada){app.innerHTML='<div class="notfound"><i class="fas fa-user-slash"></i><h2>Perfil não disponível</h2><p>Este perfil não existe ou não está disponível publicamente.</p></div>';return}
+  const p=u.privacidade||{};const sessUtil=lsGet('hmz_sessao_utilizador',null);const sessEmp=lsGet('hmz_sessao_empresa',null);const sessInst=lsGet('hmz_sessao_instituicao',null);const isOwner=sessUtil&&String(sessUtil.id)===String(id);
+  if(p.publico===false&&!isOwner){app.innerHTML='<div class="notfound"><i class="fas fa-user-lock"></i><h2>Perfil não disponível publicamente</h2><p>O utilizador restringiu a visibilidade do seu perfil.</p></div>';return}
+  if(p.empresas===false&&sessEmp&&!isOwner){app.innerHTML='<div class="notfound"><i class="fas fa-user-lock"></i><h2>Perfil indisponível para recrutadores</h2><p>Este utilizador não autorizou a visualização do perfil por empresas.</p></div>';return}
+  if(p.instituicoes===false&&sessInst&&!isOwner){app.innerHTML='<div class="notfound"><i class="fas fa-user-lock"></i><h2>Perfil indisponível para instituições</h2><p>Este utilizador não autorizou a visualização do perfil por instituições.</p></div>';return}
+  const cv=lsGet('hmz_cv_data:'+u.id,null)||{};
+  const mostrar={sobre:p.ocultarSobre!==true,edu:p.ocultarEducacao!==true,exp:p.ocultarExperiencia!==true,comp:p.ocultarCompetencias!==true,int:p.ocultarInteresses!==true,idiomas:p.ocultarIdiomas!==true,escolaridade:p.ocultarEscolaridade!==true,areaestudo:p.ocultarAreaEstudo!==true,instituicao:p.ocultarInstituicao!==true,email:p.ocultarEmail!==true,tel:p.ocultarTel!==true};
+  const bio=u.bio||u.objectivo||cv.perfil||'';
+  const experiencias=Array.isArray(cv.experiencias)&&mostrar.exp?cv.experiencias:[];
+  const educacoes=Array.isArray(cv.educacoes)&&mostrar.edu?cv.educacoes:[];
+  const competencias=Array.isArray(cv.competencias)&&mostrar.comp?cv.competencias:[];
+  const interesses=mostrar.int?(u.interesses||[]):[];
+  const idiomas=mostrar.idiomas?(u.idiomas||[]):[];
+  const foto=u.foto?`<img src="${esc(u.foto)}" alt="Foto de ${esc(u.nome||'Utilizador')}">`:esc(iniciais(u.nome));
+  const email=mostrar.email?u.email:''; const tel=mostrar.tel?u.tel:'';
+  document.title=`Perfil de ${u.nome||'Utilizador'} | HorizonteMZ`;
+  const membro=u.criadoEm?new Date(u.criadoEm).toLocaleDateString('pt-MZ',{month:'long',year:'numeric'}):'';
+  app.innerHTML=`
+    <div class="main-col">
+      <section class="perfil-hero"><div class="hero-inner"><div class="hero-avatar">${foto}</div><div class="hero-info"><h1>${esc(u.nome||'Utilizador')}</h1>${mostrar.sobre&&u.objectivo?`<div class="hero-sub">${esc(u.objectivo)}</div>`:''}<div class="hero-badges">${u.provincia?`<span class="hero-badge"><i class="fas fa-map-marker-alt"></i>${esc(u.provincia)}</span>`:''}${mostrar.escolaridade&&u.nivelEscolaridade?`<span class="hero-badge"><i class="fas fa-graduation-cap"></i>${esc(u.nivelEscolaridade)}</span>`:''}${mostrar.areaestudo&&u.areaEstudo?`<span class="hero-badge"><i class="fas fa-book-open"></i>${esc(u.areaEstudo)}</span>`:''}${membro?`<span class="hero-badge"><i class="fas fa-calendar"></i>Membro desde ${esc(membro)}</span>`:''}</div></div></div></section>
+      <div class="stats-row">${mostrar.int?`<div class="stat-item"><div class="stat-item-num">${interesses.length}</div><div class="stat-item-lbl">Áreas de interesse</div></div>`:''}${mostrar.idiomas?`<div class="stat-item"><div class="stat-item-num">${idiomas.length}</div><div class="stat-item-lbl">Idiomas</div></div>`:''}${mostrar.comp?`<div class="stat-item"><div class="stat-item-num">${competencias.length}</div><div class="stat-item-lbl">Competências</div></div>`:''}</div>
+      <section class="content-card"><div class="sec-titulo"><i class="fas fa-user"></i> Sobre ${esc((u.nome||'o utilizador').split(' ')[0])}</div>${mostrar.sobre?`<div class="desc-texto">${bio?esc(bio):'Este utilizador ainda não adicionou uma apresentação pública.'}</div>`:''}</section>
+      ${mostrar.edu&&educacoes.length?`<section class="content-card"><div class="sec-titulo"><i class="fas fa-graduation-cap"></i> Formação académica</div><div class="desc-texto">${educacoes.map(e=>`<div style="margin-bottom:13px"><strong>${esc(e.curso||e.titulo||e.nome||'Formação')}</strong>${e.instituicao?`<div style="color:var(--texto2);font-size:.82rem;margin-top:3px">${esc(e.instituicao)}</div>`:''}${e.ano?`<div style="color:var(--texto2);font-size:.76rem;margin-top:2px">${esc(e.ano)}</div>`:''}</div>`).join('')}</div></section>`:''}
+      ${mostrar.exp&&experiencias.length?`<section class="content-card"><div class="sec-titulo"><i class="fas fa-briefcase"></i> Experiência</div><div class="desc-texto">${experiencias.map(e=>`<div style="margin-bottom:13px"><strong>${esc(e.cargo||e.titulo||'Experiência')}</strong>${e.empresa?`<div style="color:var(--texto2);font-size:.82rem;margin-top:3px">${esc(e.empresa)}</div>`:''}${e.descricao?`<div style="margin-top:5px">${esc(e.descricao)}</div>`:''}</div>`).join('')}</div></section>`:''}
+      ${mostrar.int?`<section class="content-card"><div class="sec-titulo"><i class="fas fa-heart"></i> Áreas de interesse</div>${chips(interesses,'fa-circle-check')}</section>`:''}
+      ${mostrar.idiomas?`<section class="content-card"><div class="sec-titulo"><i class="fas fa-language"></i> Idiomas</div>${chips(idiomas,'fa-language')}</section>`:''}
+    </div>
+    <aside class="sidebar-perfil">
+      ${isOwner?`<button class="btn-public" onclick="location.href='perfil-utilizador.html'"><i class="fas fa-pen"></i> Editar meu perfil</button>`:''}
+      <div class="info-card"><h3><i class="fas fa-address-card"></i> Informações</h3>${info('fa-location-dot','Localização',u.provincia)}${mostrar.escolaridade?info('fa-graduation-cap','Escolaridade',u.nivelEscolaridade):''}${mostrar.areaestudo?info('fa-book','Área de estudo',u.areaEstudo):''}${mostrar.instituicao?info('fa-building-columns','Instituição de ensino',u.instituicaoEnsino):''}${info('fa-envelope','E-mail',email)}${info('fa-phone','Telefone',tel)}</div>
+      ${mostrar.comp&&competencias.length?`<div class="info-card"><h3><i class="fas fa-star"></i> Competências</h3>${chips(competencias,'fa-check')}</div>`:''}
+      <div class="notice"><i class="fas fa-shield-halved"></i> Este é o perfil público do utilizador. Apenas informações permitidas pelas definições de privacidade são apresentadas.</div>
+    </aside>`;
+})();
+</script>
+</body>
+</html>

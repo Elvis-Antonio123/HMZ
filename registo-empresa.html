@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registar Empresa | HorizonteMZ</title>
+  <meta name="description" content="Regista a tua empresa no HorizonteMZ e começa a publicar vagas de emprego para talentos moçambicanos."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;
+      --amarelo:#FFBE00;
+      --laranja:#D97706;--laranja-dark:#92400E;--laranja-light:#FEF3C7;
+      --verde:#1DB954;--vermelho:#E53935;
+      --bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;
+      --borda:#DDE3F0;--sombra:rgba(217,119,6,0.10);--sombra-hover:rgba(217,119,6,0.22);
+      --radius:14px;--radius-sm:8px;--trans:all 0.25s ease;
+    }
+    body.dark {
+      --azul:#4A9EFF;--azul-light:#0D1B3E;
+      --laranja:#F59E0B;--laranja-dark:#78350F;--laranja-light:#2d1f0a;
+      --bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;
+      --borda:#253050;--sombra:rgba(0,0,0,0.30);--sombra-hover:rgba(0,0,0,0.50);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{background:linear-gradient(135deg,#92400E,#D97706);height:65px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.22);position:sticky;top:0;z-index:100;}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:#FEF3C7;}
+    .h-right{display:flex;align-items:center;gap:10px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1.05rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-voltar{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.90);font-size:0.87rem;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.35);transition:var(--trans);}
+    .btn-voltar:hover{background:rgba(255,255,255,0.18);color:#fff;}
+
+    /* PROGRESSO */
+    .progresso-bar{background:var(--bg2);border-bottom:1px solid var(--borda);padding:16px 28px;}
+    .progresso-inner{max-width:740px;margin:0 auto;display:flex;align-items:center;}
+    .passo{display:flex;flex-direction:column;align-items:center;flex:1;position:relative;}
+    .passo:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 16px);width:calc(100% - 32px);height:2px;background:var(--borda);transition:var(--trans);}
+    .passo.concluido:not(:last-child)::after{background:var(--laranja);}
+    .passo-circulo{width:32px;height:32px;border-radius:50%;background:var(--borda);color:var(--texto2);display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:700;transition:var(--trans);position:relative;z-index:1;}
+    .passo.ativo .passo-circulo{background:var(--laranja);color:#fff;box-shadow:0 0 0 4px rgba(217,119,6,0.18);}
+    .passo.concluido .passo-circulo{background:var(--laranja);color:#fff;}
+    .passo-label{font-size:0.72rem;color:var(--texto2);margin-top:6px;font-weight:600;white-space:nowrap;}
+    .passo.ativo .passo-label,.passo.concluido .passo-label{color:var(--laranja);}
+
+    /* MAIN */
+    main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:44px 24px 60px;}
+    .form-wrap{width:100%;max-width:740px;}
+    .form-topo{text-align:center;margin-bottom:36px;animation:fadeUp 0.4s ease both;}
+    .badge-tipo{display:inline-flex;align-items:center;gap:6px;background:var(--laranja-light);color:var(--laranja);border:1px solid rgba(217,119,6,0.25);padding:5px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;margin-bottom:14px;}
+    .form-topo h1{font-size:1.85rem;font-weight:800;color:var(--laranja);letter-spacing:-0.4px;margin-bottom:8px;}
+    .form-topo p{font-size:0.92rem;color:var(--texto2);line-height:1.6;}
+    .form-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:36px;box-shadow:0 4px 24px var(--sombra);animation:fadeUp 0.4s 0.1s ease both;}
+    .sec-form{display:none;}.sec-form.ativa{display:block;}
+    .sec-titulo{font-size:1.05rem;font-weight:800;color:var(--laranja);margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+    .sec-sub{font-size:0.85rem;color:var(--texto2);margin-bottom:28px;line-height:1.5;}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+
+    /* CAMPOS */
+    .campo{margin-bottom:20px;}
+    .campo label{display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .campo label span.obrig{color:var(--vermelho);margin-left:2px;}
+    .campo label span.opc{color:var(--texto2);font-weight:400;font-size:0.78rem;margin-left:4px;}
+    .input-wrap{position:relative;}
+    .input-wrap i.ic-esq{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.92rem;pointer-events:none;transition:var(--trans);}
+    .input-wrap.textarea-wrap i.ic-esq{top:14px;transform:none;}
+    .input-wrap:focus-within i.ic-esq{color:var(--laranja);}
+    .input-wrap input,.input-wrap select,.input-wrap textarea{width:100%;padding:12px 14px 12px 42px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.93rem;background:var(--bg);color:var(--texto);font-family:inherit;transition:var(--trans);outline:none;}
+    .input-wrap select{cursor:pointer;}
+    .input-wrap textarea{resize:vertical;min-height:100px;padding-top:10px;line-height:1.55;}
+    .input-wrap input:focus,.input-wrap select:focus,.input-wrap textarea:focus{border-color:var(--laranja);box-shadow:0 0 0 3px rgba(217,119,6,0.12);background:var(--bg2);}
+    .btn-olho{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--texto2);cursor:pointer;font-size:0.95rem;padding:4px;transition:var(--trans);}
+    .btn-olho:hover{color:var(--laranja);}
+    .campo.erro .input-wrap input,.campo.erro .input-wrap select,.campo.erro .input-wrap textarea{border-color:var(--vermelho);box-shadow:0 0 0 3px rgba(229,57,53,0.10);}
+    .campo.valido .input-wrap input,.campo.valido .input-wrap select,.campo.valido .input-wrap textarea{border-color:var(--verde);}
+    .msg-erro{display:none;font-size:0.79rem;color:var(--vermelho);margin-top:5px;align-items:center;gap:5px;}
+    .campo.erro .msg-erro{display:flex;}
+    .char-count{font-size:0.75rem;color:var(--texto2);text-align:right;margin-top:4px;}
+
+    /* FORÇA SENHA */
+    .forca-wrap{margin-top:8px;}
+    .forca-barras{display:flex;gap:4px;margin-bottom:5px;}
+    .forca-barra{flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);}
+    .forca-barra.fraca{background:#E53935;}.forca-barra.media{background:#FF9800;}.forca-barra.forte{background:#4CAF50;}.forca-barra.muitoforte{background:#1DB954;}
+    .forca-label{font-size:0.77rem;font-weight:700;}
+    .forca-fraca{color:#E53935;}.forca-media{color:#FF9800;}.forca-forte{color:#4CAF50;}.forca-muitoforte{color:#1DB954;}
+
+    /* CHECKBOXES */
+    .check-grupo{display:flex;flex-wrap:wrap;gap:10px;}
+    .check-item{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:8px 14px;cursor:pointer;font-size:0.85rem;transition:var(--trans);user-select:none;}
+    .check-item:hover{border-color:var(--laranja);}
+    .check-item input[type="checkbox"]{accent-color:var(--laranja);width:15px;height:15px;cursor:pointer;}
+    .check-item.selecionado{border-color:var(--laranja);background:var(--laranja-light);color:var(--laranja);font-weight:600;}
+
+    /* AVISO */
+    .aviso-box{background:var(--laranja-light);border:1.5px solid rgba(217,119,6,0.30);border-radius:var(--radius-sm);padding:16px 18px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start;}
+    .aviso-box i{color:var(--laranja);font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+    .aviso-box p{font-size:0.86rem;color:var(--laranja-dark);line-height:1.6;}
+    body.dark .aviso-box{background:rgba(217,119,6,0.10);border-color:rgba(217,119,6,0.25);}
+    body.dark .aviso-box p{color:#fcd34d;}
+
+    /* TERMOS */
+    .termos-label{display:flex;align-items:flex-start;gap:10px;font-size:0.86rem;color:var(--texto2);cursor:pointer;line-height:1.5;}
+    .termos-label input[type="checkbox"]{accent-color:var(--laranja);width:16px;height:16px;margin-top:2px;cursor:pointer;flex-shrink:0;}
+    .termos-label a{color:var(--laranja);font-weight:600;}
+    .termos-label a:hover{text-decoration:underline;}
+
+    /* BOTÕES */
+    .nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid var(--borda);gap:12px;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:var(--radius-sm);font-size:0.93rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);text-decoration:none;}
+    .btn-laranja{background:var(--laranja);color:#fff;flex:1;}
+    .btn-laranja:hover:not(:disabled){background:var(--laranja-dark);transform:translateY(-2px);box-shadow:0 8px 24px var(--sombra-hover);}
+    .btn-laranja:disabled{opacity:0.60;cursor:not-allowed;transform:none;}
+    .btn-outline{background:transparent;border:1.5px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--laranja);color:var(--laranja);}
+    .spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .btn-laranja.loading .spinner{display:block;}.btn-laranja.loading .btn-txt{display:none;}
+
+    /* ALERTA */
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.87rem;margin-bottom:20px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    .alerta.sucesso{background:#F0FFF4;border-color:#C8E6C9;color:#1B5E20;}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    body.dark .alerta.sucesso{background:#1a2d1a;border-color:#225c22;color:#80ff9e;}
+    .alerta.visivel{display:flex;}
+
+    /* SUCESSO */
+    .sucesso-ecrã{display:none;flex-direction:column;align-items:center;text-align:center;padding:20px 0;}
+    .sucesso-ecrã.visivel{display:flex;}
+    .sucesso-ic{width:88px;height:88px;border-radius:50%;background:var(--laranja-light);border:3px solid var(--laranja);display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:var(--laranja);margin-bottom:24px;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
+    @keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .sucesso-ecrã h2{font-size:1.6rem;font-weight:800;color:var(--laranja);margin-bottom:10px;}
+    .sucesso-ecrã p{color:var(--texto2);font-size:0.92rem;line-height:1.65;max-width:400px;margin-bottom:8px;}
+    .pendente-box{background:var(--laranja-light);border:1.5px solid rgba(217,119,6,0.25);border-radius:var(--radius-sm);padding:16px 20px;margin:16px 0 28px;display:flex;gap:12px;align-items:flex-start;text-align:left;max-width:420px;}
+    .pendente-box i{color:var(--laranja);font-size:1.1rem;flex-shrink:0;margin-top:2px;}
+    .pendente-box p{font-size:0.85rem;color:var(--laranja-dark);line-height:1.6;margin:0;}
+    body.dark .pendente-box{background:rgba(217,119,6,0.10);}
+    body.dark .pendente-box p{color:#fcd34d;}
+
+    /* RODAPÉ */
+    .form-rodape{text-align:center;margin-top:24px;font-size:0.86rem;color:var(--texto2);}
+    .form-rodape a{color:var(--laranja);font-weight:700;}
+    .form-rodape a:hover{text-decoration:underline;}
+
+    /* TOAST */
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--laranja);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    .toast.erro{border-left-color:var(--vermelho);}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:640px){.grid-2{grid-template-columns:1fr;}.form-card{padding:24px 18px;}.form-topo h1{font-size:1.5rem;}.passo-label{display:none;}}
+    @media(max-width:420px){main{padding:28px 14px 50px;}}
+  
+    .upload-area{border:2px dashed var(--borda);border-radius:var(--radius-sm);padding:28px 20px;text-align:center;cursor:pointer;transition:var(--trans);background:var(--bg);margin-top:4px;}
+    .upload-area:hover,.upload-area.drag{border-color:var(--laranja);background:rgba(217,119,6,0.06);}
+    .upload-area i{font-size:2rem;color:var(--texto2);margin-bottom:10px;display:block;}
+    .upload-area p{font-size:0.85rem;color:var(--texto2);margin-bottom:4px;}
+    .upload-area small{font-size:0.76rem;color:var(--texto2);opacity:0.7;}
+    .upload-area.tem-ficheiro{border-color:var(--laranja);border-style:solid;}
+    .upload-area.tem-ficheiro i{color:var(--laranja);}
+    .upload-area.tem-ficheiro p{color:var(--laranja);font-weight:700;}
+
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <a href="login-empresa.html" class="btn-voltar"><i class="fas fa-arrow-left"></i> Já tenho conta</a>
+  </div>
+</header>
+
+<!-- PROGRESSO -->
+<div class="progresso-bar">
+  <div class="progresso-inner">
+    <div class="passo ativo" id="p1"><div class="passo-circulo" id="pc1">1</div><div class="passo-label">Dados da empresa</div></div>
+    <div class="passo" id="p2"><div class="passo-circulo" id="pc2">2</div><div class="passo-label">Sobre a empresa</div></div>
+    <div class="passo" id="p3"><div class="passo-circulo" id="pc3">3</div><div class="passo-label">Recrutamento</div></div>
+    <div class="passo" id="p4"><div class="passo-circulo" id="pc4">4</div><div class="passo-label">Segurança</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="form-wrap">
+    <div class="form-topo">
+      <div class="badge-tipo"><i class="fas fa-building"></i> Empresa</div>
+      <h1>Registar Empresa</h1>
+      <p>Regista a tua empresa no HorizonteMZ. Após validação pelo administrador, poderás publicar vagas e encontrar talentos moçambicanos.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="alerta" id="alerta-geral"><i class="fas fa-exclamation-circle"></i><span id="alerta-msg"></span></div>
+
+      <!-- PASSO 1 — Dados da empresa -->
+      <div class="sec-form ativa" id="sec1">
+        <div class="sec-titulo"><i class="fas fa-building"></i> Dados da Empresa</div>
+        <div class="sec-sub">Informação oficial da empresa para verificação pelo administrador do HMZ.</div>
+
+        <!-- Nome -->
+        <div class="campo" id="campo-nome">
+          <label for="nome">Nome da empresa <span class="obrig">*</span></label>
+          <div class="input-wrap"><i class="fas fa-building ic-esq"></i>
+            <input type="text" id="nome" placeholder="Nome oficial da empresa" maxlength="150" autocomplete="organization"/>
+          </div>
+          <div class="msg-erro" id="erro-nome"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nome"></span></div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Sector -->
+          <div class="campo" id="campo-sector">
+            <label for="sector">Sector de actividade <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-industry ic-esq"></i>
+              <select id="sector">
+                <option value="">Selecionar...</option>
+                <option>Tecnologia e Informática</option>
+                <option>Saúde e Medicina</option>
+                <option>Educação e Formação</option>
+                <option>Finanças e Banca</option>
+                <option>Construção e Engenharia</option>
+                <option>Agricultura e Agronegócio</option>
+                <option>Turismo e Hotelaria</option>
+                <option>Transportes e Logística</option>
+                <option>Comércio e Retalho</option>
+                <option>Energia e Recursos Naturais</option>
+                <option>Telecomunicações</option>
+                <option>Media e Comunicação</option>
+                <option>Serviços Jurídicos</option>
+                <option>Consultoria e Gestão</option>
+                <option>ONGs e Sector Social</option>
+                <option>Indústria e Manufactura</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-sector"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-sector"></span></div>
+          </div>
+
+          <!-- Dimensão -->
+          <div class="campo" id="campo-dimensao">
+            <label for="dimensao">Dimensão da empresa <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-users ic-esq"></i>
+              <select id="dimensao">
+                <option value="">Selecionar...</option>
+                <option>Micro (1–9 colaboradores)</option>
+                <option>Pequena (10–49 colaboradores)</option>
+                <option>Média (50–249 colaboradores)</option>
+                <option>Grande (250+ colaboradores)</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-dimensao"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-dimensao"></span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- NUIT -->
+          <div class="campo" id="campo-nuit">
+            <label for="nuit">NUIT <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-file-invoice ic-esq"></i>
+              <input type="text" id="nuit" placeholder="Ex: 123456789" maxlength="20" inputmode="numeric"/>
+            </div>
+            <div class="msg-erro" id="erro-nuit"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nuit"></span></div>
+          </div>
+
+          <!-- Ano de fundação -->
+          <div class="campo">
+            <label for="ano">Ano de fundação <span class="opc">(opcional)</span></label>
+            <div class="input-wrap"><i class="fas fa-calendar ic-esq"></i>
+              <input type="number" id="ano" placeholder="Ex: 2010" min="1900" max="2026" inputmode="numeric"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Província -->
+          <div class="campo" id="campo-prov">
+            <label for="prov">Província (sede) <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-map-marker-alt ic-esq"></i>
+              <select id="prov">
+                <option value="">Selecionar...</option>
+                <option>Cabo Delgado</option><option>Gaza</option><option>Inhambane</option>
+                <option>Manica</option><option>Maputo Cidade</option><option>Maputo Província</option>
+                <option>Nampula</option><option>Niassa</option><option>Sofala</option>
+                <option>Tete</option><option>Zambézia</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-prov"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-prov"></span></div>
+          </div>
+
+          <!-- Cidade -->
+          <div class="campo" id="campo-cidade">
+            <label for="cidade">Cidade / Distrito <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-city ic-esq"></i>
+              <input type="text" id="cidade" placeholder="Ex: Maputo" maxlength="80"/>
+            </div>
+            <div class="msg-erro" id="erro-cidade"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-cidade"></span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Email -->
+          <div class="campo" id="campo-email">
+            <label for="email">E-mail oficial <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-envelope ic-esq"></i>
+              <input type="email" id="email" placeholder="rh@empresa.mz" maxlength="120" autocomplete="email" inputmode="email"/>
+            </div>
+            <div class="msg-erro" id="erro-email"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-email"></span></div>
+          </div>
+
+          <!-- Telefone -->
+          <div class="campo" id="campo-tel">
+            <label for="tel">Telefone <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-phone ic-esq"></i>
+              <input type="tel" id="tel" placeholder="+258 2X XXX XXXX" maxlength="18" inputmode="tel"/>
+            </div>
+            <div class="msg-erro" id="erro-tel"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-tel"></span></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Website -->
+          <div class="campo">
+            <label for="website">Website <span class="opc">(opcional)</span></label>
+            <div class="input-wrap"><i class="fas fa-globe ic-esq"></i>
+              <input type="url" id="website" placeholder="https://www.empresa.mz" maxlength="200"/>
+            </div>
+          </div>
+
+          <!-- Pessoa de contacto RH -->
+          <div class="campo" id="campo-contacto">
+            <label for="contacto">Responsável de RH <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-user-tie ic-esq"></i>
+              <input type="text" id="contacto" placeholder="Nome do responsável" maxlength="100"/>
+            </div>
+            <div class="msg-erro" id="erro-contacto"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-contacto"></span></div>
+          </div>
+        </div>
+
+        <div class="nav-btns">
+          <div></div>
+          <button class="btn btn-laranja" onclick="irPasso(2)">
+            <span class="btn-txt">Continuar <i class="fas fa-arrow-right"></i></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PASSO 2 — Sobre a empresa -->
+      <div class="sec-form" id="sec2">
+        <div class="sec-titulo"><i class="fas fa-info-circle"></i> Sobre a Empresa</div>
+        <div class="sec-sub">Informação que será apresentada publicamente no perfil da tua empresa no HMZ.</div>
+
+        <!-- Descrição -->
+        <div class="campo" id="campo-descricao">
+          <label for="descricao">Descrição da empresa <span class="obrig">*</span></label>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left ic-esq"></i>
+            <textarea id="descricao" placeholder="Descreve a empresa, a sua missão, valores e o que a torna um bom local de trabalho..." maxlength="700" oninput="contarChars(this,'cont-desc',700)"></textarea>
+          </div>
+          <div class="char-count"><span id="cont-desc">0</span>/700</div>
+          <div class="msg-erro" id="erro-descricao"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-descricao"></span></div>
+        </div>
+
+        <!-- Presença geográfica -->
+        <div class="campo">
+          <label for="presenca">Presença geográfica <span class="opc">(opcional)</span></label>
+          <div class="input-wrap"><i class="fas fa-map ic-esq"></i>
+            <select id="presenca">
+              <option value="">Selecionar...</option>
+              <option>Local (uma cidade)</option>
+              <option>Provincial (várias cidades)</option>
+              <option>Nacional (todo o país)</option>
+              <option>Regional (África Austral)</option>
+              <option>Internacional</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Redes sociais -->
+        <div class="grid-2">
+          <div class="campo">
+            <label for="linkedin">LinkedIn <span class="opc">(opcional)</span></label>
+            <div class="input-wrap"><i class="fab fa-linkedin ic-esq"></i>
+              <input type="url" id="linkedin" placeholder="https://linkedin.com/company/..." maxlength="200"/>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="facebook">Facebook <span class="opc">(opcional)</span></label>
+            <div class="input-wrap"><i class="fab fa-facebook ic-esq"></i>
+              <input type="url" id="facebook" placeholder="https://facebook.com/..." maxlength="200"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="irPasso(1)"><i class="fas fa-arrow-left"></i> Anterior</button>
+          <button class="btn btn-laranja" onclick="irPasso(3)"><span class="btn-txt">Continuar <i class="fas fa-arrow-right"></i></span></button>
+        </div>
+      </div>
+
+      <!-- PASSO 3 — Recrutamento -->
+      <div class="sec-form" id="sec3">
+        <div class="sec-titulo"><i class="fas fa-briefcase"></i> Perfil de Recrutamento</div>
+        <div class="sec-sub">Define o tipo de vagas que pretendes publicar e os perfis que procuras.</div>
+
+        <!-- Tipos de vaga -->
+        <div class="campo" id="campo-tipos-vaga">
+          <label>Tipos de vaga que vais publicar <span class="obrig">*</span></label>
+          <div class="check-grupo" id="grupo-tipos-vaga">
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Emprego a tempo inteiro"/> <i class="fas fa-briefcase"></i> Tempo inteiro</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Emprego a tempo parcial"/> <i class="fas fa-clock"></i> Tempo parcial</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Estágio profissional"/> <i class="fas fa-user-graduate"></i> Estágio profissional</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Estágio curricular"/> <i class="fas fa-school"></i> Estágio curricular</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Trabalho remoto"/> <i class="fas fa-laptop-house"></i> Trabalho remoto</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Freelance / Projecto"/> <i class="fas fa-project-diagram"></i> Freelance / Projecto</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Consultoria"/> <i class="fas fa-handshake"></i> Consultoria</label>
+          </div>
+          <div class="msg-erro" id="erro-tipos-vaga" style="margin-top:8px;"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-tipos-vaga"></span></div>
+        </div>
+
+        <!-- Áreas de contratação -->
+        <div class="campo">
+          <label>Áreas de contratação habitual <span class="opc">(opcional)</span></label>
+          <div class="check-grupo">
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Tecnologia"/> Tecnologia</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Finanças e Contabilidade"/> Finanças</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Marketing e Comunicação"/> Marketing</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Recursos Humanos"/> Recursos Humanos</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Engenharia"/> Engenharia</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Saúde"/> Saúde</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Direito"/> Direito</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Educação"/> Educação</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Logística"/> Logística</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Vendas"/> Vendas</label>
+          </div>
+        </div>
+
+        <!-- Nota sobre validação -->
+        <div class="aviso-box">
+          <i class="fas fa-shield-alt"></i>
+          <p>Todas as vagas publicadas no HMZ passarão por revisão do administrador antes de serem visíveis ao público. Isto garante a qualidade e autenticidade das oportunidades na plataforma.</p>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="irPasso(2)"><i class="fas fa-arrow-left"></i> Anterior</button>
+          <button class="btn btn-laranja" onclick="irPasso(4)"><span class="btn-txt">Continuar <i class="fas fa-arrow-right"></i></span></button>
+        </div>
+      </div>
+
+      <!-- PASSO 4 — Segurança -->
+      <div class="sec-form" id="sec4">
+        <div class="sec-titulo"><i class="fas fa-shield-alt"></i> Acesso e Segurança</div>
+        <div class="sec-sub">Define as credenciais de acesso ao painel da tua empresa.</div>
+
+        <div class="aviso-box" style="margin-bottom:24px;">
+          <i class="fas fa-clock"></i>
+          <p><strong>Validação necessária:</strong> Após o registo, o administrador do HMZ irá verificar os dados da empresa e aprovar o acesso. O processo demora até 48 horas. Serás notificado por e-mail quando a conta for aprovada.</p>
+        </div>
+
+        <!-- Senha -->
+        <div class="campo" id="campo-senha">
+          <label for="senha">Senha de acesso <span class="obrig">*</span></label>
+          <div class="input-wrap"><i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="senha" placeholder="Mínimo 8 caracteres" maxlength="100" autocomplete="new-password" oninput="avaliarForca(this.value)"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('senha','olho1')" aria-label="Mostrar senha"><i class="fas fa-eye" id="olho1"></i></button>
+          </div>
+          <div class="forca-wrap">
+            <div class="forca-barras"><div class="forca-barra" id="fb1"></div><div class="forca-barra" id="fb2"></div><div class="forca-barra" id="fb3"></div><div class="forca-barra" id="fb4"></div></div>
+            <span class="forca-label" id="forca-label"></span>
+          </div>
+          <div class="msg-erro" id="erro-senha"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-senha"></span></div>
+        </div>
+
+        <!-- Confirmar -->
+        <div class="campo" id="campo-confirmar">
+          <label for="confirmar">Confirmar senha <span class="obrig">*</span></label>
+          <div class="input-wrap"><i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="confirmar" placeholder="Repete a senha" maxlength="100" autocomplete="new-password"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('confirmar','olho2')" aria-label="Mostrar confirmação"><i class="fas fa-eye" id="olho2"></i></button>
+          </div>
+          <div class="msg-erro" id="erro-confirmar"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-confirmar"></span></div>
+        </div>
+
+        <!-- Termos -->
+        <div class="campo" id="campo-termos" style="margin-top:24px;">
+          <label class="termos-label">
+            <input type="checkbox" id="termos"/>
+            Confirmo que os dados fornecidos são verídicos, que tenho autorização para registar esta empresa, e aceito os <a href="termos.html" target="_blank">Termos de Uso</a> e a <a href="termos.html#privacidade" target="_blank">Política de Privacidade</a> do HorizonteMZ.
+          </label>
+          <div class="msg-erro" id="erro-termos" style="margin-top:8px;"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-termos"></span></div>
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-outline" onclick="irPasso(3)"><i class="fas fa-arrow-left"></i> Anterior</button>
+          
+          <!-- ── ÁREA DE DOCUMENTOS ── -->
+          <div class="campo" style="margin-bottom:20px;">
+            <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;color:var(--texto);">
+              Documentos comprovativos <span style="color:var(--vermelho);">*</span>
+            </label>
+            <div class="upload-area" id="upload-area-docs"
+              onclick="document.getElementById('input-docs').click()"
+              ondragover="event.preventDefault();this.classList.add('drag')"
+              ondragleave="this.classList.remove('drag')"
+              ondrop="handleDrop(event)">
+              <i class="fas fa-file-pdf" id="upload-icon-docs"></i>
+              <p id="upload-label-docs">Clica ou arrasta o ficheiro PDF aqui</p>
+              <small>Compila todos os documentos num único PDF (máx. 10 MB)</small>
+            </div>
+            <input type="file" id="input-docs" accept=".pdf" style="display:none;" onchange="handleFileSelect(this)"/>
+            <div style="font-size:0.78rem;color:var(--texto2);margin-top:6px;display:flex;align-items:center;gap:5px;">
+              <i class="fas fa-info-circle"></i> Inclui: alvará/licença comercial, BI do responsável, NUIT da empresa
+            </div>
+          </div>
+
+          <button class="btn btn-laranja" id="btn-submit" onclick="submeter()">
+            <span class="spinner"></span>
+            <span class="btn-txt"><i class="fas fa-paper-plane"></i> Submeter pedido</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ECRÃ DE SUCESSO -->
+      <div class="sucesso-ecrã" id="sec-sucesso">
+        <div class="sucesso-ic"><i class="fas fa-building"></i></div>
+        <h2>Pedido submetido!</h2>
+        <p>A empresa <strong id="nome-sucesso"></strong> foi registada com sucesso no HorizonteMZ.</p>
+        <div class="pendente-box">
+          <i class="fas fa-clock"></i>
+          <p>A tua conta está em análise. O administrador irá verificar os dados e aprovar o acesso. Este processo pode demorar até 48 horas. Receberás uma confirmação no e-mail <strong id="email-sucesso"></strong>.</p>
+        </div>
+        <a href="index.html" class="btn btn-laranja" style="max-width:280px;width:100%;"><i class="fas fa-home"></i> Voltar à página inicial</a>
+        <a href="login-empresa.html" class="btn btn-outline" style="max-width:280px;width:100%;margin-top:10px;justify-content:center;"><i class="fas fa-sign-in-alt"></i> Tentar entrar na conta</a>
+      </div>
+
+    </div><!-- /form-card -->
+
+    <div class="form-rodape" id="form-rodape">
+      <p>Já tens conta? <a href="login-empresa.html">Entrar na minha conta</a></p>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 &nbsp;|&nbsp;
+  <a href="termos.html" style="color:rgba(255,255,255,0.55);transition:color 0.2s;" onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a>
+</footer>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+  const KEYS={tema:'hmz_tema',sessaoEmp:'hmz_sessao_empresa',empresas:'hmz_empresas'};
+  let passoAtual=1;
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){console.warn(e);}}
+  function gerarId(){return 'emp_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);}
+
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  function mostrarToast(msg,tipo=''){const cont=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;cont.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+  function mostrarAlerta(msg,tipo='erro'){const el=document.getElementById('alerta-geral');document.getElementById('alerta-msg').textContent=msg;el.className='alerta '+tipo+' visivel';el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+  function esconderAlerta(){document.getElementById('alerta-geral').className='alerta';}
+
+  function marcarErro(id,msg){const c=document.getElementById(id);if(!c)return;c.classList.add('erro');c.classList.remove('valido');const t=document.getElementById('txt-erro-'+id.replace('campo-',''));if(t)t.textContent=msg;}
+  function marcarValido(id){const c=document.getElementById(id);if(!c)return;c.classList.remove('erro');c.classList.add('valido');}
+  function limpar(id){const c=document.getElementById(id);if(c)c.classList.remove('erro','valido');}
+
+  function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());}
+  function validarTel(t){return /^(\+258)?[0-9]{9,12}$/.test(t.replace(/\s/g,''));}
+  function validarURL(u){if(!u)return true;try{new URL(u);return true;}catch{return false;}}
+  function validarNUIT(n){return /^[0-9]{8,9}$/.test(n.trim());}
+
+  function toggleSenha(iId,oId){const i=document.getElementById(iId);const o=document.getElementById(oId);const s=i.type==='password';i.type=s?'text':'password';o.className=s?'fas fa-eye-slash':'fas fa-eye';}
+
+  function avaliarForca(senha){
+    let pts=0;
+    if(senha.length>=8)pts++;if(senha.length>=12)pts++;
+    if(/[A-Z]/.test(senha)&&/[a-z]/.test(senha))pts++;
+    if(/[0-9]/.test(senha))pts++;if(/[^A-Za-z0-9]/.test(senha))pts++;
+    const nivel=Math.min(Math.max(Math.ceil(pts*4/5),senha.length>0?1:0),4);
+    const cls=['fraca','media','forte','muitoforte'];
+    const labels=['Fraca','Média','Forte','Muito forte'];
+    const lcls=['forca-fraca','forca-media','forca-forte','forca-muitoforte'];
+    ['fb1','fb2','fb3','fb4'].forEach((id,i)=>{const el=document.getElementById(id);el.className='forca-barra';if(i<nivel)el.classList.add(cls[nivel-1]);});
+    const lbl=document.getElementById('forca-label');
+    if(!senha.length){lbl.textContent='';return;}
+    lbl.textContent=labels[nivel-1]||'';lbl.className='forca-label '+(lcls[nivel-1]||'');
+  }
+
+  function contarChars(el,cId){document.getElementById(cId).textContent=el.value.length;}
+
+  function toggleCheck(label){const cb=label.querySelector('input[type="checkbox"]');cb.checked=!cb.checked;label.classList.toggle('selecionado',cb.checked);}
+
+  function actualizarProgresso(novo){
+    for(let i=1;i<=4;i++){
+      const p=document.getElementById('p'+i);const pc=document.getElementById('pc'+i);
+      p.classList.remove('ativo','concluido');
+      if(i<novo){p.classList.add('concluido');pc.innerHTML='<i class="fas fa-check" style="font-size:0.75rem"></i>';}
+      else if(i===novo){p.classList.add('ativo');pc.textContent=i;}
+      else{pc.textContent=i;}
+    }
+  }
+
+  function irPasso(novo){
+    if(novo>passoAtual&&!validarPasso(passoAtual))return;
+    esconderAlerta();
+    document.getElementById('sec'+passoAtual).classList.remove('ativa');
+    document.getElementById('sec'+novo).classList.add('ativa');
+    actualizarProgresso(novo);passoAtual=novo;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function validarPasso(p){
+    let ok=true;
+    if(p===1){
+      const nome=document.getElementById('nome').value.trim();
+      const sector=document.getElementById('sector').value;
+      const dim=document.getElementById('dimensao').value;
+      const nuit=document.getElementById('nuit').value.trim();
+      const prov=document.getElementById('prov').value;
+      const cidade=document.getElementById('cidade').value.trim();
+      const email=document.getElementById('email').value.trim();
+      const tel=document.getElementById('tel').value.trim();
+      const contacto=document.getElementById('contacto').value.trim();
+      const web=document.getElementById('website').value.trim();
+
+      ['campo-nome','campo-sector','campo-dimensao','campo-nuit','campo-prov',
+       'campo-cidade','campo-email','campo-tel','campo-contacto'].forEach(limpar);
+
+      if(!nome||nome.length<2){marcarErro('campo-nome','Nome da empresa obrigatório.');ok=false;}else marcarValido('campo-nome');
+      if(!sector){marcarErro('campo-sector','Seleciona o sector de actividade.');ok=false;}else marcarValido('campo-sector');
+      if(!dim){marcarErro('campo-dimensao','Seleciona a dimensão da empresa.');ok=false;}else marcarValido('campo-dimensao');
+      if(!nuit){marcarErro('campo-nuit','O NUIT é obrigatório.');ok=false;}
+      else if(!validarNUIT(nuit)){marcarErro('campo-nuit','NUIT inválido (8-9 dígitos).');ok=false;}
+      else marcarValido('campo-nuit');
+      if(!prov){marcarErro('campo-prov','Seleciona a província.');ok=false;}else marcarValido('campo-prov');
+      if(!cidade){marcarErro('campo-cidade','Introduz a cidade ou distrito.');ok=false;}else marcarValido('campo-cidade');
+      if(!email){marcarErro('campo-email','O e-mail é obrigatório.');ok=false;}
+      else if(!validarEmail(email)){marcarErro('campo-email','E-mail inválido.');ok=false;}
+      else{
+        const existe=lsGet(KEYS.empresas,[]).some(e=>e.email.toLowerCase()===email.toLowerCase());
+        if(existe){marcarErro('campo-email','Já existe conta com este e-mail.');ok=false;}
+        else marcarValido('campo-email');
+      }
+      if(!tel){marcarErro('campo-tel','O telefone é obrigatório.');ok=false;}
+      else if(!validarTel(tel)){marcarErro('campo-tel','Número inválido (+258...).');ok=false;}
+      else marcarValido('campo-tel');
+      if(!contacto||contacto.length<3){marcarErro('campo-contacto','Nome do responsável de RH obrigatório.');ok=false;}else marcarValido('campo-contacto');
+      if(web&&!validarURL(web)){mostrarAlerta('O website deve ser uma URL válida (ex: https://...).');ok=false;}
+    }
+    else if(p===2){
+      const desc=document.getElementById('descricao').value.trim();
+      limpar('campo-descricao');
+      if(!desc||desc.length<30){marcarErro('campo-descricao','A descrição deve ter pelo menos 30 caracteres.');ok=false;}
+      else marcarValido('campo-descricao');
+    }
+    else if(p===3){
+      const tipos=document.querySelectorAll('#grupo-tipos-vaga input:checked');
+      document.getElementById('campo-tipos-vaga').classList.remove('erro');
+      document.getElementById('erro-tipos-vaga').style.display='none';
+      if(tipos.length===0){
+        document.getElementById('campo-tipos-vaga').classList.add('erro');
+        document.getElementById('txt-erro-tipos-vaga').textContent='Seleciona pelo menos um tipo de vaga.';
+        document.getElementById('erro-tipos-vaga').style.display='flex';
+        ok=false;
+      }
+    }
+    if(!ok)mostrarAlerta('Corrige os erros antes de continuar.');
+    return ok;
+  }
+
+  function submeter(){
+    const cfgGlobal=lsGet('hmz_admin_config',{});
+    if(cfgGlobal.regPub===false){mostrarAlerta('Os novos registos estão temporariamente desactivados pelo administrador.','aviso');return;}
+
+    esconderAlerta();limpar('campo-senha');limpar('campo-confirmar');
+    document.getElementById('campo-termos').classList.remove('erro');
+    document.getElementById('erro-termos').style.display='none';
+
+    const senha=document.getElementById('senha').value;
+    const confirmar=document.getElementById('confirmar').value;
+    const termos=document.getElementById('termos').checked;
+    let ok=true;
+
+    if(!senha||senha.length<8){marcarErro('campo-senha','Mínimo 8 caracteres.');ok=false;}else marcarValido('campo-senha');
+    if(!confirmar){marcarErro('campo-confirmar','Confirma a senha.');ok=false;}
+    else if(senha!==confirmar){marcarErro('campo-confirmar','As senhas não coincidem.');ok=false;}
+    else if(senha.length>=8)marcarValido('campo-confirmar');
+    if(!termos){
+      document.getElementById('campo-termos').classList.add('erro');
+      document.getElementById('txt-erro-termos').textContent='Deves aceitar os Termos de Uso.';
+      document.getElementById('erro-termos').style.display='flex';
+      ok=false;
+    }
+    if(!docBase64){mostrarAlerta('Por favor anexa os documentos comprovativos em PDF.');return;}
+    if(!ok){mostrarAlerta('Corrige os erros antes de submeter.');return;}
+
+    const btn=document.getElementById('btn-submit');
+    btn.classList.add('loading');btn.disabled=true;
+
+    setTimeout(()=>{
+      const tiposVaga=Array.from(document.querySelectorAll('#grupo-tipos-vaga input:checked')).map(c=>c.value);
+      const areasContr=Array.from(document.querySelectorAll('.check-grupo:not(#grupo-tipos-vaga) input:checked')).map(c=>c.value);
+      const ano=document.getElementById('ano').value;
+
+      const novaEmp={
+        id:gerarId(),
+        nome:document.getElementById('nome').value.trim(),
+        sector:document.getElementById('sector').value,
+        dimensao:document.getElementById('dimensao').value,
+        nuit:document.getElementById('nuit').value.trim(),
+        anoFundacao:ano?parseInt(ano):null,
+        provincia:document.getElementById('prov').value,
+        cidade:document.getElementById('cidade').value.trim(),
+        email:document.getElementById('email').value.trim().toLowerCase(),
+        tel:document.getElementById('tel').value.trim(),
+        website:document.getElementById('website').value.trim(),
+        contactoRH:document.getElementById('contacto').value.trim(),
+        descricao:document.getElementById('descricao').value.trim(),
+        presenca:document.getElementById('presenca').value,
+        linkedin:document.getElementById('linkedin').value.trim(),
+        facebook:document.getElementById('facebook').value.trim(),
+        tiposVaga,
+        areasContratacao:areasContr,
+        senha,
+        logo:null,
+        docs:docBase64||null,
+        aprovada:lsGet('hmz_admin_config',{}).modEmp!==false?false:true,
+        verificada:false,
+        criadoEm:new Date().toISOString(),
+        ultimoLogin:null,
+        vagas:[],
+      };
+
+      const empresas=lsGet(KEYS.empresas,[]);
+      empresas.push(novaEmp);
+      lsSet(KEYS.empresas,empresas);
+
+      btn.classList.remove('loading');
+
+      document.getElementById('sec4').classList.remove('ativa');
+      document.getElementById('sec-sucesso').classList.add('visivel');
+      document.getElementById('nome-sucesso').textContent=novaEmp.nome;
+      document.getElementById('email-sucesso').textContent=novaEmp.email;
+      document.getElementById('form-rodape').style.display='none';
+      document.querySelector('.progresso-bar').style.display='none';
+
+      mostrarToast('Empresa registada! Aguarda aprovação do administrador.','');
+    },1200);
+  }
+
+  /* Limpar erros ao digitar */
+  ['nome','sector','dimensao','nuit','prov','cidade','email','tel','contacto','descricao','senha','confirmar'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('input',()=>{limpar('campo-'+id);esconderAlerta();});
+  });
+
+  /* Verificar sessão */
+  document.addEventListener('DOMContentLoaded',function(){
+    if(lsGet(KEYS.sessaoEmp)){
+      mostrarToast('Já tens sessão activa. A redirigir...','');
+      setTimeout(()=>{window.location.href='dashboard-empresa.html';},1200);
+    }
+    setTimeout(()=>{document.getElementById('nome').focus();},300);
+  });
+</script>
+
+<script>
+var docFile = null;
+var docBase64 = null;
+function handleFileSelect(input){
+  var f = input.files[0];
+  if(!f) return;
+  if(f.size > 10*1024*1024){ alert('O ficheiro não pode ter mais de 10 MB.'); return; }
+  docFile = f;
+  var reader = new FileReader();
+  reader.onload = function(e){ docBase64 = e.target.result; };
+  reader.readAsDataURL(f);
+  var area = document.getElementById('upload-area-docs');
+  area.classList.add('tem-ficheiro');
+  document.getElementById('upload-icon-docs').className = 'fas fa-check-circle';
+  document.getElementById('upload-label-docs').textContent = f.name + ' (' + (f.size/1024/1024).toFixed(2) + ' MB)';
+}
+function handleDrop(ev){
+  ev.preventDefault();
+  var area = document.getElementById('upload-area-docs');
+  area.classList.remove('drag');
+  var f = ev.dataTransfer.files[0];
+  if(f && f.type==='application/pdf'){
+    var inp = document.getElementById('input-docs');
+    var dt = new DataTransfer(); dt.items.add(f); inp.files = dt.files;
+    handleFileSelect(inp);
+  } else { alert('Por favor envia apenas ficheiros PDF.'); }
+}
+</script>
+
+</body>
+</html>

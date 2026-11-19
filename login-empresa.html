@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – Empresa | HorizonteMZ</title>
+  <meta name="description" content="Entra na tua conta de empresa no HorizonteMZ e publica vagas de emprego."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:        #0057C2;
+      --azul-dark:   #003F8F;
+      --azul-light:  #EEF4FF;
+      --amarelo:     #FFBE00;
+      --amarelo-dark:#E5AA00;
+      --laranja:     #D97706;
+      --laranja-dark:#92400E;
+      --laranja-light:#FEF3C7;
+      --verde:       #1DB954;
+      --vermelho:    #E53935;
+      --bg:          #F4F7FF;
+      --bg2:         #FFFFFF;
+      --texto:       #1A1A2E;
+      --texto2:      #555577;
+      --borda:       #DDE3F0;
+      --sombra:      rgba(217,119,6,0.10);
+      --sombra-hover:rgba(217,119,6,0.22);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --trans:       all 0.25s ease;
+    }
+    body.dark {
+      --azul:        #4A9EFF;
+      --azul-light:  #0D1B3E;
+      --laranja:     #F59E0B;
+      --laranja-dark:#78350F;
+      --laranja-light:#2d1f0a;
+      --bg:          #0D1117;
+      --bg2:         #161B27;
+      --texto:       #E8EEFF;
+      --texto2:      #8899BB;
+      --borda:       #253050;
+      --sombra:      rgba(0,0,0,0.30);
+      --sombra-hover:rgba(0,0,0,0.50);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Segoe UI', system-ui, sans-serif;
+      background:var(--bg); color:var(--texto);
+      min-height:100vh; display:flex; flex-direction:column;
+      transition:background 0.3s, color 0.3s;
+    }
+    a { text-decoration:none; color:inherit; }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #92400E, #D97706);
+      height:65px; padding:0 28px;
+      display:flex; align-items:center; justify-content:space-between;
+      box-shadow:0 2px 20px rgba(0,0,0,0.22);
+      position:sticky; top:0; z-index:100;
+    }
+    .logo { font-size:1.45rem; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+    .logo span { color:#FEF3C7; }
+    .h-right { display:flex; align-items:center; gap:10px; }
+    .btn-dark {
+      background:none; border:none; color:#fff;
+      font-size:1.05rem; cursor:pointer;
+      padding:7px; border-radius:var(--radius-sm); transition:var(--trans);
+    }
+    .btn-dark:hover { background:rgba(255,255,255,0.18); }
+    .btn-voltar {
+      display:inline-flex; align-items:center; gap:6px;
+      color:rgba(255,255,255,0.90); font-size:0.87rem;
+      font-weight:600; padding:7px 14px;
+      border-radius:var(--radius-sm);
+      border:1px solid rgba(255,255,255,0.35); transition:var(--trans);
+    }
+    .btn-voltar:hover { background:rgba(255,255,255,0.18); color:#fff; }
+
+    /* ── LAYOUT ── */
+    main {
+      flex:1; display:grid;
+      grid-template-columns:1fr 1fr;
+      min-height:calc(100vh - 65px - 56px);
+    }
+
+    /* Painel esquerdo */
+    .painel-esq {
+      background: linear-gradient(145deg, #92400E, #D97706);
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:52px 40px; color:#fff;
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .painel-esq::before {
+      content:''; position:absolute;
+      width:320px; height:320px; border-radius:50%;
+      background:rgba(255,255,255,0.05); top:-80px; left:-80px;
+    }
+    .painel-esq::after {
+      content:''; position:absolute;
+      width:220px; height:220px; border-radius:50%;
+      background:rgba(255,255,255,0.06); bottom:-60px; right:-60px;
+    }
+    .esq-icon {
+      width:88px; height:88px; border-radius:24px;
+      background:rgba(255,255,255,0.15);
+      border:2px solid rgba(255,255,255,0.25);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2.4rem; margin-bottom:28px;
+      position:relative; z-index:1;
+      animation:float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);} }
+    .painel-esq h2 {
+      font-size:1.7rem; font-weight:800;
+      margin-bottom:12px; position:relative; z-index:1;
+      letter-spacing:-0.3px;
+    }
+    .painel-esq h2 span { color:#FEF3C7; }
+    .painel-esq p {
+      font-size:0.92rem; opacity:0.88; line-height:1.7;
+      max-width:320px; position:relative; z-index:1; margin-bottom:36px;
+    }
+    .esq-features {
+      display:flex; flex-direction:column; gap:14px;
+      width:100%; max-width:300px; position:relative; z-index:1;
+    }
+    .esq-feat {
+      display:flex; align-items:center; gap:12px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.20);
+      border-radius:10px; padding:10px 16px;
+      text-align:left; font-size:0.85rem;
+    }
+    .esq-feat i { color:#FEF3C7; font-size:1rem; flex-shrink:0; }
+
+    /* Painel direito */
+    .painel-dir {
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:52px 48px; background:var(--bg2);
+    }
+    .form-box {
+      width:100%; max-width:420px;
+      animation:fadeUp 0.45s ease both;
+    }
+    @keyframes fadeUp {
+      from{opacity:0;transform:translateY(20px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    /* Cabeçalho */
+    .form-topo { margin-bottom:32px; }
+    .badge-tipo {
+      display:inline-flex; align-items:center; gap:6px;
+      background:var(--laranja-light); color:var(--laranja);
+      border:1px solid rgba(217,119,6,0.25);
+      padding:5px 14px; border-radius:50px;
+      font-size:0.78rem; font-weight:700; margin-bottom:14px;
+    }
+    .form-topo h1 {
+      font-size:1.7rem; font-weight:800;
+      color:var(--laranja); letter-spacing:-0.3px; margin-bottom:6px;
+    }
+    .form-topo p { font-size:0.88rem; color:var(--texto2); line-height:1.6; }
+
+    /* Campos */
+    .campo { margin-bottom:20px; }
+    .campo label {
+      display:block; font-size:0.85rem;
+      font-weight:700; margin-bottom:7px; color:var(--texto);
+    }
+    .campo label span.obrig { color:var(--vermelho); margin-left:2px; }
+    .input-wrap { position:relative; }
+    .input-wrap i.ic-esq {
+      position:absolute; left:14px; top:50%;
+      transform:translateY(-50%);
+      color:var(--texto2); font-size:0.92rem;
+      pointer-events:none; transition:var(--trans);
+    }
+    .input-wrap:focus-within i.ic-esq { color:var(--laranja); }
+    .input-wrap input {
+      width:100%; padding:12px 14px 12px 42px;
+      border:1.5px solid var(--borda);
+      border-radius:var(--radius-sm);
+      font-size:0.93rem; background:var(--bg);
+      color:var(--texto); font-family:inherit;
+      transition:var(--trans); outline:none;
+    }
+    .input-wrap input:focus {
+      border-color:var(--laranja);
+      box-shadow:0 0 0 3px rgba(217,119,6,0.12);
+      background:var(--bg2);
+    }
+    .btn-olho {
+      position:absolute; right:12px; top:50%;
+      transform:translateY(-50%);
+      background:none; border:none; color:var(--texto2);
+      cursor:pointer; font-size:0.95rem; padding:4px; transition:var(--trans);
+    }
+    .btn-olho:hover { color:var(--laranja); }
+    .campo.erro .input-wrap input {
+      border-color:var(--vermelho);
+      box-shadow:0 0 0 3px rgba(229,57,53,0.10);
+    }
+    .campo.valido .input-wrap input { border-color:var(--verde); }
+    .msg-erro {
+      display:none; font-size:0.79rem; color:var(--vermelho);
+      margin-top:5px; align-items:center; gap:5px;
+    }
+    .campo.erro .msg-erro { display:flex; }
+
+    /* Extras */
+    .linha-extras {
+      display:flex; align-items:center;
+      justify-content:space-between; margin-bottom:24px;
+    }
+    .check-label {
+      display:flex; align-items:center; gap:8px;
+      font-size:0.84rem; color:var(--texto2); cursor:pointer;
+    }
+    .check-label input[type="checkbox"] {
+      accent-color:var(--laranja); width:16px; height:16px; cursor:pointer;
+    }
+    .link-esqueci {
+      font-size:0.84rem; color:var(--laranja);
+      font-weight:600; transition:var(--trans);
+    }
+    .link-esqueci:hover { text-decoration:underline; }
+
+    /* Botão submit */
+    .btn-submit {
+      width:100%; padding:13px;
+      background:var(--laranja); color:#fff;
+      border:none; border-radius:var(--radius-sm);
+      font-size:0.97rem; font-weight:700;
+      cursor:pointer; font-family:inherit;
+      transition:var(--trans);
+      display:flex; align-items:center;
+      justify-content:center; gap:8px; margin-bottom:20px;
+    }
+    .btn-submit:hover:not(:disabled) {
+      background:var(--laranja-dark);
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px var(--sombra-hover);
+    }
+    .btn-submit:disabled { opacity:0.65; cursor:not-allowed; transform:none; }
+    .spinner {
+      display:none; width:16px; height:16px;
+      border:2px solid rgba(255,255,255,0.35);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin 0.7s linear infinite;
+    }
+    @keyframes spin { to{transform:rotate(360deg);} }
+    .btn-submit.loading .spinner { display:block; }
+    .btn-submit.loading .btn-txt { display:none; }
+
+    /* Alerta */
+    .alerta {
+      display:none; padding:12px 16px;
+      border-radius:var(--radius-sm); font-size:0.87rem;
+      margin-bottom:20px; align-items:center; gap:10px; border:1px solid;
+    }
+    .alerta.erro    { background:#FFF5F5; border-color:#FFCDD2; color:#C62828; }
+    .alerta.sucesso { background:#F0FFF4; border-color:#C8E6C9; color:#1B5E20; }
+    .alerta.aviso   { background:#FFFDE7; border-color:#FFF59D; color:#F57F17; }
+    body.dark .alerta.erro    { background:#2d1a1a; border-color:#5c2222; color:#ff8a80; }
+    body.dark .alerta.sucesso { background:#1a2d1a; border-color:#225c22; color:#80ff9e; }
+    body.dark .alerta.aviso   { background:#2d2700; border-color:#5c4e00; color:#ffd740; }
+    .alerta.visivel { display:flex; }
+
+    /* Bloqueio */
+    .bloqueio-aviso {
+      display:none; background:#FFF3E0;
+      border:1px solid #FFE0B2; border-radius:var(--radius-sm);
+      padding:12px 16px; font-size:0.85rem; color:#E65100;
+      margin-bottom:16px; align-items:center; gap:10px;
+    }
+    .bloqueio-aviso.visivel { display:flex; }
+    body.dark .bloqueio-aviso { background:#2d1f0a; border-color:#5c3a10; color:#ffb74d; }
+
+    /* Separador */
+    .separador {
+      display:flex; align-items:center; gap:12px;
+      margin:20px 0; font-size:0.82rem; color:var(--texto2);
+    }
+    .separador::before,.separador::after {
+      content:''; flex:1; height:1px; background:var(--borda);
+    }
+
+    /* Rodapé form */
+    .form-rodape {
+      text-align:center; font-size:0.85rem; color:var(--texto2);
+      padding-top:16px; border-top:1px solid var(--borda);
+    }
+    .form-rodape a { color:var(--laranja); font-weight:700; transition:var(--trans); }
+    .form-rodape a:hover { text-decoration:underline; }
+
+    /* Toast */
+    #toast-container {
+      position:fixed; bottom:24px; right:24px;
+      z-index:9999; display:flex;
+      flex-direction:column; gap:10px; pointer-events:none;
+    }
+    .toast {
+      background:var(--bg2); border:1px solid var(--borda);
+      border-left:4px solid var(--laranja); color:var(--texto);
+      padding:13px 18px; border-radius:var(--radius-sm);
+      font-size:0.88rem; box-shadow:0 8px 24px rgba(0,0,0,0.15);
+      animation:toastIn 0.3s ease; pointer-events:all; max-width:320px;
+    }
+    .toast.sucesso { border-left-color:var(--verde); }
+    .toast.erro    { border-left-color:var(--vermelho); }
+    @keyframes toastIn  { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes toastOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(40px)} }
+
+    /* Footer */
+    footer {
+      background:#0D1B3E; color:rgba(255,255,255,0.50);
+      text-align:center; padding:18px 24px; font-size:0.82rem;
+    }
+    footer strong { color:rgba(255,255,255,0.80); }
+
+    /* Responsividade */
+    @media (max-width:820px) {
+      main { grid-template-columns:1fr; }
+      .painel-esq { display:none; }
+      .painel-dir { padding:40px 24px; min-height:calc(100vh - 65px - 56px); }
+    }
+    @media (max-width:440px) {
+      .painel-dir { padding:32px 18px; }
+      .linha-extras { flex-direction:column; align-items:flex-start; gap:10px; }
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-right">
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- Painel esquerdo -->
+  <div class="painel-esq">
+    <div class="esq-icon"><i class="fas fa-building"></i></div>
+    <h2>Área de <span>Empresas</span></h2>
+    <p>Publica vagas de emprego, recebe candidaturas com CVs e encontra os melhores talentos moçambicanos.</p>
+    <div class="esq-features">
+      <div class="esq-feat"><i class="fas fa-plus-circle"></i><span>Publicar vagas de emprego verificadas</span></div>
+      <div class="esq-feat"><i class="fas fa-file-alt"></i><span>Receber CVs directamente dos candidatos</span></div>
+      <div class="esq-feat"><i class="fas fa-chart-bar"></i><span>Painel de métricas e candidaturas</span></div>
+      <div class="esq-feat"><i class="fas fa-shield-alt"></i><span>Badge de empresa verificada pelo HMZ</span></div>
+    </div>
+  </div>
+
+  <!-- Painel direito -->
+  <div class="painel-dir">
+    <div class="form-box">
+
+      <div class="form-topo">
+        <div class="badge-tipo"><i class="fas fa-building"></i> Empresa</div>
+        <h1>Entrar na conta</h1>
+        <p>Acede ao painel da tua empresa e gere as vagas de emprego publicadas no HorizonteMZ.</p>
+      </div>
+
+      <!-- Bloqueio -->
+      <div class="bloqueio-aviso" id="bloqueio-aviso">
+        <i class="fas fa-lock"></i>
+        <span>Conta temporariamente bloqueada. Tenta novamente em <strong id="countdown">0</strong>s.</span>
+      </div>
+
+      <!-- Alerta -->
+      <div class="alerta" id="alerta-geral">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="alerta-msg"></span>
+      </div>
+
+      <!-- Formulário -->
+      <form id="form-login" novalidate autocomplete="on">
+
+        <!-- Email -->
+        <div class="campo" id="campo-email">
+          <label for="email">E-mail da empresa <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-envelope ic-esq"></i>
+            <input type="email" id="email" name="email"
+                   placeholder="empresa@email.com"
+                   autocomplete="email" maxlength="120" inputmode="email"/>
+          </div>
+          <div class="msg-erro" id="erro-email">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-email"></span>
+          </div>
+        </div>
+
+        <!-- Senha -->
+        <div class="campo" id="campo-senha">
+          <label for="senha">Senha <span class="obrig">*</span></label>
+          <div class="input-wrap">
+            <i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="senha" name="senha"
+                   placeholder="A tua senha"
+                   autocomplete="current-password" maxlength="100"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha()" aria-label="Mostrar senha">
+              <i class="fas fa-eye" id="olho-icon"></i>
+            </button>
+          </div>
+          <div class="msg-erro" id="erro-senha">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="txt-erro-senha"></span>
+          </div>
+        </div>
+
+        <!-- Extras -->
+        <div class="linha-extras">
+          <label class="check-label">
+            <input type="checkbox" id="lembrar"/> Lembrar-me
+          </label>
+          <a href="recuperar-senha-emp.html" class="link-esqueci">Esqueci a senha</a>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <span class="spinner"></span>
+          <span class="btn-txt"><i class="fas fa-sign-in-alt"></i> Entrar</span>
+        </button>
+
+      </form>
+
+      <div class="separador">ou</div>
+
+      <div class="form-rodape">
+        <p>Ainda não tens conta? <a href="registo-empresa.html">Registar empresa</a></p>
+        <p style="margin-top:10px;">
+          Outro tipo de conta? <a href="escolha-conta.html">Voltar à escolha</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 &nbsp;|&nbsp;
+  <a href="termos.html" style="color:rgba(255,255,255,0.55);transition:color 0.2s;"
+     onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a>
+</footer>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+  const KEYS = {
+    tema:       'hmz_tema',
+    sessaoEmp:  'hmz_sessao_empresa',
+    sessaoUtil: 'hmz_sessao_utilizador',
+    sessaoInst: 'hmz_sessao_instituicao',
+    empresas:   'hmz_empresas',
+    tentEmp:    'hmz_tentativas_emp',
+    bloqEmp:    'hmz_bloqueio_emp',
+  };
+
+  const MAX_TENT  = 5;
+  const BLOQ_SEG  = 60;
+  let timerBloq   = null;
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){console.warn(e);}}
+
+  /* ── MODO ESCURO ── */
+  function aplicarTema(dark){
+    document.body.classList.toggle('dark',dark);
+    const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';
+  }
+  function toggleDark(){
+    const dark=!document.body.classList.contains('dark');
+    lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);
+  }
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  /* ── TOAST ── */
+  function mostrarToast(msg,tipo=''){
+    const cont=document.getElementById('toast-container');
+    const toast=document.createElement('div');
+    toast.className='toast '+tipo;toast.textContent=msg;cont.appendChild(toast);
+    setTimeout(()=>{toast.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>toast.remove(),300);},3500);
+  }
+
+  /* ── ALERTA ── */
+  function mostrarAlerta(msg,tipo='erro'){
+    const el=document.getElementById('alerta-geral');
+    document.getElementById('alerta-msg').textContent=msg;
+    el.className='alerta '+tipo+' visivel';
+  }
+  function esconderAlerta(){document.getElementById('alerta-geral').className='alerta';}
+
+  /* ── CAMPOS ── */
+  function marcarErro(id,msg){
+    const c=document.getElementById(id);if(!c)return;
+    c.classList.add('erro');c.classList.remove('valido');
+    const t=document.getElementById('txt-erro-'+id.replace('campo-',''));
+    if(t)t.textContent=msg;
+  }
+  function marcarValido(id){
+    const c=document.getElementById(id);if(!c)return;
+    c.classList.remove('erro');c.classList.add('valido');
+  }
+  function limpar(id){const c=document.getElementById(id);if(c)c.classList.remove('erro','valido');}
+  function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());}
+
+  /* ── TOGGLE SENHA ── */
+  function toggleSenha(){
+    const inp=document.getElementById('senha');
+    const icon=document.getElementById('olho-icon');
+    const show=inp.type==='password';
+    inp.type=show?'text':'password';
+    icon.className=show?'fas fa-eye-slash':'fas fa-eye';
+  }
+
+  /* ── BLOQUEIO ── */
+  function verificarBloqueio(){
+    const ate=lsGet(KEYS.bloqEmp,0);
+    const agora=Date.now();
+    if(ate>agora){activarBloqueioUI(Math.ceil((ate-agora)/1000));return true;}
+    return false;
+  }
+  function activarBloqueioUI(seg){
+    const aviso=document.getElementById('bloqueio-aviso');
+    const btn=document.getElementById('btn-submit');
+    const el=document.getElementById('countdown');
+    aviso.classList.add('visivel');btn.disabled=true;el.textContent=seg;
+    clearInterval(timerBloq);
+    timerBloq=setInterval(()=>{
+      seg--;el.textContent=seg;
+      if(seg<=0){
+        clearInterval(timerBloq);aviso.classList.remove('visivel');
+        btn.disabled=false;lsSet(KEYS.tentEmp,0);lsSet(KEYS.bloqEmp,0);
+      }
+    },1000);
+  }
+  function registarTentFalhada(){
+    let t=lsGet(KEYS.tentEmp,0)+1;lsSet(KEYS.tentEmp,t);
+    if(t>=MAX_TENT){
+      lsSet(KEYS.bloqEmp,Date.now()+BLOQ_SEG*1000);lsSet(KEYS.tentEmp,0);
+      activarBloqueioUI(BLOQ_SEG);
+    } else {
+      mostrarAlerta(`Credenciais incorrectas. ${MAX_TENT-t} tentativa(s) restante(s).`);
+    }
+  }
+
+  /* ── SUBMIT ── */
+  document.getElementById('form-login').addEventListener('submit',function(e){
+    e.preventDefault();
+    if(verificarBloqueio())return;
+
+    const email=document.getElementById('email').value.trim();
+    const senha=document.getElementById('senha').value;
+    let valido=true;
+
+    esconderAlerta();limpar('campo-email');limpar('campo-senha');
+
+    if(!email){marcarErro('campo-email','O e-mail é obrigatório.');valido=false;}
+    else if(!validarEmail(email)){marcarErro('campo-email','Introduz um e-mail válido.');valido=false;}
+    else marcarValido('campo-email');
+
+    if(!senha){marcarErro('campo-senha','A senha é obrigatória.');valido=false;}
+    else if(senha.length<6){marcarErro('campo-senha','A senha deve ter pelo menos 6 caracteres.');valido=false;}
+    else marcarValido('campo-senha');
+
+    if(!valido)return;
+
+    const btn=document.getElementById('btn-submit');
+    btn.classList.add('loading');btn.disabled=true;
+
+    setTimeout(()=>{
+      const empresas=lsGet(KEYS.empresas,[]);
+      const emp=empresas.find(e=>e.email.toLowerCase()===email.toLowerCase());
+
+      btn.classList.remove('loading');btn.disabled=false;
+
+      if(!emp){
+        marcarErro('campo-email','Não existe conta de empresa com este e-mail.');
+        registarTentFalhada();return;
+      }
+      if(emp.senha!==senha){
+        marcarErro('campo-senha','Senha incorrecta.');
+        registarTentFalhada();return;
+      }
+      if(!emp.aprovada){
+        mostrarAlerta('A tua empresa ainda está em análise pelo administrador. Aguarda a aprovação antes de entrar.','aviso');
+        return;
+      }
+
+      /* Conta suspensa pelo administrador: não pode reactivar-se pelo login. */
+      if(emp.suspensaAdmin===true){
+        mostrarAlerta('Esta conta foi suspensa pelo administrador. Contacta o suporte para mais informações.','erro');
+        return;
+      }
+
+      /* Compatibilidade com dados antigos: "suspensa" era usada para a desactivação voluntária. */
+      if(emp.desativada===true || (emp.suspensa===true && emp.suspensaAdmin!==true)){
+        emp.desativada=false;
+        emp.suspensa=false;
+        const empIdx=empresas.findIndex(e=>e.id===emp.id);
+        if(empIdx!==-1){
+          empresas[empIdx].desativada=false;
+          empresas[empIdx].suspensa=false;
+        }
+        const vagas=lsGet(KEYS.vagas,[]);
+        vagas.forEach(v=>{
+          if(v.empresaId===emp.id && v.suspensaPorConta){
+            v.pausada=false;
+            delete v.suspensaPorConta;
+          }
+        });
+        lsSet(KEYS.vagas,vagas);
+        lsSet(KEYS.empresas,empresas);
+      }
+      lsSet(KEYS.tentEmp,0);lsSet(KEYS.bloqEmp,0);
+
+      const sessao={
+        id:emp.id,nome:emp.nome,email:emp.email,
+        logo:emp.logo||null,loginEm:new Date().toISOString(),
+        lembrar:document.getElementById('lembrar').checked,
+      };
+      lsSet(KEYS.sessaoEmp,sessao);
+
+      /* Actualizar último login */
+      const idx=empresas.findIndex(e=>e.id===emp.id);
+      if(idx!==-1){empresas[idx].ultimoLogin=new Date().toISOString();lsSet(KEYS.empresas,empresas);}
+
+      mostrarAlerta(`Bem-vinda, ${emp.nome}! A redirigir...`,'sucesso');
+      setTimeout(()=>{window.location.href='dashboard-empresa.html';},1000);
+
+    },900);
+  });
+
+  /* ── LIMPAR ERROS ── */
+  document.getElementById('email').addEventListener('input',function(){limpar('campo-email');esconderAlerta();});
+  document.getElementById('senha').addEventListener('input',function(){limpar('campo-senha');esconderAlerta();});
+
+  /* ── SESSÃO EXISTENTE ── */
+  document.addEventListener('DOMContentLoaded',function(){
+    if(lsGet(KEYS.sessaoEmp)){
+      mostrarToast('Já tens sessão activa. A redirigir...','sucesso');
+      setTimeout(()=>{window.location.href='dashboard-empresa.html';},1200);return;
+    }
+    verificarBloqueio();
+    setTimeout(()=>{document.getElementById('email').focus();},300);
+  });
+</script>
+</body>
+</html>

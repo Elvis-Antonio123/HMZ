@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel Admin | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --admin:#1a1a2e;--admin2:#16213e;--admin3:#0f3460;
+      --amarelo:#FFBE00;--amarelo-dark:#E5AA00;
+      --verde:#1DB954;--vermelho:#E53935;--azul:#4A9EFF;--laranja:#F59E0B;--roxo:#A78BFA;
+      --bg:#0D1117;--bg2:#161B27;--bg3:#1E2536;
+      --texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;
+      --sombra:rgba(0,0,0,0.30);--radius:12px;--radius-sm:8px;--trans:all 0.25s ease;
+      --sidebar-w:240px;--header-h:60px;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s;}
+    a{text-decoration:none;color:inherit;}ul{list-style:none;}
+
+    /* HEADER */
+    header{background:var(--admin);height:var(--header-h);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:1px solid var(--borda);box-shadow:0 2px 20px rgba(0,0,0,0.40);}
+    .logo{font-size:1.25rem;font-weight:800;color:#fff;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px;}
+    .logo span{color:var(--amarelo);}
+    .logo-badge{background:var(--vermelho);color:#fff;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:0.5px;}
+    .h-dir{display:flex;align-items:center;gap:10px;}
+    .admin-chip{display:flex;align-items:center;gap:8px;background:rgba(255,190,0,0.15);border:1px solid rgba(255,190,0,0.30);border-radius:50px;padding:5px 14px 5px 6px;font-size:0.83rem;font-weight:600;color:var(--amarelo);}
+    .admin-ic{width:28px;height:28px;border-radius:50%;background:var(--amarelo);color:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;}
+    .btn-sair{background:rgba(229,57,53,0.15);border:1px solid rgba(229,57,53,0.30);color:var(--vermelho);padding:6px 12px;border-radius:var(--radius-sm);font-size:0.82rem;cursor:pointer;font-weight:600;font-family:inherit;transition:var(--trans);display:inline-flex;align-items:center;gap:5px;}
+    .btn-sair:hover{background:rgba(229,57,53,0.30);}
+    .btn-burger{display:none;background:none;border:none;color:var(--texto);font-size:1.1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);}
+
+    /* LAYOUT */
+    .layout{display:flex;min-height:calc(100vh - var(--header-h));}
+
+    /* SIDEBAR */
+    .sidebar{width:var(--sidebar-w);background:var(--admin);border-right:1px solid var(--borda);padding:20px 0;position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;flex-shrink:0;transition:var(--trans);}
+    .sidebar::-webkit-scrollbar{width:4px;}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--borda);border-radius:2px;}
+    .sidebar-label{font-size:0.68rem;font-weight:700;letter-spacing:1px;color:var(--texto2);padding:0 18px;margin:16px 0 6px;text-transform:uppercase;opacity:0.6;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:0.87rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);border-left:3px solid transparent;position:relative;}
+    .nav-item:hover{background:rgba(255,255,255,0.05);color:var(--texto);border-left-color:var(--amarelo);}
+    .nav-item.ativo{background:rgba(255,190,0,0.10);color:var(--amarelo);border-left-color:var(--amarelo);}
+    .nav-item i{width:16px;text-align:center;font-size:0.92rem;}
+    .nav-badge{margin-left:auto;font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center;}
+    .nb-verde{background:var(--verde);color:#fff;}
+    .nb-amarelo{background:var(--amarelo);color:#1a1a2e;}
+    .nb-vermelho{background:var(--vermelho);color:#fff;}
+    .nb-azul{background:var(--azul);color:#fff;}
+    .sidebar-div{height:1px;background:var(--borda);margin:10px 14px;}
+
+    /* CONTEÚDO */
+    .conteudo{flex:1;padding:28px;overflow-x:hidden;background:var(--bg);}
+
+    /* SECÇÕES */
+    .sec{display:none;animation:fadeUp 0.35s ease both;}
+    .sec.ativa{display:block;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+    /* PG HEADER */
+    .pg-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:16px;}
+    .pg-header h1{font-size:1.5rem;font-weight:800;letter-spacing:-0.3px;}
+    .pg-header p{font-size:0.86rem;color:var(--texto2);margin-top:4px;}
+
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px;}
+    .stat-card{background:var(--bg2);border-radius:var(--radius);border:1px solid var(--borda);padding:18px;transition:var(--trans);position:relative;overflow:hidden;}
+    .stat-card:hover{border-color:var(--amarelo);box-shadow:0 6px 20px var(--sombra);}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cor-stat,var(--amarelo));}
+    .stat-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:10px;}
+    .stat-num{font-size:1.75rem;font-weight:800;line-height:1;margin-bottom:4px;}
+    .stat-lbl{font-size:0.77rem;color:var(--texto2);}
+
+    /* BOTÕES */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 18px;border-radius:var(--radius-sm);font-size:0.86rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);text-decoration:none;}
+    .btn-amarelo{background:var(--amarelo);color:#1a1a2e;}
+    .btn-amarelo:hover{background:var(--amarelo-dark);}
+    .btn-verde{background:var(--verde);color:#fff;}
+    .btn-verde:hover{background:#15803d;}
+    .btn-vermelho{background:var(--vermelho);color:#fff;}
+    .btn-vermelho:hover{opacity:0.88;}
+    .btn-outline{background:transparent;border:1px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--amarelo);color:var(--amarelo);}
+    .btn-azul{background:var(--azul);color:#fff;}
+    .btn-azul:hover{opacity:0.88;}
+
+    /* TABELA */
+    .tabela-wrap{background:var(--bg2);border-radius:var(--radius);border:1px solid var(--borda);overflow:hidden;margin-bottom:20px;}
+    .tabela-header{padding:16px 20px;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .tabela-titulo{font-size:0.92rem;font-weight:800;color:var(--texto);flex:1;}
+    .input-busca{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--borda);border-radius:var(--radius-sm);padding:7px 12px;min-width:180px;}
+    .input-busca i{color:var(--texto2);font-size:0.85rem;}
+    .input-busca input{border:none;background:none;outline:none;color:var(--texto);font-family:inherit;font-size:0.85rem;width:100%;}
+    .filtro-sel{padding:7px 10px;border:1px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg3);color:var(--texto);font-family:inherit;font-size:0.83rem;outline:none;cursor:pointer;}
+    table{width:100%;border-collapse:collapse;}
+    thead th{background:var(--bg3);padding:10px 14px;font-size:0.77rem;font-weight:700;color:var(--texto2);text-align:left;border-bottom:1px solid var(--borda);white-space:nowrap;text-transform:uppercase;letter-spacing:0.4px;}
+    tbody tr{border-bottom:1px solid var(--borda);transition:var(--trans);}
+    tbody tr:last-child{border-bottom:none;}
+    tbody tr:hover{background:rgba(255,255,255,0.03);}
+    tbody td{padding:12px 14px;font-size:0.84rem;vertical-align:middle;}
+
+    /* BADGES */
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+    .badge-verde  {background:rgba(29,185,84,0.15);color:var(--verde);}
+    .badge-amarelo{background:rgba(255,190,0,0.15);color:var(--amarelo);}
+    .badge-vermelho{background:rgba(229,57,53,0.15);color:var(--vermelho);}
+    .badge-azul   {background:rgba(74,158,255,0.15);color:var(--azul);}
+    .badge-cinza  {background:rgba(255,255,255,0.08);color:var(--texto2);}
+    .badge-roxo   {background:rgba(167,139,250,0.15);color:var(--roxo);}
+
+    /* ACÇÕES */
+    .acoes{display:flex;gap:5px;}
+    .btn-ic{width:30px;height:30px;border-radius:var(--radius-sm);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.80rem;transition:var(--trans);}
+    .bi-aprovar{background:rgba(29,185,84,0.15);color:var(--verde);}
+    .bi-aprovar:hover{background:var(--verde);color:#fff;}
+    .bi-ver{background:rgba(74,158,255,0.15);color:var(--azul);}
+    .bi-ver:hover{background:var(--azul);color:#fff;}
+    .bi-verificar{background:rgba(255,190,0,0.15);color:var(--amarelo);}
+    .bi-verificar:hover{background:var(--amarelo);color:#1a1a2e;}
+    .bi-rejeitar{background:rgba(229,57,53,0.15);color:var(--vermelho);}
+    .bi-rejeitar:hover{background:var(--vermelho);color:#fff;}
+    .bi-editar{background:rgba(167,139,250,0.15);color:var(--roxo);}
+    .bi-editar:hover{background:var(--roxo);color:#fff;}
+    .bi-banir{background:rgba(229,57,53,0.15);color:var(--vermelho);}
+    .bi-banir:hover{background:var(--vermelho);color:#fff;}
+
+    /* CARDS MÉTRICAS */
+    .metricas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px;}
+    .metrica-card{background:var(--bg2);border-radius:var(--radius);border:1px solid var(--borda);padding:20px;}
+    .metrica-titulo{font-size:0.85rem;font-weight:700;color:var(--texto2);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+    .metrica-titulo i{color:var(--amarelo);}
+
+    /* LISTA ACTIVIDADE */
+    .activ-lista{display:flex;flex-direction:column;gap:10px;}
+    .activ-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border-radius:var(--radius-sm);border:1px solid var(--borda);}
+    .activ-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;}
+    .activ-corpo{flex:1;}
+    .activ-corpo p{font-size:0.84rem;color:var(--texto);}
+    .activ-corpo small{font-size:0.76rem;color:var(--texto2);}
+
+    /* BARRAS DE CATEGORIA */
+    .cat-item{margin-bottom:12px;}
+    .cat-label{display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:5px;}
+    .cat-label span{color:var(--texto2);}
+    .cat-label strong{color:var(--texto);}
+    .cat-barra{height:6px;background:var(--borda);border-radius:3px;overflow:hidden;}
+    .cat-fill{height:100%;border-radius:3px;transition:width 1s ease;}
+
+    /* CARD CONFIGURAÇÕES */
+    .config-card{background:var(--bg2);border-radius:var(--radius);border:1px solid var(--borda);padding:24px;margin-bottom:16px;}
+    .config-titulo{font-size:0.92rem;font-weight:800;color:var(--amarelo);margin-bottom:16px;display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--borda);}
+    .config-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--borda);}
+    .config-row:last-child{border-bottom:none;}
+    .config-row-info h4{font-size:0.86rem;font-weight:700;margin-bottom:3px;}
+    .config-row-info p{font-size:0.79rem;color:var(--texto2);}
+    .toggle-sw{width:44px;height:24px;border-radius:12px;background:var(--borda);position:relative;cursor:pointer;transition:var(--trans);}
+    .toggle-sw.on{background:var(--verde);}
+    .toggle-sw::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:var(--trans);}
+    .toggle-sw.on::after{left:23px;}
+
+    /* LOGS */
+    .log-lista{display:flex;flex-direction:column;gap:8px;font-family:monospace;}
+    .log-item{background:var(--bg3);border:1px solid var(--borda);border-radius:var(--radius-sm);padding:10px 14px;font-size:0.80rem;display:flex;gap:14px;align-items:flex-start;}
+    .log-time{color:var(--texto2);white-space:nowrap;flex-shrink:0;}
+    .log-tipo{padding:1px 8px;border-radius:4px;font-size:0.72rem;font-weight:700;flex-shrink:0;}
+    .log-info{background:rgba(74,158,255,0.2);color:var(--azul);}
+    .log-sucesso{background:rgba(29,185,84,0.2);color:var(--verde);}
+    .log-aviso{background:rgba(255,190,0,0.2);color:var(--amarelo);}
+    .log-erro{background:rgba(229,57,53,0.2);color:var(--vermelho);}
+    .log-msg{color:var(--texto);}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.70);z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+    .modal-overlay.visivel{display:flex;}
+    .modal{background:var(--bg2);border-radius:var(--radius);padding:28px;width:100%;max-width:460px;box-shadow:0 24px 64px rgba(0,0,0,0.50);border:1px solid var(--borda);animation:modalIn 0.3s ease both;}
+    @keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;}
+    .modal p{font-size:0.86rem;color:var(--texto2);line-height:1.65;margin-bottom:20px;}
+    .modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+
+    /* TOAST */
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--amarelo);color:var(--texto);padding:12px 16px;border-radius:var(--radius-sm);font-size:0.86rem;box-shadow:0 8px 24px rgba(0,0,0,0.40);animation:toastIn 0.3s ease;pointer-events:all;max-width:300px;}
+    .toast.sucesso{border-left-color:var(--verde);}
+    .toast.erro{border-left-color:var(--vermelho);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    /* EMPTY */
+    .empty-row td{text-align:center;padding:32px!important;color:var(--texto2);font-size:0.86rem;}
+
+    @media(max-width:900px){.sidebar{position:fixed;top:var(--header-h);left:0;height:calc(100vh - var(--header-h));transform:translateX(-100%);z-index:150;box-shadow:4px 0 20px rgba(0,0,0,0.5);}.sidebar.aberta{transform:translateX(0);}.btn-burger{display:flex;}.conteudo{padding:20px 14px;}}
+    @media(max-width:560px){.stats-grid{grid-template-columns:1fr 1fr;}.metricas-grid{grid-template-columns:1fr;}}
+  
+    /* DOCS MODAL */
+    .modal-docs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:3000;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+    .modal-docs-overlay.visivel{display:flex;}
+    .modal-docs{background:var(--bg2);border-radius:var(--radius);width:100%;max-width:800px;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.4);}
+    .modal-docs-header{padding:16px 22px;border-bottom:1px solid var(--borda);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .modal-docs-header h3{font-size:0.97rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+    .modal-docs-body{flex:1;padding:16px 22px;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+    .modal-docs-body iframe{width:100%;flex:1;min-height:460px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);}
+    .modal-docs-footer{padding:12px 22px 16px;border-top:1px solid var(--borda);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;}
+    .btn-ic.bi-docs{background:rgba(0,87,194,0.12);color:var(--azul);}
+    .btn-ic.bi-docs:hover{background:var(--azul);color:#fff;}
+    /* REJEIÇÃO MODAL */
+    .modal-rejeicao-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:3000;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+    .modal-rejeicao-overlay.visivel{display:flex;}
+    .modal-rejeicao{background:var(--bg2);border-radius:var(--radius);width:100%;max-width:460px;box-shadow:0 24px 64px rgba(0,0,0,0.35);}
+    .modal-rejeicao-header{padding:18px 22px;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:10px;}
+    .modal-rejeicao-header h3{font-size:0.97rem;font-weight:800;color:var(--vermelho);}
+    .modal-rejeicao-body{padding:20px 22px;}
+    .motivo-opcoes{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+    .motivo-opcao{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);cursor:pointer;transition:var(--trans);}
+    .motivo-opcao:hover{border-color:var(--vermelho);background:#FFF5F5;}
+    .motivo-opcao input[type=radio]{margin-top:2px;accent-color:var(--vermelho);flex-shrink:0;}
+    .motivo-opcao label{cursor:pointer;font-size:0.86rem;font-weight:600;color:var(--texto);}
+    .motivo-opcao small{display:block;font-size:0.77rem;color:var(--texto2);margin-top:2px;font-weight:400;}
+    .motivo-opcao.selecionado{border-color:var(--vermelho);background:#FFF5F5;}
+    .motivo-outro{width:100%;padding:9px 12px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.88rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;resize:none;min-height:70px;display:none;}
+    .motivo-outro.visivel{display:block;}
+    .modal-rejeicao-footer{padding:12px 22px 18px;border-top:1px solid var(--borda);display:flex;gap:10px;justify-content:flex-end;}
+    /* DENÚNCIAS/FEEDBACK */
+    .df-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:18px 20px;margin-bottom:12px;transition:var(--trans);}
+    .df-card:hover{box-shadow:0 4px 16px var(--sombra);}
+    .df-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px;}
+    .df-tipo{display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+    .df-tipo.denuncia{background:#FFF5F5;color:var(--vermelho);}
+    .df-tipo.feedback{background:#EEF4FF;color:var(--azul);}
+    .df-tipo.sugestao{background:#F0FFF4;color:var(--verde);}
+    .df-msg{font-size:0.86rem;color:var(--texto);line-height:1.65;margin-bottom:8px;}
+    .df-meta{font-size:0.77rem;color:var(--texto2);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .df-empty{text-align:center;padding:48px 24px;color:var(--texto2);}
+    .df-empty i{font-size:2rem;display:block;margin-bottom:10px;opacity:0.35;}
+    .nb-df{background:var(--vermelho);}
+
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+    #modal-docs.visivel{display:flex !important;}
+
+    /* MODAL PREVIEW */
+    .modal-preview-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:3000;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
+    .modal-preview-overlay.visivel{display:flex;}
+    .modal-preview{background:var(--bg2);border-radius:var(--radius);width:100%;max-width:700px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.4);border:1.5px solid var(--borda);}
+    .modal-preview-header{padding:18px 22px;border-bottom:1px solid var(--borda);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1;}
+    .modal-preview-header h3{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+    .modal-preview-body{padding:22px;}
+    .preview-hero{background:linear-gradient(135deg,var(--azul-dark),var(--azul));border-radius:var(--radius-sm);padding:22px 24px;color:#fff;margin-bottom:18px;}
+    .preview-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+    .preview-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.25);padding:3px 10px;border-radius:20px;font-size:0.76rem;}
+    .preview-titulo{font-size:1.3rem;font-weight:800;margin-bottom:4px;}
+    .preview-inst{font-size:0.88rem;opacity:0.85;display:flex;align-items:center;gap:6px;}
+    .preview-sec{margin-bottom:16px;}
+    .preview-sec-titulo{font-size:0.80rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--azul);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+    .preview-sec-titulo::after{content:'';flex:1;height:1px;background:var(--borda);}
+    .preview-sec p{font-size:0.86rem;color:var(--texto);line-height:1.75;}
+    .preview-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .preview-info-item{background:var(--bg);border:1px solid var(--borda);border-radius:var(--radius-sm);padding:10px 12px;}
+    .preview-info-item label{font-size:0.70rem;color:var(--texto2);display:block;margin-bottom:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;}
+    .preview-info-item span{font-size:0.85rem;font-weight:700;color:var(--texto);}
+    .preview-footer{padding:14px 22px;border-top:1px solid var(--borda);display:flex;gap:10px;justify-content:flex-end;background:var(--bg2);position:sticky;bottom:0;}
+    .preview-pendente-aviso{background:rgba(255,190,0,0.12);border:1px solid rgba(255,190,0,0.30);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;font-size:0.84rem;color:var(--amarelo);display:flex;align-items:center;gap:8px;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="btn-burger" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars" id="burger-icon"></i></button>
+    <div class="logo">
+      Horizonte<span>MZ</span>
+      <span class="logo-badge">ADMIN</span>
+    </div>
+  </div>
+  <div class="h-dir">
+    <div class="admin-chip">
+      <div class="admin-ic"><i class="fas fa-user-shield"></i></div>
+      Administrador
+    </div>
+    <button class="btn-sair" onclick="sair()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-label">Principal</div>
+    <div class="nav-item ativo" onclick="irSec('dashboard')"><i class="fas fa-home"></i> Dashboard <span class="nav-badge nb-amarelo" id="nb-pend">0</span></div>
+    <div class="sidebar-div"></div>
+    <div class="sidebar-label">Conteúdo</div>
+    <div class="nav-item" onclick="irSec('oportunidades')"><i class="fas fa-list"></i> Oportunidades <span class="nav-badge nb-vermelho" id="nb-op">0</span></div>
+    <div class="nav-item" onclick="irSec('vagas')"><i class="fas fa-briefcase"></i> Vagas de Emprego <span class="nav-badge nb-vermelho" id="nb-vaga">0</span></div>
+    <div class="sidebar-div"></div>
+    <div class="sidebar-label">Utilizadores</div>
+    <div class="nav-item" onclick="irSec('utilizadores')"><i class="fas fa-users"></i> Utilizadores <span class="nav-badge nb-azul" id="nb-util">0</span></div>
+    <div class="nav-item" onclick="irSec('instituicoes')"><i class="fas fa-university"></i> Instituições <span class="nav-badge nb-verde" id="nb-inst">0</span></div>
+    <div class="nav-item" onclick="irSec('empresas')"><i class="fas fa-building"></i> Empresas <span class="nav-badge nb-verde" id="nb-emp">0</span></div>
+    <div class="sidebar-div"></div>
+    <div class="sidebar-label">Sistema</div>
+    <div class="nav-item" onclick="irSec('metricas')"><i class="fas fa-chart-bar"></i> Métricas</div>
+    <div class="nav-item" onclick="irSec('denuncias')"><i class="fas fa-flag"></i> Denúncias/Feedback <span class="nav-badge nb-df" id="nb-df" style="display:none;">0</span></div>
+    <div class="nav-item" onclick="irSec('mailton')"><i class="fas fa-envelope-open-text"></i> Configurar Email</div>
+    <div class="nav-item" onclick="irSec('logs')"><i class="fas fa-terminal"></i> Logs</div>
+    <div class="nav-item" onclick="irSec('configuracoes')"><i class="fas fa-cog"></i> Configurações</div>
+    <div class="sidebar-div"></div>
+    <div class="nav-item" onclick="location.href='index.html'"><i class="fas fa-external-link-alt"></i> Ver plataforma</div>
+    <div class="nav-item" onclick="sair()" style="color:var(--vermelho);"><i class="fas fa-sign-out-alt"></i> Sair</div>
+  </aside>
+
+  <div id="overlay" onclick="fecharSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.50);z-index:140;"></div>
+
+  <!-- CONTEÚDO -->
+  <main class="conteudo">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="sec ativa" id="sec-dashboard">
+      <div class="pg-header">
+        <div><h1>Dashboard</h1><p>Visão geral da plataforma HorizonteMZ.</p></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-outline" onclick="exportarDados()"><i class="fas fa-download"></i> Exportar dados</button>
+          <button class="btn btn-amarelo" onclick="irSec('oportunidades')"><i class="fas fa-check-circle"></i> Aprovar pendentes</button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card" style="--cor-stat:var(--amarelo)">
+          <div class="stat-ic" style="background:rgba(255,190,0,0.15);color:var(--amarelo);"><i class="fas fa-clock"></i></div>
+          <div class="stat-num" id="st-pend">0</div>
+          <div class="stat-lbl">Pendentes de aprovação</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--verde)">
+          <div class="stat-ic" style="background:rgba(29,185,84,0.15);color:var(--verde);"><i class="fas fa-list"></i></div>
+          <div class="stat-num" id="st-ops">0</div>
+          <div class="stat-lbl">Oportunidades activas</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--azul)">
+          <div class="stat-ic" style="background:rgba(74,158,255,0.15);color:var(--azul);"><i class="fas fa-users"></i></div>
+          <div class="stat-num" id="st-utils">0</div>
+          <div class="stat-lbl">Utilizadores registados</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--roxo)">
+          <div class="stat-ic" style="background:rgba(167,139,250,0.15);color:var(--roxo);"><i class="fas fa-university"></i></div>
+          <div class="stat-num" id="st-insts">0</div>
+          <div class="stat-lbl">Instituições aprovadas</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--laranja)">
+          <div class="stat-ic" style="background:rgba(245,158,11,0.15);color:var(--laranja);"><i class="fas fa-building"></i></div>
+          <div class="stat-num" id="st-emps">0</div>
+          <div class="stat-lbl">Empresas aprovadas</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--vermelho)">
+          <div class="stat-ic" style="background:rgba(229,57,53,0.15);color:var(--vermelho);"><i class="fas fa-paper-plane"></i></div>
+          <div class="stat-num" id="st-cands">0</div>
+          <div class="stat-lbl">Candidaturas totais</div>
+        </div>
+      </div>
+
+      <!-- Pendentes -->
+      <div class="tabela-wrap">
+        <div class="tabela-header">
+          <span class="tabela-titulo"><i class="fas fa-clock" style="color:var(--amarelo)"></i> Pendentes de Aprovação</span>
+        </div>
+        <table>
+          <thead><tr><th>Tipo</th><th>Nome</th><th>Submetido por</th><th>Data</th><th>Acções</th></tr></thead>
+          <tbody id="tb-pendentes"></tbody>
+        </table>
+      </div>
+
+      <!-- Actividade recente -->
+      <div class="metricas-grid">
+        <div class="metrica-card">
+          <div class="metrica-titulo"><i class="fas fa-activity"></i> Actividade Recente</div>
+          <div class="activ-lista" id="activ-lista"></div>
+        </div>
+        <div class="metrica-card">
+          <div class="metrica-titulo"><i class="fas fa-chart-pie"></i> Oportunidades por Categoria</div>
+          <div id="cats-wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── OPORTUNIDADES ── -->
+    <div class="sec" id="sec-oportunidades">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-list" style="color:var(--amarelo)"></i> Oportunidades</h1><p>Gere e aprova as oportunidades submetidas pelas instituições.</p></div>
+      </div>
+      <div class="tabela-wrap">
+        <div class="tabela-header">
+          <span class="tabela-titulo">Todas as oportunidades</span>
+          <div class="input-busca"><i class="fas fa-search"></i><input type="text" id="busca-ops" placeholder="Pesquisar..." oninput="filtrarOps()"/></div>
+          <select class="filtro-sel" id="filtro-ops" onchange="filtrarOps()">
+            <option value="">Todos os estados</option>
+            <option value="pendente">Pendente</option>
+            <option value="aprovada">Aprovada</option>
+            <option value="pausada">Pausada</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Título</th><th>Categoria</th><th>Instituição</th><th>Estado</th><th>Data</th><th>Acções</th></tr></thead>
+          <tbody id="tb-ops"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── VAGAS ── -->
+    <div class="sec" id="sec-vagas">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-briefcase" style="color:var(--laranja)"></i> Vagas de Emprego</h1><p>Gere e aprova as vagas submetidas pelas empresas.</p></div>
+      </div>
+      <div class="tabela-wrap">
+        <div class="tabela-header">
+          <span class="tabela-titulo">Todas as vagas</span>
+          <div class="input-busca"><i class="fas fa-search"></i><input type="text" id="busca-vagas" placeholder="Pesquisar..." oninput="filtrarVagas()"/></div>
+          <select class="filtro-sel" id="filtro-vagas" onchange="filtrarVagas()">
+            <option value="">Todos os estados</option>
+            <option value="pendente">Pendente</option>
+            <option value="aprovada">Aprovada</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Título</th><th>Tipo</th><th>Empresa</th><th>Estado</th><th>Data</th><th>Acções</th></tr></thead>
+          <tbody id="tb-vagas"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── UTILIZADORES ── -->
+    <div class="sec" id="sec-utilizadores">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-users" style="color:var(--azul)"></i> Utilizadores</h1><p>Gere os utilizadores registados na plataforma.</p></div>
+      </div>
+      <div class="tabela-wrap">
+        <div class="tabela-header">
+          <span class="tabela-titulo">Todos os utilizadores</span>
+          <div class="input-busca"><i class="fas fa-search"></i><input type="text" id="busca-utils" placeholder="Pesquisar..." oninput="filtrarUtils()"/></div>
+        </div>
+        <table>
+          <thead><tr><th>Nome</th><th>E-mail</th><th>Província</th><th>Registo</th><th>Candidaturas</th><th>Acções</th></tr></thead>
+          <tbody id="tb-utils"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── INSTITUIÇÕES ── -->
+    <div class="sec" id="sec-instituicoes">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-university" style="color:var(--verde)"></i> Instituições</h1><p>Aprova e verifica as instituições registadas.</p></div>
+      </div>
+      <div class="tabela-wrap">
+        <div class="tabela-header">
+          <span class="tabela-titulo">Todas as instituições</span>
+          <div class="input-busca"><i class="fas fa-search"></i><input type="text" id="busca-insts" placeholder="Pesquisar..." oninput="filtrarInsts()"/></div>
+          <select class="filtro-sel" id="filtro-insts" onchange="filtrarInsts()">
+            <option value="">Todos</option>
+            <option value="pendente">Pendente</option>
+            <option value="aprovada">Aprovada</option>
+            <option value="verificada">Verificada</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Nome</th><th>Tipo</th><th>Província</th><th>Estado</th><th>Oportunidades</th><th>Acções</th></tr></thead>
+          <tbody id="tb-insts"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── EMPRESAS ── -->
+    <div class="sec" id="sec-empresas">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-building" style="color:var(--laranja)"></i> Empresas</h1><p>Aprova e verifica as empresas registadas.</p></div>
+      </div>
+      <div class="tabela-wrap">
+        <div class="tabela-header">
+          <span class="tabela-titulo">Todas as empresas</span>
+          <div class="input-busca"><i class="fas fa-search"></i><input type="text" id="busca-emps" placeholder="Pesquisar..." oninput="filtrarEmps()"/></div>
+          <select class="filtro-sel" id="filtro-emps" onchange="filtrarEmps()">
+            <option value="">Todos</option>
+            <option value="pendente">Pendente</option>
+            <option value="aprovada">Aprovada</option>
+            <option value="verificada">Verificada</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Nome</th><th>Sector</th><th>Dimensão</th><th>Estado</th><th>Vagas</th><th>Acções</th></tr></thead>
+          <tbody id="tb-emps"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── MÉTRICAS ── -->
+    <div class="sec" id="sec-metricas">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-chart-bar" style="color:var(--roxo)"></i> Métricas</h1><p>Estatísticas detalhadas da plataforma.</p></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" style="--cor-stat:var(--verde)"><div class="stat-ic" style="background:rgba(29,185,84,0.15);color:var(--verde);"><i class="fas fa-eye"></i></div><div class="stat-num" id="m-views">0</div><div class="stat-lbl">Visualizações totais</div></div>
+        <div class="stat-card" style="--cor-stat:var(--azul)"><div class="stat-ic" style="background:rgba(74,158,255,0.15);color:var(--azul);"><i class="fas fa-bookmark"></i></div><div class="stat-num" id="m-guard">0</div><div class="stat-lbl">Oportunidades guardadas</div></div>
+        <div class="stat-card" style="--cor-stat:var(--roxo)"><div class="stat-ic" style="background:rgba(167,139,250,0.15);color:var(--roxo);"><i class="fas fa-paper-plane"></i></div><div class="stat-num" id="m-cands">0</div><div class="stat-lbl">Candidaturas enviadas</div></div>
+        <div class="stat-card" style="--cor-stat:var(--amarelo)"><div class="stat-ic" style="background:rgba(255,190,0,0.15);color:var(--amarelo);"><i class="fas fa-check-circle"></i></div><div class="stat-num" id="m-aceites">0</div><div class="stat-lbl">Candidaturas aceites</div></div>
+      </div>
+      <div class="metricas-grid">
+        <div class="metrica-card">
+          <div class="metrica-titulo"><i class="fas fa-chart-pie"></i> Distribuição por Categoria</div>
+          <div id="m-cats"></div>
+        </div>
+        <div class="metrica-card">
+          <div class="metrica-titulo"><i class="fas fa-map-marker-alt"></i> Distribuição por Província</div>
+          <div id="m-provs"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOGS ── -->
+    <div class="sec" id="sec-logs">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-terminal" style="color:var(--verde)"></i> Logs do Sistema</h1><p>Registo de actividades e eventos da plataforma.</p></div>
+        <button class="btn btn-outline" onclick="limparLogs()"><i class="fas fa-trash-alt"></i> Limpar logs</button>
+      </div>
+      <div class="tabela-wrap" style="padding:16px;">
+        <div class="log-lista" id="log-lista"></div>
+      </div>
+    </div>
+
+    <!-- ── CONFIGURAÇÕES ── -->
+    <div class="sec" id="sec-configuracoes">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-cog" style="color:var(--texto2)"></i> Configurações</h1><p>Configurações globais da plataforma.</p></div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-titulo"><i class="fas fa-shield-alt"></i> Moderação</div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Aprovação manual de oportunidades</h4><p>Todas as oportunidades precisam de aprovação antes de serem publicadas.</p></div>
+          <div class="toggle-sw on" id="tog-modOp" onclick="toggleConfig(this,'modOp')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Aprovação manual de vagas</h4><p>Todas as vagas de emprego precisam de aprovação antes de serem publicadas.</p></div>
+          <div class="toggle-sw on" id="tog-modVaga" onclick="toggleConfig(this,'modVaga')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Verificação de instituições</h4><p>Instituições precisam de aprovação manual para aceder à plataforma.</p></div>
+          <div class="toggle-sw on" id="tog-modInst" onclick="toggleConfig(this,'modInst')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Verificação de empresas</h4><p>Empresas precisam de aprovação manual para publicar vagas.</p></div>
+          <div class="toggle-sw on" id="tog-modEmp" onclick="toggleConfig(this,'modEmp')"></div>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-titulo"><i class="fas fa-sliders-h"></i> Plataforma</div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Modo manutenção</h4><p>Impede o acesso de utilizadores normais à plataforma.</p></div>
+          <div class="toggle-sw" id="tog-manut" onclick="toggleConfig(this,'manut')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Registos públicos</h4><p>Permitir novos registos de utilizadores, instituições e empresas.</p></div>
+          <div class="toggle-sw on" id="tog-regPub" onclick="toggleConfig(this,'regPub')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Orientação profissional</h4><p>Mostrar o quiz de orientação profissional na plataforma.</p></div>
+          <div class="toggle-sw on" id="tog-orient" onclick="toggleConfig(this,'orient')"></div>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-titulo"><i class="fas fa-database"></i> Dados</div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Exportar todos os dados</h4><p>Descarregar um backup completo da plataforma em JSON.</p></div>
+          <button class="btn btn-outline" onclick="exportarDados()"><i class="fas fa-download"></i> Exportar</button>
+        </div>
+        <div class="config-row">
+          <div class="config-row-info"><h4>Limpar dados de teste</h4><p>Apagar todos os dados de teste e reiniciar a plataforma.</p></div>
+          <button class="btn btn-vermelho" onclick="confirmarLimpar()"><i class="fas fa-trash-alt"></i> Limpar</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- DENÚNCIAS E FEEDBACK -->
+    <div class="sec" id="sec-denuncias">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="font-size:1.2rem;font-weight:800;">Denúncias, Feedbacks e Sugestões</h2>
+          <p style="font-size:0.85rem;color:var(--texto2);margin-top:4px;">Mensagens enviadas pelos utilizadores da plataforma.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <select id="filtro-df" onchange="renderizarDF()" style="padding:8px 12px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg);color:var(--texto);font-family:inherit;outline:none;cursor:pointer;font-size:0.85rem;">
+            <option value="">Todos</option>
+            <option value="denuncia">Denúncias</option>
+            <option value="feedback">Feedbacks</option>
+            <option value="sugestao">Sugestões</option>
+          </select>
+          <button class="btn btn-outline" onclick="limparDF()" style="font-size:0.82rem;padding:7px 14px;"><i class="fas fa-trash-alt"></i> Limpar todos</button>
+        </div>
+      </div>
+      <div id="lista-df"></div>
+    </div>
+
+
+    <!-- CONFIGURAR EMAIL MAILTON -->
+    <div class="sec" id="sec-mailton">
+      <div style="margin-bottom:24px;">
+        <h2 style="font-size:1.2rem;font-weight:800;">Configuração de Email (Mailton)</h2>
+        <p style="font-size:0.85rem;color:var(--texto2);margin-top:4px;">Configura a API do Mailton para enviar emails automáticos de aprovação e rejeição de contas.</p>
+      </div>
+
+      <!-- COMO OBTER A API KEY -->
+      <div style="background:var(--azul-light);border:1.5px solid var(--borda);border-radius:var(--radius);padding:20px 22px;margin-bottom:20px;">
+        <h4 style="font-size:0.9rem;font-weight:800;color:var(--azul);margin-bottom:10px;display:flex;align-items:center;gap:7px;"><i class="fas fa-info-circle"></i> Como obter a API Key do Mailton</h4>
+        <ol style="font-size:0.84rem;color:var(--texto);line-height:2;padding-left:18px;">
+          <li>Acede a <a href="https://mailton.co" target="_blank" style="color:var(--azul);font-weight:700;">mailton.co</a> e cria uma conta gratuita</li>
+          <li>No painel, vai a <strong>API Keys → Create new key</strong></li>
+          <li>Copia a chave gerada e cola no campo abaixo</li>
+          <li>Em <strong>Verified Senders</strong>, adiciona e verifica o email remetente</li>
+          <li>Guarda as configurações — os emails serão enviados automaticamente</li>
+        </ol>
+      </div>
+
+      <div style="background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius);padding:24px;">
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;">API Key do Mailton <span style="color:var(--vermelho);">*</span></label>
+          <div style="position:relative;">
+            <i class="fas fa-key" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--texto2);"></i>
+            <input type="password" id="mailton-key" placeholder="mk_live_xxxxxxxxxxxxxxxxxxxx"
+              style="width:100%;padding:11px 40px 11px 40px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;"/>
+            <button onclick="toggleMailtonKey()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--texto2);cursor:pointer;font-size:0.9rem;" id="btn-toggle-key"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;">Email remetente <span style="color:var(--vermelho);">*</span></label>
+          <div style="position:relative;">
+            <i class="fas fa-envelope" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--texto2);"></i>
+            <input type="email" id="mailton-from" placeholder="noreply@horizontemz.co.mz"
+              style="width:100%;padding:11px 14px 11px 40px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;"/>
+          </div>
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;">Email de teste</label>
+          <div style="display:flex;gap:10px;">
+            <div style="position:relative;flex:1;">
+              <i class="fas fa-paper-plane" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--texto2);"></i>
+              <input type="email" id="mailton-teste" placeholder="teste@email.com"
+                style="width:100%;padding:11px 14px 11px 40px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;"/>
+            </div>
+            <button class="btn btn-outline" onclick="enviarEmailTeste()" style="white-space:nowrap;"><i class="fas fa-flask"></i> Testar</button>
+          </div>
+        </div>
+        <!-- Estado da ligação -->
+        <div id="mailton-estado" style="display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.85rem;margin-bottom:16px;border:1px solid;"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn btn-outline" onclick="carregarConfigMailton()"><i class="fas fa-undo"></i> Repor</button>
+          <button class="btn btn-azul" onclick="guardarConfigMailton()"><i class="fas fa-save"></i> Guardar configuração</button>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO DE EMAILS -->
+      <div style="background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius);padding:20px 22px;margin-top:20px;">
+        <h4 style="font-size:0.9rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:7px;"><i class="fas fa-history" style="color:var(--azul);"></i> Histórico de Emails</h4>
+        <div id="historico-emails">
+          <p style="font-size:0.84rem;color:var(--texto2);text-align:center;padding:20px 0;">Nenhum email enviado ainda.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO -->
+<div class="modal-overlay" id="modal-conf">
+  <div class="modal">
+    <h3 id="modal-titulo" style="color:var(--vermelho);">Confirmar acção</h3>
+    <p id="modal-msg">Tens a certeza?</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="fecharModal()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-vermelho" id="btn-confirmar-modal"><i class="fas fa-check"></i> Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+  const KEYS={sessaoAdmin:'hmz_sessao_admin',sessaoInst:'hmz_sessao_instituicao',sessaoUtil:'hmz_sessao_utilizador',sessaoEmp:'hmz_sessao_empresa',oportunidades:'hmz_oportunidades',vagas:'hmz_vagas',utilizadores:'hmz_utilizadores',instituicoes:'hmz_instituicoes',empresas:'hmz_empresas',candidaturas:'hmz_candidaturas',candidaturasEmp:'hmz_candidaturas_emp',logs:'hmz_admin_logs',config:'hmz_admin_config'};
+  let modalCallback=null;
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){console.warn(e);}}
+  function truncar(txt,max){return txt&&txt.length>max?txt.substring(0,max)+'...':txt||'';}
+  function formatarData(iso){if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('pt-MZ',{day:'2-digit',month:'short',year:'numeric'});}
+  function agora(){return new Date().toLocaleTimeString('pt-MZ',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+
+  /* TOAST */
+  function mostrarToast(msg,tipo=''){const cont=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;cont.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+
+  /* SIDEBAR */
+  let sbAberta=false;
+  function toggleSidebar(){sbAberta?fecharSidebar():abrirSidebar();}
+  function abrirSidebar(){sbAberta=true;document.getElementById('sidebar').classList.add('aberta');document.getElementById('overlay').style.display='block';document.getElementById('burger-icon').className='fas fa-times';}
+  function fecharSidebar(){sbAberta=false;document.getElementById('sidebar').classList.remove('aberta');document.getElementById('overlay').style.display='none';document.getElementById('burger-icon').className='fas fa-bars';}
+
+  /* MODAL */
+  function abrirModal(titulo,msg,cb){
+    document.getElementById('modal-titulo').textContent=titulo;
+    document.getElementById('modal-msg').textContent=msg;
+    document.getElementById('btn-confirmar-modal').onclick=()=>{fecharModal();cb();};
+    document.getElementById('modal-conf').classList.add('visivel');
+    document.body.style.overflow='hidden';
+  }
+  function fecharModal(){document.getElementById('modal-conf').classList.remove('visivel');document.body.style.overflow='';}
+  document.getElementById('modal-conf').addEventListener('click',function(e){if(e.target===this)fecharModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharModal();});
+
+  /* LOG */
+  function adicionarLog(tipo,msg){
+    const logs=lsGet(KEYS.logs,[]);
+    logs.unshift({tipo,msg,hora:new Date().toISOString()});
+    if(logs.length>100)logs.pop();
+    lsSet(KEYS.logs,logs);
+  }
+
+  /* NAVEGAÇÃO */
+  function irSec(id){
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ativa'));
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('ativo'));
+    document.getElementById('sec-'+id).classList.add('ativa');
+    const nav=document.querySelector(`.nav-item[onclick*="${id}"]`);
+    if(nav)nav.classList.add('ativo');
+    fecharSidebar();
+    // Carregar dados da secção
+    if(id==='oportunidades')renderizarOps();
+    else if(id==='vagas')renderizarVagas();
+    else if(id==='utilizadores')renderizarUtils();
+    else if(id==='instituicoes')renderizarInsts();
+    else if(id==='empresas')renderizarEmps();
+    else if(id==='metricas')renderizarMetricas();
+    else if(id==='logs')renderizarLogs();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  /* SAIR */
+  function sair(){lsSet(KEYS.sessaoAdmin,null);window.location.href='index.html';}
+
+  /* BADGE ESTADO */
+  function badgeEstado(item){
+    if(item.suspensaAdmin===true)return'<span class="badge badge-vermelho">Suspensa</span>';
+    if(item.desativada===true || item.suspensa===true)return'<span class="badge badge-cinza">Desactivada</span>';
+    if(item.verificada)return'<span class="badge badge-verde"><i class="fas fa-check-circle"></i> Verificada</span>';
+    if(item.aprovada)return'<span class="badge badge-azul">Aprovada</span>';
+    if(item.pausada)return'<span class="badge badge-amarelo">Pausada</span>';
+    return'<span class="badge badge-amarelo"><i class="fas fa-clock"></i> Pendente</span>';
+  }
+
+  /* ── DASHBOARD ── */
+  function carregarDashboard(){
+    const ops=lsGet(KEYS.oportunidades,[]);
+    const vagas=lsGet(KEYS.vagas,[]);
+    const utils=lsGet(KEYS.utilizadores,[]);
+    const insts=lsGet(KEYS.instituicoes,[]);
+    const emps=lsGet(KEYS.empresas,[]);
+    const cands=[...lsGet(KEYS.candidaturas,[]),...lsGet(KEYS.candidaturasEmp,[])];
+
+    const pendOps=ops.filter(o=>!o.aprovada&&!o.pausada).length;
+    var pendVagas=vagas.filter(function(v){return !v.aprovada&&!v.fechada;}).length;
+    const pendInsts=insts.filter(i=>!i.aprovada&&i.suspensaAdmin!==true).length;
+    const pendEmps=emps.filter(e=>!e.aprovada&&e.suspensaAdmin!==true).length;
+    const totalPend=pendOps+pendVagas+pendInsts+pendEmps;
+
+    document.getElementById('st-pend').textContent=totalPend;
+    document.getElementById('st-ops').textContent=ops.filter(o=>o.aprovada&&!o.pausada).length;
+    if(document.getElementById('st-vagas'))document.getElementById('st-vagas').textContent=vagas.filter(v=>v.aprovada&&!v.pausada&&!v.fechada).length;
+    document.getElementById('st-utils').textContent=utils.length;
+    document.getElementById('st-insts').textContent=insts.filter(i=>i.aprovada&&i.suspensaAdmin!==true&&i.desativada!==true).length;
+    document.getElementById('st-emps').textContent=emps.filter(e=>e.aprovada&&e.suspensaAdmin!==true&&e.desativada!==true).length;
+    document.getElementById('st-cands').textContent=cands.length;
+
+    // Badges sidebar
+    document.getElementById('nb-pend').textContent=totalPend;
+    document.getElementById('nb-op').textContent=ops.length;
+    document.getElementById('nb-vaga').textContent=vagas.length;
+    document.getElementById('nb-util').textContent=utils.length;
+    document.getElementById('nb-inst').textContent=insts.length;
+    document.getElementById('nb-emp').textContent=emps.length;
+
+    // Pendentes
+    const pendentes=[];
+    ops.filter(o=>!o.aprovada).forEach(o=>pendentes.push({tipo:'Oportunidade',nome:o.titulo,por:o.instituicao,data:o.criadoEm,id:o.id,tipoEnt:'op'}));
+    vagas.filter(v=>!v.aprovada).forEach(v=>pendentes.push({tipo:'Vaga',nome:v.titulo,por:v.empresa,data:v.criadoEm,id:v.id,tipoEnt:'vaga'}));
+    insts.filter(i=>!i.aprovada&&i.suspensaAdmin!==true).forEach(i=>pendentes.push({tipo:'Instituição',nome:i.nome,por:i.responsavel,data:i.criadoEm,id:i.id,tipoEnt:'inst'}));
+    emps.filter(e=>!e.aprovada&&e.suspensaAdmin!==true).forEach(e=>pendentes.push({tipo:'Empresa',nome:e.nome,por:e.contactoRH,data:e.criadoEm,id:e.id,tipoEnt:'emp'}));
+    pendentes.sort((a,b)=>new Date(b.data)-new Date(a.data));
+
+    const tbPend=document.getElementById('tb-pendentes');
+    if(!pendentes.length){tbPend.innerHTML='<tr class="empty-row"><td colspan="5">Sem itens pendentes de aprovação.</td></tr>';}
+    else{
+      tbPend.innerHTML=pendentes.slice(0,8).map(p=>`
+        <tr>
+          <td><span class="badge ${p.tipoEnt==='op'?'badge-verde':p.tipoEnt==='vaga'?'badge-amarelo':p.tipoEnt==='inst'?'badge-roxo':'badge-azul'}">${p.tipo}</span></td>
+          <td style="font-weight:700;max-width:200px;">${truncar(p.nome,40)}</td>
+          <td style="color:var(--texto2);">${truncar(p.por||'—',25)}</td>
+          <td style="color:var(--texto2);">${formatarData(p.data)}</td>
+          <td><div class="acoes">
+            <button class="btn-ic bi-aprovar" onclick="aprovarItem('${p.tipoEnt}','${p.id}')" title="Aprovar"><i class="fas fa-check"></i></button>
+            <button class="btn-ic bi-rejeitar" onclick="rejeitarItem('${p.tipoEnt}','${p.id}')" title="Rejeitar"><i class="fas fa-times"></i></button>
+          </div></td>
+        </tr>`).join('');
+    }
+
+    // Actividade
+    const logs=lsGet(KEYS.logs,[]).slice(0,5);
+    const activEl=document.getElementById('activ-lista');
+    if(!logs.length){activEl.innerHTML='<p style="font-size:0.83rem;color:var(--texto2);">Sem actividade registada.</p>';}
+    else{
+      activEl.innerHTML=logs.map(l=>`
+        <div class="activ-item">
+          <div class="activ-ic" style="background:rgba(255,190,0,0.15);color:var(--amarelo);"><i class="fas fa-${l.tipo==='sucesso'?'check-circle':l.tipo==='erro'?'times-circle':'info-circle'}"></i></div>
+          <div class="activ-corpo"><p>${l.msg}</p><small>${new Date(l.hora).toLocaleString('pt-MZ')}</small></div>
+        </div>`).join('');
+    }
+
+    // Categorias
+    const maxCat=Math.max(...cats.map(c=>ops.filter(o=>o.categoria===c).length),1);
+    const catsEl=document.getElementById('cats-wrap');
+    catsEl.innerHTML=cats.map(c=>{const n=ops.filter(o=>o.categoria===c).length;const pct=Math.round(n/maxCat*100);return`<div class="cat-item"><div class="cat-label"><span>${c}</span><strong>${n}</strong></div><div class="cat-barra"><div class="cat-fill" style="width:0%;background:${cores[c]||'var(--azul)'};" data-pct="${pct}"></div></div></div>`;}).join('');
+    setTimeout(()=>{document.querySelectorAll('.cat-fill').forEach(el=>{el.style.width=el.dataset.pct+'%';});},300);
+  }
+
+  const var_azul='#4A9EFF',var_verde='#1DB954',var_roxo='#A78BFA',var_laranja='#F59E0B',var_amarelo='#FFBE00',var_vermelho='#E53935';
+
+  function sameId(a,b){ return String(a)===String(b); }
+
+  function removerCandidaturasPorPublicacao(tipoPublicacao,id){
+    var key=tipoPublicacao==='vaga'?KEYS.candidaturasEmp:KEYS.candidaturas;
+    var candidaturas=lsGet(key,[]);
+    var antes=candidaturas.length;
+    var restantes=candidaturas.filter(function(c){
+      if(tipoPublicacao==='op') return !sameId(c.oportunidadeId!==undefined?c.oportunidadeId:c.oportunidade_id,id);
+      return !sameId(c.vagaId!==undefined?c.vagaId:c.vaga_id,id);
+    });
+    if(restantes.length!==antes) lsSet(key,restantes);
+    return antes-restantes.length;
+  }
+
+  function removerDadosDaEntidade(tipo,id){
+    var publicacaoKey = tipo==='inst' ? KEYS.oportunidades : KEYS.vagas;
+    var lista=lsGet(publicacaoKey,[]);
+    var removidas=lista.filter(function(p){
+      var ownerId = tipo==='inst' ? p.instituicaoId : p.empresaId;
+      return sameId(ownerId,id);
+    });
+    var restantes=lista.filter(function(p){
+      var ownerId = tipo==='inst' ? p.instituicaoId : p.empresaId;
+      return !sameId(ownerId,id);
+    });
+    if(removidas.length) lsSet(publicacaoKey,restantes);
+    var candidaturasRemovidas=0;
+    removidas.forEach(function(p){
+      candidaturasRemovidas += removerCandidaturasPorPublicacao(tipo==='inst'?'op':'vaga',p.id);
+    });
+    return {publicacoes:removidas.length,candidaturas:candidaturasRemovidas};
+  }
+
+  /* APROVAR / REJEITAR */
+  function aprovarItem(tipo,id){
+    var keyMap={op:KEYS.oportunidades,vaga:KEYS.vagas,inst:KEYS.instituicoes,emp:KEYS.empresas};
+    var key=keyMap[tipo];
+    if(!key){ mostrarToast('Tipo de item inválido.','erro'); return false; }
+    var arr=lsGet(key,[]);
+    var idx=arr.findIndex(function(i){return sameId(i.id,id);});
+    if(idx!==-1){
+      arr[idx].aprovada=true;
+      lsSet(key,arr);
+      adicionarLog('sucesso',tipo.toUpperCase()+' aprovado: '+(arr[idx].nome||arr[idx].titulo||arr[idx].empresa||'—'));
+      if((tipo==='inst'||tipo==='emp')&&arr[idx].email){
+        enviarEmailAprovacao(arr[idx].email,arr[idx].nome,tipo).then(function(resultado){
+          mostrarToast(resultado?'Conta aprovada e email enviado.':'Conta aprovada. O email não foi enviado.',resultado?'sucesso':'aviso');
+        });
+      } else {
+        mostrarToast('Aprovado com sucesso!','sucesso');
+      }
+      carregarDashboard();
+      return true;
+    }
+    mostrarToast('Item não encontrado.','erro');
+    return false;
+  }
+  function rejeitarItem(tipo,id){
+    /* Para inst e emp abre modal de motivo; para outros rejeita directamente */
+    if(tipo==='inst'||tipo==='emp'){
+      abrirModalRejeicao(tipo,id);
+    } else {
+      abrirModal('Rejeitar item','Tens a certeza que queres rejeitar e eliminar este item?',()=>{
+        const keyMap={op:KEYS.oportunidades,vaga:KEYS.vagas,inst:KEYS.instituicoes,emp:KEYS.empresas};
+        const key=keyMap[tipo];const arr=lsGet(key,[]);
+        const item=arr.find(i=>sameId(i.id,id));
+        if(!item){ mostrarToast('Item não encontrado.','erro'); return; }
+        lsSet(key,arr.filter(i=>!sameId(i.id,id)));
+        var removidas=removerCandidaturasPorPublicacao(tipo,id);
+        adicionarLog('aviso',`Item rejeitado: ${item?.nome||item?.titulo||'—'}${removidas?` (${removidas} candidatura(s) associada(s) removida(s))`:''}`);
+        carregarDashboard();mostrarToast('Item rejeitado e removido.','');
+      });
+    }
+  }
+
+  /* ── OPORTUNIDADES ── */
+  function renderizarOps(){
+    const busca=document.getElementById('busca-ops').value.toLowerCase();
+    const filtro=document.getElementById('filtro-ops').value;
+    let ops=lsGet(KEYS.oportunidades,[]);
+    if(busca)ops=ops.filter(o=>(o.titulo||'').toLowerCase().includes(busca)||(o.instituicao||'').toLowerCase().includes(busca));
+    if(filtro==='pendente')ops=ops.filter(o=>!o.aprovada&&!o.pausada);
+    else if(filtro==='aprovada')ops=ops.filter(o=>o.aprovada&&!o.pausada);
+    else if(filtro==='pausada')ops=ops.filter(o=>o.pausada);
+    const tbody=document.getElementById('tb-ops');
+    if(!ops.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhuma oportunidade encontrada.</td></tr>';return;}
+    tbody.innerHTML=ops.map(o=>`
+      <tr>
+        <td style="font-weight:700;max-width:180px;">${truncar(o.titulo,40)}</td>
+        <td><span class="badge badge-azul">${o.categoria||'—'}</span></td>
+        <td style="color:var(--texto2);">${truncar(o.instituicao||'—',25)}</td>
+        <td>${badgeEstado(o)}</td>
+        <td style="color:var(--texto2);">${formatarData(o.criadoEm)}</td>
+        <td><div class="acoes">
+          ${!o.aprovada?`<button class="btn-ic bi-aprovar" onclick="aprovarItem('op','${o.id}')" title="Aprovar"><i class="fas fa-check"></i></button>`:''}
+          <button class="btn-ic bi-ver" onclick="previewOp('${o.id}')" title="Pré-visualizar"><i class="fas fa-eye"></i></button>
+          <button class="btn-ic bi-rejeitar" onclick="rejeitarItem('op','${o.id}')" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }
+  function filtrarOps(){renderizarOps();}
+
+  /* ── VAGAS ── */
+  function renderizarVagas(){
+    const busca=document.getElementById('busca-vagas').value.toLowerCase();
+    const filtro=document.getElementById('filtro-vagas').value;
+    let vagas=lsGet(KEYS.vagas,[]);
+    if(busca)vagas=vagas.filter(v=>(v.titulo||'').toLowerCase().includes(busca)||(v.empresa||'').toLowerCase().includes(busca));
+    if(filtro==='pendente')vagas=vagas.filter(v=>!v.aprovada);
+    else if(filtro==='aprovada')vagas=vagas.filter(v=>v.aprovada);
+    const tbody=document.getElementById('tb-vagas');
+    if(!vagas.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhuma vaga encontrada.</td></tr>';return;}
+    tbody.innerHTML=vagas.map(v=>`
+      <tr>
+        <td style="font-weight:700;max-width:180px;">${truncar(v.titulo,40)}</td>
+        <td><span class="badge badge-amarelo">${truncar(v.tipo||'—',20)}</span></td>
+        <td style="color:var(--texto2);">${truncar(v.empresa||'—',25)}</td>
+        <td>${badgeEstado(v)}</td>
+        <td style="color:var(--texto2);">${formatarData(v.criadoEm)}</td>
+        <td><div class="acoes">
+          <button class="btn-ic bi-ver" onclick="previewVaga('${v.id}')" title="Pré-visualizar"><i class="fas fa-eye"></i></button>
+          ${!v.aprovada?`<button class="btn-ic bi-aprovar" onclick="aprovarItem('vaga','${v.id}')" title="Aprovar"><i class="fas fa-check"></i></button>`:''}
+          <button class="btn-ic bi-rejeitar" onclick="rejeitarItem('vaga','${v.id}')" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }
+  function filtrarVagas(){renderizarVagas();}
+
+  /* ── UTILIZADORES ── */
+  function renderizarUtils(){
+    const busca=document.getElementById('busca-utils').value.toLowerCase();
+    let utils=lsGet(KEYS.utilizadores,[]);
+    if(busca)utils=utils.filter(u=>(u.nome||'').toLowerCase().includes(busca)||(u.email||'').toLowerCase().includes(busca));
+    const cands=[...lsGet(KEYS.candidaturas,[]),...lsGet(KEYS.candidaturasEmp,[])];
+    const tbody=document.getElementById('tb-utils');
+    if(!utils.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhum utilizador encontrado.</td></tr>';return;}
+    tbody.innerHTML=utils.map(u=>`
+      <tr>
+        <td style="font-weight:700;">${truncar(u.nome||'—',25)}</td>
+        <td style="color:var(--texto2);">${u.email||'—'}</td>
+        <td style="color:var(--texto2);">${u.provincia||'—'}</td>
+        <td style="color:var(--texto2);">${formatarData(u.criadoEm)}</td>
+        <td style="text-align:center;">${cands.filter(c=>sameId(c.utilizadorId??c.utilizador_id??c.candidatoId,u.id)).length}</td>
+        <td><div class="acoes">
+          <button class="btn-ic bi-rejeitar" onclick="banirUtil('${u.id}')" title="Eliminar conta"><i class="fas fa-ban"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }
+  function filtrarUtils(){renderizarUtils();}
+  function banirUtil(id){
+    abrirModal('Eliminar utilizador','Tens a certeza que queres eliminar esta conta de utilizador?',()=>{
+      const utils=lsGet(KEYS.utilizadores,[]);const u=utils.find(u=>u.id===id);
+      lsSet(KEYS.utilizadores,utils.filter(u=>u.id!==id));
+      adicionarLog('aviso',`Utilizador eliminado: ${u?.nome||'—'}`);renderizarUtils();carregarDashboard();mostrarToast('Utilizador eliminado.','');
+    });
+  }
+
+  /* ── INSTITUIÇÕES ── */
+  function renderizarInsts(){
+    const busca=document.getElementById('busca-insts').value.toLowerCase();
+    const filtro=document.getElementById('filtro-insts').value;
+    let insts=lsGet(KEYS.instituicoes,[]);
+    if(busca)insts=insts.filter(i=>(i.nome||'').toLowerCase().includes(busca));
+    if(filtro==='pendente')insts=insts.filter(i=>!i.aprovada);
+    else if(filtro==='aprovada')insts=insts.filter(i=>i.aprovada&&!i.verificada);
+    else if(filtro==='verificada')insts=insts.filter(i=>i.verificada);
+    const ops=lsGet(KEYS.oportunidades,[]);
+    const tbody=document.getElementById('tb-insts');
+    if(!insts.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhuma instituição encontrada.</td></tr>';return;}
+    tbody.innerHTML=insts.map(i=>`
+      <tr>
+        <td style="font-weight:700;">${truncar(i.nome||'—',30)}</td>
+        <td style="color:var(--texto2);">${truncar(i.tipo||'—',25)}</td>
+        <td style="color:var(--texto2);">${i.provincia||'—'}</td>
+        <td>${badgeEstado(i)}</td>
+        <td style="text-align:center;">${ops.filter(o=>o.instituicaoId===i.id).length}</td>
+        <td><div class="acoes">
+          <button class=\"btn-ic bi-docs\" onclick=\"verDocs('${i.id}','inst')\" title=\"${i.docs?'Ver documentos':'Sem documentos'}\" style=\"${i.docs?'':'opacity:0.35;cursor:not-allowed;'}\"><i class=\"fas fa-file-pdf\"></i></button>
+          ${!i.aprovada?`<button class="btn-ic bi-aprovar" onclick="aprovarItem('inst','${i.id}')" title="Aprovar"><i class="fas fa-check"></i></button>`:''}
+          ${i.aprovada&&!i.verificada?`<button class="btn-ic bi-verificar" onclick="verificarInst('${i.id}')" title="Verificar"><i class="fas fa-shield-alt"></i></button>`:''}
+          <button class="btn-ic bi-rejeitar" onclick="rejeitarItem('inst','${i.id}')" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }
+  function filtrarInsts(){renderizarInsts();}
+  function verificarInst(id){
+    const insts=lsGet(KEYS.instituicoes,[]);const idx=insts.findIndex(i=>sameId(i.id,id));
+    if(idx!==-1){insts[idx].verificada=true;lsSet(KEYS.instituicoes,insts);adicionarLog('sucesso',`Instituição verificada: ${insts[idx].nome}`);renderizarInsts();mostrarToast('Instituição verificada!','sucesso');return true;}
+    mostrarToast('Instituição não encontrada.','erro');return false;
+  }
+
+  /* ── EMPRESAS ── */
+  function renderizarEmps(){
+    const busca=document.getElementById('busca-emps').value.toLowerCase();
+    const filtro=document.getElementById('filtro-emps').value;
+    let emps=lsGet(KEYS.empresas,[]);
+    if(busca)emps=emps.filter(e=>(e.nome||'').toLowerCase().includes(busca));
+    if(filtro==='pendente')emps=emps.filter(e=>!e.aprovada);
+    else if(filtro==='aprovada')emps=emps.filter(e=>e.aprovada&&!e.verificada);
+    else if(filtro==='verificada')emps=emps.filter(e=>e.verificada);
+    const vagas=lsGet(KEYS.vagas,[]);
+    const tbody=document.getElementById('tb-emps');
+    if(!emps.length){tbody.innerHTML='<tr class="empty-row"><td colspan="6">Nenhuma empresa encontrada.</td></tr>';return;}
+    tbody.innerHTML=emps.map(e=>`
+      <tr>
+        <td style="font-weight:700;">${truncar(e.nome||'—',30)}</td>
+        <td style="color:var(--texto2);">${truncar(e.sector||'—',22)}</td>
+        <td style="color:var(--texto2);">${truncar(e.dimensao||'—',20)}</td>
+        <td>${badgeEstado(e)}</td>
+        <td style="text-align:center;">${vagas.filter(v=>v.empresaId===e.id).length}</td>
+        <td><div class="acoes">
+          <button class=\"btn-ic bi-docs\" onclick=\"verDocs('${e.id}','emp')\" title=\"${e.docs?'Ver documentos':'Sem documentos'}\" style=\"${e.docs?'':'opacity:0.35;cursor:not-allowed;'}\"><i class=\"fas fa-file-pdf\"></i></button>
+          ${!e.aprovada?`<button class="btn-ic bi-aprovar" onclick="aprovarItem('emp','${e.id}')" title="Aprovar"><i class="fas fa-check"></i></button>`:''}
+          ${e.aprovada&&!e.verificada?`<button class="btn-ic bi-verificar" onclick="verificarEmp('${e.id}')" title="Verificar"><i class="fas fa-shield-alt"></i></button>`:''}
+          <button class="btn-ic bi-rejeitar" onclick="rejeitarItem('emp','${e.id}')" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }
+  function filtrarEmps(){renderizarEmps();}
+  function verificarEmp(id){
+    const emps=lsGet(KEYS.empresas,[]);const idx=emps.findIndex(e=>sameId(e.id,id));
+    if(idx!==-1){emps[idx].verificada=true;lsSet(KEYS.empresas,emps);adicionarLog('sucesso',`Empresa verificada: ${emps[idx].nome}`);renderizarEmps();mostrarToast('Empresa verificada!','sucesso');return true;}
+    mostrarToast('Empresa não encontrada.','erro');return false;
+  }
+
+  /* ── MÉTRICAS ── */
+  function renderizarMetricas(){
+    const ops=lsGet(KEYS.oportunidades,[]);
+    const utils=lsGet(KEYS.utilizadores,[]);
+    const cands=lsGet(KEYS.candidaturas,[]);
+    document.getElementById('m-views').textContent=ops.reduce((s,o)=>s+(o.views||0),0);
+    document.getElementById('m-guard').textContent=utils.reduce((s,u)=>s+(u.guardados||[]).length,0);
+    document.getElementById('m-cands').textContent=cands.length;
+    document.getElementById('m-aceites').textContent=cands.filter(c=>c.estado==='Aceite').length;
+
+    const maxC=Math.max(...cats.map(c=>ops.filter(o=>o.categoria===c).length),1);
+    document.getElementById('m-cats').innerHTML=cats.map(c=>{const n=ops.filter(o=>o.categoria===c).length;return`<div class="cat-item"><div class="cat-label"><span>${c}</span><strong>${n}</strong></div><div class="cat-barra"><div class="cat-fill" style="width:0%;background:var(--azul);" data-pct="${Math.round(n/maxC*100)}"></div></div></div>`;}).join('');
+
+    const provs=['Maputo Cidade','Nampula','Sofala','Gaza','Inhambane','Zambézia','Tete','Manica','Cabo Delgado','Niassa','Maputo Província'];
+    const maxP=Math.max(...provs.map(p=>ops.filter(o=>o.provincia===p).length),1);
+    document.getElementById('m-provs').innerHTML=provs.map(p=>{const n=ops.filter(o=>o.provincia===p).length;return`<div class="cat-item"><div class="cat-label"><span>${p}</span><strong>${n}</strong></div><div class="cat-barra"><div class="cat-fill" style="width:0%;background:var(--roxo);" data-pct="${Math.round(n/maxP*100)}"></div></div></div>`;}).join('');
+
+    setTimeout(()=>{document.querySelectorAll('.cat-fill').forEach(el=>{el.style.width=el.dataset.pct+'%';});},300);
+  }
+
+  /* ── LOGS ── */
+  function renderizarLogs(){
+    const logs=lsGet(KEYS.logs,[]);
+    const el=document.getElementById('log-lista');
+    if(!logs.length){el.innerHTML='<p style="color:var(--texto2);font-size:0.84rem;text-align:center;padding:20px;">Sem logs registados.</p>';return;}
+    el.innerHTML=logs.map(l=>`
+      <div class="log-item">
+        <span class="log-time">${new Date(l.hora).toLocaleString('pt-MZ')}</span>
+        <span class="log-tipo log-${l.tipo}">${l.tipo.toUpperCase()}</span>
+        <span class="log-msg">${l.msg}</span>
+      </div>`).join('');
+  }
+  function limparLogs(){abrirModal('Limpar logs','Tens a certeza que queres eliminar todos os logs?',()=>{lsSet(KEYS.logs,[]);renderizarLogs();mostrarToast('Logs eliminados.','');});}
+
+  /* ── CONFIGURAÇÕES ── */
+  function toggleConfig(el,key){
+    el.classList.toggle('on');
+    const config=lsGet(KEYS.config,{});
+    config[key]=el.classList.contains('on');
+    lsSet(KEYS.config,config);
+    mostrarToast('Configuração guardada.','sucesso');
+  }
+
+
+  function carregarConfiguracoesGlobais(){
+    const cfg=lsGet(KEYS.config,{});
+    ['modOp','modVaga','modInst','modEmp','manut','regPub','orient'].forEach(k=>{const el=document.getElementById('tog-'+k);if(el)el.classList.toggle('on',cfg[k]!==false && (k!=='manut'||cfg[k]===true));});
+  }
+
+  /* ── EXPORTAR ── */
+  function exportarDados(){
+    const dados={oportunidades:lsGet(KEYS.oportunidades,[]),vagas:lsGet(KEYS.vagas,[]),utilizadores:lsGet(KEYS.utilizadores,[]),instituicoes:lsGet(KEYS.instituicoes,[]),empresas:lsGet(KEYS.empresas,[]),candidaturas:lsGet(KEYS.candidaturas,[]),exportadoEm:new Date().toISOString()};
+    const blob=new Blob([JSON.stringify(dados,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);const a=document.createElement('a');
+    a.href=url;a.download='HMZ_backup_'+new Date().toISOString().split('T')[0]+'.json';
+    a.click();URL.revokeObjectURL(url);
+    adicionarLog('info','Dados exportados pelo administrador.');mostrarToast('Dados exportados!','sucesso');
+  }
+
+  /* ── LIMPAR DADOS ── */
+  function confirmarLimpar(){
+    abrirModal('Limpar todos os dados','ATENÇÃO: Esta acção é irreversível. Todos os dados da plataforma serão apagados. Será necessário confirmar novamente.',()=>{
+      if(prompt('Para confirmar, escreve APAGAR TUDO')!=='APAGAR TUDO'){mostrarToast('Operação cancelada.','aviso');return;}
+      [KEYS.oportunidades,KEYS.vagas,KEYS.utilizadores,KEYS.instituicoes,KEYS.empresas,KEYS.candidaturas].forEach(k=>lsSet(k,[]));
+      adicionarLog('aviso','Todos os dados foram eliminados pelo administrador.');carregarDashboard();mostrarToast('Dados eliminados.','erro');
+    });
+  }
+
+  /* ── INICIALIZAR ── */
+  document.addEventListener('DOMContentLoaded',function(){
+    // Verificar sessão admin
+    const s=lsGet(KEYS.sessaoAdmin);
+    if(!s){window.location.href='login-instituicao.html';return;}
+    // Adicionar log de acesso
+    adicionarLog('info','Administrador acedeu ao painel.');
+    carregarConfiguracoesGlobais();
+    carregarDashboard();
+  });
+</script>
+
+<!-- MODAL DOCUMENTOS -->
+<div class="modal-docs-overlay" id="modal-docs">
+  <div class="modal-docs">
+    <div class="modal-docs-header">
+      <h3><i class="fas fa-file-pdf" style="color:var(--vermelho);"></i> <span id="modal-docs-titulo">Documentos</span></h3>
+      <button class="btn-ic bi-rejeitar" onclick="fecharModalDocs()" title="Fechar"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-docs-body">
+      <div id="modal-docs-conteudo" style="flex:1;display:flex;flex-direction:column;"></div>
+    </div>
+    <div class="modal-docs-footer">
+      <button class="btn btn-outline" onclick="fecharModalDocs()"><i class="fas fa-times"></i> Fechar</button>
+      <button class="btn btn-azul" onclick="downloadDoc()"><i class="fas fa-download"></i> Descarregar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REJEIÇÃO COM MOTIVOS -->
+<div class="modal-rejeicao-overlay" id="modal-rejeicao">
+  <div class="modal-rejeicao">
+    <div class="modal-rejeicao-header">
+      <i class="fas fa-times-circle" style="color:var(--vermelho);font-size:1.2rem;"></i>
+      <h3>Motivo da rejeição</h3>
+    </div>
+    <div class="modal-rejeicao-body">
+      <p style="font-size:0.85rem;color:var(--texto2);margin-bottom:16px;">Selecciona o motivo pelo qual esta conta está a ser rejeitada. O utilizador será notificado.</p>
+      <div class="motivo-opcoes" id="motivo-opcoes">
+        <div class="motivo-opcao" onclick="selecionarMotivo(this,'informacoes_falsas')">
+          <input type="radio" name="motivo" value="informacoes_falsas"/>
+          <div>
+            <label>Informações falsas</label>
+            <small>Os dados fornecidos não correspondem à realidade ou foram fabricados.</small>
+          </div>
+        </div>
+        <div class="motivo-opcao" onclick="selecionarMotivo(this,'documentos_insuficientes')">
+          <input type="radio" name="motivo" value="documentos_insuficientes"/>
+          <div>
+            <label>Documentos insuficientes</label>
+            <small>Os documentos enviados não são suficientes para comprovar a veracidade.</small>
+          </div>
+        </div>
+        <div class="motivo-opcao" onclick="selecionarMotivo(this,'documentos_invalidos')">
+          <input type="radio" name="motivo" value="documentos_invalidos"/>
+          <div>
+            <label>Documentos inválidos ou ilegíveis</label>
+            <small>Os ficheiros enviados estão corrompidos, ilegíveis ou não são documentos válidos.</small>
+          </div>
+        </div>
+        <div class="motivo-opcao" onclick="selecionarMotivo(this,'duplicado')">
+          <input type="radio" name="motivo" value="duplicado"/>
+          <div>
+            <label>Conta duplicada</label>
+            <small>Já existe uma conta registada com os mesmos dados nesta plataforma.</small>
+          </div>
+        </div>
+        <div class="motivo-opcao" onclick="selecionarMotivo(this,'nao_elegivel')">
+          <input type="radio" name="motivo" value="nao_elegivel"/>
+          <div>
+            <label>Não elegível para a plataforma</label>
+            <small>O perfil desta entidade não se enquadra nos critérios do HorizonteMZ.</small>
+          </div>
+        </div>
+        <div class="motivo-opcao" onclick="selecionarMotivo(this,'outro')">
+          <input type="radio" name="motivo" value="outro"/>
+          <div>
+            <label>Outro motivo</label>
+            <small>Especifica abaixo o motivo da rejeição.</small>
+          </div>
+        </div>
+      </div>
+      <textarea class="motivo-outro" id="motivo-outro" placeholder="Descreve o motivo..." maxlength="300"></textarea>
+    </div>
+    <div class="modal-rejeicao-footer">
+      <button class="btn btn-outline" onclick="fecharModalRejeicao()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-vermelho" onclick="confirmarRejeicao()"><i class="fas fa-ban"></i> Rejeitar conta</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ══════════════════════════════════════
+   ADMIN — Documentos, Rejeição, Denúncias
+══════════════════════════════════════ */
+
+/* ── DOCUMENTOS ── */
+var docActual = null;
+function verDocs(id, tipo){
+  var chave = tipo==='inst' ? 'hmz_instituicoes' : 'hmz_empresas';
+  var lista = lsGet(chave, []);
+  var item = lista.find(function(x){ return x.id===id; });
+  if(!item || !item.docs){
+    mostrarToast('Esta conta não enviou documentos comprovati vos.','');
+    return;
+  }
+  docActual = item.docs;
+  document.getElementById('modal-docs-titulo').textContent = (item.nome||'Entidade') + ' — Documentos comprovativos';
+  var cont = document.getElementById('modal-docs-conteudo');
+  cont.innerHTML = '<iframe src="'+item.docs+'" title="Documentos" style="width:100%;min-height:460px;border:none;"></iframe>';
+  document.getElementById('modal-docs').classList.add('visivel');
+  document.body.style.overflow='hidden';
+}
+function fecharModalDocs(){
+  document.getElementById('modal-docs').classList.remove('visivel');
+  document.getElementById('modal-docs-conteudo').innerHTML='';
+  document.body.style.overflow='';
+  docActual=null;
+}
+function downloadDoc(){
+  if(!docActual)return;
+  var a=document.createElement('a');
+  a.href=docActual; a.download='documentos_hmz.pdf'; a.click();
+}
+document.getElementById('modal-docs').addEventListener('click',function(e){
+  if(e.target===this) fecharModalDocs();
+});
+
+/* ── REJEIÇÃO COM MOTIVOS ── */
+var rejeicaoActual = { tipo:null, id:null };
+var motivoSelecionado = null;
+
+function abrirModalRejeicao(tipo, id){
+  rejeicaoActual = { tipo:tipo, id:id };
+  motivoSelecionado = null;
+  /* Reset */
+  document.querySelectorAll('.motivo-opcao').forEach(function(el){
+    el.classList.remove('selecionado');
+    el.querySelector('input').checked = false;
+  });
+  document.getElementById('motivo-outro').classList.remove('visivel');
+  document.getElementById('motivo-outro').value = '';
+  document.getElementById('modal-rejeicao').classList.add('visivel');
+  document.body.style.overflow='hidden';
+}
+
+function fecharModalRejeicao(){
+  document.getElementById('modal-rejeicao').classList.remove('visivel');
+  document.body.style.overflow='';
+  rejeicaoActual = { tipo:null, id:null };
+  motivoSelecionado = null;
+}
+
+function selecionarMotivo(el, valor){
+  document.querySelectorAll('.motivo-opcao').forEach(function(o){ o.classList.remove('selecionado'); });
+  el.classList.add('selecionado');
+  el.querySelector('input').checked = true;
+  motivoSelecionado = valor;
+  var outro = document.getElementById('motivo-outro');
+  if(valor==='outro'){ outro.classList.add('visivel'); outro.focus(); }
+  else { outro.classList.remove('visivel'); }
+}
+
+function confirmarRejeicao(){
+  if(!motivoSelecionado){ mostrarToast('Selecciona um motivo de rejeição.',''); return; }
+  var motivo = motivoSelecionado==='outro'
+    ? document.getElementById('motivo-outro').value.trim()
+    : document.querySelector('.motivo-opcao.selecionado label').textContent;
+  if(motivoSelecionado==='outro' && !motivo){
+    mostrarToast('Descreve o motivo antes de confirmar.',''); return;
+  }
+
+  var tipo = rejeicaoActual.tipo;
+  var id   = rejeicaoActual.id;
+  var chave = tipo==='inst' ? 'hmz_instituicoes' : 'hmz_empresas';
+  var arr = lsGet(chave, []);
+  var item = arr.find(function(x){ return sameId(x.id,id); });
+  if(!item){ mostrarToast('Conta não encontrada.','erro'); fecharModalRejeicao(); return; }
+  var nome = item.nome||'Entidade';
+  var email = item.email||'';
+
+  /* Rejeição da entidade: remover também publicações e candidaturas associadas para não deixar dados órfãos */
+  var limpeza = removerDadosDaEntidade(tipo,id);
+  lsSet(chave, arr.filter(function(x){ return !sameId(x.id,id); }));
+  adicionarLog('aviso', tipo.toUpperCase()+' rejeitado ('+motivo+'): '+nome+'; '+limpeza.publicacoes+' publicação(ões) e '+limpeza.candidaturas+' candidatura(s) associada(s) removida(s).');
+
+  /* Enviar email via Mailton */
+  if(email) enviarEmailRejeicao(email, nome, motivo, tipo);
+
+  fecharModalRejeicao();
+  carregarDashboard();
+  mostrarToast(nome+' foi rejeitado: '+motivo,'');
+}
+
+document.getElementById('modal-rejeicao').addEventListener('click',function(e){
+  if(e.target===this) fecharModalRejeicao();
+});
+
+/* ── EMAIL VIA MAILTON ── */
+function obterConfigMailton(){
+  var cfg = lsGet('hmz_config_admin', {});
+  return { apiKey: cfg.mailtonKey||'', from: cfg.mailtonFrom||'noreply@horizontemz.co.mz' };
+}
+
+function enviarEmailAprovacao(email, nome, tipo){
+  var cfg = obterConfigMailton();
+  if(!cfg.apiKey){ console.warn('Mailton: API Key não configurada.'); return Promise.resolve(false); }
+  var tipoLabel = tipo==='inst' ? 'Instituição' : 'Empresa';
+  fetch('https://api.mailton.co/v1/email/send', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},
+    body: JSON.stringify({
+      from: cfg.from,
+      to: email,
+      subject: '✅ Conta aprovada no HorizonteMZ — Bem-vindo(a)!',
+      html:
+        '<div style="font-family:Segoe UI,sans-serif;max-width:560px;margin:auto;">' +
+        '<div style="background:#0057C2;padding:28px 32px;border-radius:12px 12px 0 0;text-align:center;">' +
+        '<h1 style="color:#fff;font-size:1.5rem;margin:0;">HorizonteMZ</h1></div>' +
+        '<div style="background:#fff;padding:32px;border:1px solid #DDE3F0;border-radius:0 0 12px 12px;">' +
+        '<h2 style="color:#0057C2;font-size:1.1rem;">Conta aprovada com sucesso!</h2>' +
+        '<p style="color:#444;line-height:1.7;">Olá <strong>'+nome+'</strong>,</p>' +
+        '<p style="color:#444;line-height:1.7;">A tua conta de <strong>'+tipoLabel+'</strong> no HorizonteMZ foi analisada e <strong style="color:#1DB954;">aprovada</strong>.</p>' +
+        '<p style="color:#444;line-height:1.7;">Já podes aceder ao teu painel e começar a publicar oportunidades e vagas para jovens moçambicanos.</p>' +
+        '<div style="text-align:center;margin:28px 0;">' +
+        '<a href="https://horizontemz.co.mz" style="background:#0057C2;color:#fff;padding:13px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.95rem;">Aceder ao painel</a>' +
+        '</div>' +
+        '<p style="color:#888;font-size:0.82rem;margin-top:24px;">HorizonteMZ — A plataforma #1 de oportunidades em Moçambique.</p>' +
+        '</div></div>'
+    })
+  }).then(function(r){ console.log('Email aprovação:', r.status); return r.ok; })
+    .catch(function(e){ console.error('Erro ao enviar email:', e); return false; });
+}
+
+function enviarEmailRejeicao(email, nome, motivo, tipo){
+  var cfg = obterConfigMailton();
+  if(!cfg.apiKey){ console.warn('Mailton: API Key não configurada.'); return; }
+  var tipoLabel = tipo==='inst' ? 'Instituição' : 'Empresa';
+  fetch('https://api.mailton.co/v1/email/send', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},
+    body: JSON.stringify({
+      from: cfg.from,
+      to: email,
+      subject: '❌ Pedido de registo não aprovado — HorizonteMZ',
+      html:
+        '<div style="font-family:Segoe UI,sans-serif;max-width:560px;margin:auto;">' +
+        '<div style="background:#0057C2;padding:28px 32px;border-radius:12px 12px 0 0;text-align:center;">' +
+        '<h1 style="color:#fff;font-size:1.5rem;margin:0;">HorizonteMZ</h1></div>' +
+        '<div style="background:#fff;padding:32px;border:1px solid #DDE3F0;border-radius:0 0 12px 12px;">' +
+        '<h2 style="color:#E53935;font-size:1.1rem;">Pedido de registo não aprovado</h2>' +
+        '<p style="color:#444;line-height:1.7;">Olá <strong>'+nome+'</strong>,</p>' +
+        '<p style="color:#444;line-height:1.7;">Após análise do teu pedido de registo como <strong>'+tipoLabel+'</strong> no HorizonteMZ, não foi possível aprovar a tua conta pelo seguinte motivo:</p>' +
+        '<div style="background:#FFF5F5;border-left:4px solid #E53935;padding:14px 18px;border-radius:4px;margin:16px 0;">' +
+        '<strong style="color:#E53935;">'+motivo+'</strong></div>' +
+        '<p style="color:#444;line-height:1.7;">Podes submeter um novo pedido corrigindo as informações indicadas.</p>' +
+        '<p style="color:#888;font-size:0.82rem;margin-top:24px;">HorizonteMZ — A plataforma #1 de oportunidades em Moçambique.</p>' +
+        '</div></div>'
+    })
+  }).then(function(r){ console.log('Email rejeição enviado:', r.status); })
+    .catch(function(e){ console.error('Erro ao enviar email:', e); });
+}
+
+/* ── APROVAR COM EMAIL ── */
+/* aprovarItem consolidado acima */
+
+/* ── DENÚNCIAS E FEEDBACKS ── */
+var KEYS_DF = 'hmz_denuncias_feedback';
+
+function renderizarDF(){
+  var filtro = document.getElementById('filtro-df') ? document.getElementById('filtro-df').value : '';
+  var lista = lsGet(KEYS_DF, []);
+  if(filtro) lista = lista.filter(function(d){ return d.tipo===filtro; });
+  var cont = document.getElementById('lista-df');
+  if(!cont) return;
+
+  /* Actualizar badge */
+  var total = lsGet(KEYS_DF,[]).length;
+  var nbDf = document.getElementById('nb-df');
+  if(nbDf){ nbDf.textContent=total; nbDf.style.display=total?'inline-block':'none'; }
+
+  if(!lista.length){
+    cont.innerHTML = '<div class="df-empty"><i class="fas fa-inbox"></i><p>Nenhuma mensagem recebida ainda.</p></div>';
+    return;
+  }
+
+  var tipoMap = { denuncia:'Denúncia', feedback:'Feedback', sugestao:'Sugestão' };
+  cont.innerHTML = lista.slice().reverse().map(function(d, i){
+    var idx = lista.length - 1 - i;
+    return '<div class="df-card">' +
+      '<div class="df-topo">' +
+      '<span class="df-tipo '+d.tipo+'"><i class="fas '+(d.tipo==='denuncia'?'fa-flag':d.tipo==='feedback'?'fa-comment':'fa-lightbulb')+'"></i> '+tipoMap[d.tipo]+'</span>' +
+      '<button class="btn-ic bi-rejeitar" onclick="eliminarDF('+idx+')" title="Eliminar" style="width:28px;height:28px;font-size:0.78rem;"><i class="fas fa-trash-alt"></i></button>' +
+      '</div>' +
+      '<div class="df-msg">'+d.mensagem+'</div>' +
+      '<div class="df-meta">' +
+      (d.nome?'<span><i class="fas fa-user"></i> '+d.nome+'</span>':'<span><i class="fas fa-user-secret"></i> Anónimo</span>') +
+      (d.email?'<span><i class="fas fa-envelope"></i> '+d.email+'</span>':'') +
+      '<span><i class="fas fa-clock"></i> '+new Date(d.data).toLocaleDateString("pt-MZ",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})+'</span>' +
+      '</div></div>';
+  }).join('');
+}
+
+function eliminarDF(idx){
+  var lista = lsGet(KEYS_DF,[]);
+  lista.splice(idx,1);
+  lsSet(KEYS_DF,lista);
+  renderizarDF();
+  mostrarToast('Mensagem eliminada.','');
+}
+
+function limparDF(){
+  if(!confirm('Eliminar todas as mensagens? Esta acção é permanente.')) return;
+  lsSet(KEYS_DF,[]);
+  renderizarDF();
+  mostrarToast('Todas as mensagens foram eliminadas.','');
+}
+
+/* Actualizar irSec para carregar denúncias */
+var _irSecOriginal = irSec;
+irSec = function(id){
+  _irSecOriginal(id);
+  if(id==='denuncias') renderizarDF();
+};
+
+/* Carregar badge ao iniciar */
+document.addEventListener('DOMContentLoaded', function(){
+  var total = lsGet(KEYS_DF,[]).length;
+  var nbDf = document.getElementById('nb-df');
+  if(nbDf){ nbDf.textContent=total; nbDf.style.display=total?'inline-block':'none'; }
+});
+
+
+  /* ── MAILTON CONFIG ── */
+  function carregarConfigMailton(){
+    var cfg = lsGet('hmz_config_admin', {});
+    var keyEl = document.getElementById('mailton-key');
+    var fromEl = document.getElementById('mailton-from');
+    if(keyEl) keyEl.value = cfg.mailtonKey||'';
+    if(fromEl) fromEl.value = cfg.mailtonFrom||'noreply@horizontemz.co.mz';
+    renderizarHistoricoEmails();
+  }
+
+  function guardarConfigMailton(){
+    var key = document.getElementById('mailton-key').value.trim();
+    var from = document.getElementById('mailton-from').value.trim();
+    if(!key||!from){ mostrarToast('Preenche a API Key e o email remetente.',''); return; }
+    var cfg = lsGet('hmz_config_admin',{});
+    cfg.mailtonKey = key;
+    cfg.mailtonFrom = from;
+    lsSet('hmz_config_admin', cfg);
+    mostrarToast('Configuração do Mailton guardada!','sucesso');
+    var el = document.getElementById('mailton-estado');
+    if(el){
+      el.style.display='flex';
+      el.style.background='#F0FFF4';el.style.borderColor='#C8E6C9';el.style.color='#1B5E20';
+      el.innerHTML='<i class="fas fa-check-circle" style="margin-right:8px;"></i> Configuração guardada com sucesso!';
+      setTimeout(function(){ el.style.display='none'; }, 4000);
+    }
+  }
+
+  function toggleMailtonKey(){
+    var inp = document.getElementById('mailton-key');
+    var btn = document.getElementById('btn-toggle-key');
+    if(!inp||!btn) return;
+    inp.type = inp.type==='password' ? 'text' : 'password';
+    btn.innerHTML = inp.type==='password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+  }
+
+  function enviarEmailTeste(){
+    var cfg = lsGet('hmz_config_admin',{});
+    var key = cfg.mailtonKey||document.getElementById('mailton-key').value.trim();
+    var from = cfg.mailtonFrom||document.getElementById('mailton-from').value.trim();
+    var to = document.getElementById('mailton-teste').value.trim();
+    var el = document.getElementById('mailton-estado');
+
+    if(!key){ mostrarToast('Guarda primeiro a API Key antes de testar.',''); return; }
+    if(!to){ mostrarToast('Introduz um email de destino para o teste.',''); return; }
+
+    mostrarToast('A enviar email de teste...','');
+
+    fetch('https://api.mailton.co/v1/email/send', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body: JSON.stringify({
+        from: from,
+        to: to,
+        subject: '✅ Teste de configuração — HorizonteMZ Admin',
+        html: '<div style="font-family:Segoe UI,sans-serif;padding:32px;max-width:480px;margin:auto;background:#f9f9f9;border-radius:12px;text-align:center;"><h2 style="color:#0057C2;">HorizonteMZ</h2><p style="color:#444;">O sistema de emails está correctamente configurado!</p><p style="color:#888;font-size:0.82rem;">Este é um email de teste enviado pelo painel admin.</p></div>'
+      })
+    })
+    .then(function(r){
+      if(r.ok){
+        if(el){el.style.display='flex';el.style.background='#F0FFF4';el.style.borderColor='#C8E6C9';el.style.color='#1B5E20';el.innerHTML='<i class="fas fa-check-circle" style="margin-right:8px;"></i> Email de teste enviado para '+to;}
+        adicionarEmailHistorico('Teste', to, 'sucesso');
+        renderizarHistoricoEmails();
+      } else {
+        if(el){el.style.display='flex';el.style.background='#FFF5F5';el.style.borderColor='#FFCDD2';el.style.color='#C62828';el.innerHTML='<i class="fas fa-times-circle" style="margin-right:8px;"></i> Erro ao enviar. Verifica a API Key.';}
+      }
+    })
+    .catch(function(){
+      if(el){el.style.display='flex';el.style.background='#FFF5F5';el.style.borderColor='#FFCDD2';el.style.color='#C62828';el.innerHTML='<i class="fas fa-times-circle" style="margin-right:8px;"></i> Erro de ligação. Verifica a API Key.';}
+    });
+  }
+
+  function adicionarEmailHistorico(tipo, destinatario, estado){
+    var hist = lsGet('hmz_email_historico', []);
+    hist.unshift({ tipo:tipo, destinatario:destinatario, estado:estado, data:new Date().toISOString() });
+    if(hist.length > 50) hist = hist.slice(0,50);
+    lsSet('hmz_email_historico', hist);
+  }
+
+  function renderizarHistoricoEmails(){
+    var cont = document.getElementById('historico-emails');
+    if(!cont) return;
+    var hist = lsGet('hmz_email_historico', []);
+    if(!hist.length){
+      cont.innerHTML='<p style="font-size:0.84rem;color:var(--texto2);text-align:center;padding:20px 0;">Nenhum email enviado ainda.</p>';
+      return;
+    }
+    cont.innerHTML = hist.slice(0,10).map(function(h){
+      var cor = h.estado==='sucesso' ? 'var(--verde)' : 'var(--vermelho)';
+      var ic  = h.estado==='sucesso' ? 'fa-check-circle' : 'fa-times-circle';
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--borda);">' +
+        '<i class="fas '+ic+'" style="color:'+cor+';font-size:0.9rem;flex-shrink:0;"></i>' +
+        '<div style="flex:1;min-width:0;">' +
+        '<span style="font-size:0.84rem;font-weight:700;">'+h.tipo+'</span>' +
+        ' <span style="font-size:0.82rem;color:var(--texto2);">→ '+h.destinatario+'</span>' +
+        '</div>' +
+        '<span style="font-size:0.75rem;color:var(--texto2);white-space:nowrap;">'+new Date(h.data).toLocaleDateString('pt-MZ',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})+'</span>' +
+        '</div>';
+    }).join('');
+  }
+
+  /* Carregar configuração do Mailton quando a secção abre */
+  /* irSec consolidado */
+
+  /* Interceptar enviarEmailAprovacao para registar no histórico */
+  var _enviarEmailAprovacaoOrig = enviarEmailAprovacao;
+  enviarEmailAprovacao = function(email, nome, tipo){
+    _enviarEmailAprovacaoOrig(email, nome, tipo);
+    adicionarEmailHistorico('Aprovação ('+tipo+')', email, 'sucesso');
+  };
+  var _enviarEmailRejeicaoOrig = enviarEmailRejeicao;
+  enviarEmailRejeicao = function(email, nome, motivo, tipo){
+    _enviarEmailRejeicaoOrig(email, nome, motivo, tipo);
+    adicionarEmailHistorico('Rejeição ('+tipo+')', email, 'sucesso');
+  };
+
+
+  /* ── PREVIEW OPORTUNIDADE ── */
+  function previewOp(id){
+    try{
+    var ops = lsGet('hmz_oportunidades', []);
+    var o = ops.find(function(x){ return x.id===id; });
+    if(!o){ mostrarToast('Oportunidade não encontrada.',''); return; }
+    var insts = lsGet('hmz_instituicoes', []);
+    var inst = insts.find(function(i){ return i.id===o.instituicaoId; });
+    var instNome = inst ? inst.nome : (o.instituicao||'—');
+
+    var badgesCor = {Bolsas:'#CCE5FF',Cursos:'#D4EDDA',Workshops:'#CCE5FF',Estágios:'#FFF3CD',Voluntariado:'#D4EDDA',Concursos:'#FFF3CD'};
+    var cor = badgesCor[o.categoria]||'#E2E3E5';
+
+    var html =
+      (!o.aprovada?'<div class="preview-pendente-aviso"><i class="fas fa-clock"></i> Esta oportunidade está pendente de aprovação.</div>':'<div style="background:rgba(29,185,84,0.12);border:1px solid rgba(29,185,84,0.30);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:0.84rem;color:#1DB954;display:flex;align-items:center;gap:8px;"><i class="fas fa-check-circle"></i> Esta oportunidade está aprovada e visível na plataforma.</div>') +
+      '<div class="preview-hero">' +
+      '<div class="preview-badges">' +
+      (o.categoria?'<span class="preview-badge"><i class="fas fa-tag"></i>'+o.categoria+'</span>':'')+
+      (o.custo?'<span class="preview-badge"><i class="fas fa-coins"></i>'+o.custo+'</span>':'')+
+      (o.modalidade?'<span class="preview-badge"><i class="fas fa-map-marker-alt"></i>'+o.modalidade+'</span>':'')+
+      '</div>'+
+      '<div class="preview-titulo">'+(o.titulo||'Sem título')+'</div>'+
+      '<div class="preview-inst"><i class="fas fa-building"></i>'+instNome+(o.provincia?' · '+o.provincia:'')+'</div>'+
+      '</div>'+
+      (o.descricao?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-align-left"></i> Descrição</div><p>'+o.descricao+'</p></div>':'')+
+      '<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-info-circle"></i> Informações Gerais</div>'+
+      '<div class="preview-info-grid">'+
+      (o.prazo?'<div class="preview-info-item"><label>Prazo</label><span>'+o.prazo+'</span></div>':'')+
+      (o.dataInicio?'<div class="preview-info-item"><label>Início</label><span>'+o.dataInicio+'</span></div>':'')+
+      (o.vagas?'<div class="preview-info-item"><label>Vagas</label><span>'+o.vagas+'</span></div>':'')+
+      (o.duracao?'<div class="preview-info-item"><label>Duração</label><span>'+o.duracao+'</span></div>':'')+
+      (o.provincia?'<div class="preview-info-item"><label>Localização</label><span>'+o.provincia+'</span></div>':'')+
+      (o.custo?'<div class="preview-info-item"><label>Custo</label><span>'+o.custo+'</span></div>':'')+
+      '</div></div>'+
+      (o.requisitos?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-list-ul"></i> Requisitos</div><p>'+o.requisitos+'</p></div>':'')+
+      (o.beneficios?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-gift"></i> Benefícios</div><p>'+o.beneficios+'</p></div>':'');
+
+    document.getElementById('modal-preview-body').innerHTML = html;
+    var btnApr=document.getElementById('btn-preview-aprovar');
+    if(o.aprovada){btnApr.style.display='none';}else{btnApr.style.display='inline-flex';btnApr.onclick=function(){aprovarItem('op',id);fecharPreview();};}
+    document.getElementById('modal-preview').classList.add('visivel');
+    document.body.style.overflow = 'hidden';
+    }catch(err){console.error('Erro previewOp:',err);mostrarToast('Erro ao abrir preview: '+err.message,'erro');}
+  }
+
+  /* ── PREVIEW VAGA ── */
+  function previewVaga(id){
+    try{
+    var vagas = lsGet('hmz_vagas', []);
+    var v = vagas.find(function(x){ return x.id===id; });
+    if(!v){ mostrarToast('Vaga não encontrada.',''); return; }
+
+    var html =
+      (!v.aprovada?'<div class="preview-pendente-aviso"><i class="fas fa-clock"></i> Esta vaga está pendente de aprovação.</div>':'<div style="background:rgba(29,185,84,0.12);border:1px solid rgba(29,185,84,0.30);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:0.84rem;color:#1DB954;display:flex;align-items:center;gap:8px;"><i class="fas fa-check-circle"></i> Esta vaga está aprovada e visível na plataforma.</div>') +
+      '<div class="preview-hero" style="background:linear-gradient(135deg,#92400E,#D97706);">' +
+      '<div class="preview-badges">'+
+      (v.tipo?'<span class="preview-badge"><i class="fas fa-briefcase"></i>'+v.tipo+'</span>':'')+
+      (v.regime?'<span class="preview-badge"><i class="fas fa-clock"></i>'+v.regime+'</span>':'')+
+      (v.area?'<span class="preview-badge"><i class="fas fa-tag"></i>'+v.area+'</span>':'')+
+      '</div>'+
+      '<div class="preview-titulo">'+(v.titulo||'Sem título')+'</div>'+
+      '<div class="preview-inst"><i class="fas fa-building"></i>'+(v.empresa||'—')+(v.provincia?' · '+v.provincia:'')+'</div>'+
+      '</div>'+
+      (v.descricao?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-align-left"></i> Descrição</div><p>'+v.descricao+'</p></div>':'')+
+      '<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-info-circle"></i> Informações</div>'+
+      '<div class="preview-info-grid">'+
+      (v.prazo?'<div class="preview-info-item"><label>Prazo</label><span>'+v.prazo+'</span></div>':'')+
+      (v.salario?'<div class="preview-info-item"><label>Salário</label><span>'+v.salario+'</span></div>':'')+
+      (v.numVagas?'<div class="preview-info-item"><label>Nº de Vagas</label><span>'+v.numVagas+'</span></div>':'')+
+      (v.provincia?'<div class="preview-info-item"><label>Localização</label><span>'+v.provincia+'</span></div>':'')+
+      (v.experiencia?'<div class="preview-info-item"><label>Experiência</label><span>'+v.experiencia+'</span></div>':'')+
+      (v.duracao?'<div class="preview-info-item"><label>Duração</label><span>'+v.duracao+'</span></div>':'')+
+      '</div></div>'+
+      (v.competencias?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-tools"></i> Competências</div><p>'+v.competencias+'</p></div>':'')+
+      (v.beneficios?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-gift"></i> Benefícios</div><p>'+v.beneficios+'</p></div>':'')+
+      (v.comoCandidatar?'<div class="preview-sec"><div class="preview-sec-titulo"><i class="fas fa-paper-plane"></i> Como candidatar</div><p>'+v.comoCandidatar+'</p></div>':'');
+
+    document.getElementById('modal-preview-body').innerHTML = html;
+    var btnAprV=document.getElementById('btn-preview-aprovar');
+    if(v.aprovada){btnAprV.style.display='none';}else{btnAprV.style.display='inline-flex';btnAprV.onclick=function(){aprovarItem('vaga',id);fecharPreview();};}
+    document.getElementById('modal-preview').classList.add('visivel');
+    document.body.style.overflow = 'hidden';
+    }catch(err){console.error('Erro previewVaga:',err);mostrarToast('Erro ao abrir preview: '+err.message,'erro');}
+  }
+
+  function fecharPreview(){
+    document.getElementById('modal-preview').classList.remove('visivel');
+    document.getElementById('modal-preview-body').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+</script>
+
+
+<!-- MODAL PREVIEW OPORTUNIDADE/VAGA -->
+<div class="modal-preview-overlay" id="modal-preview" onclick="if(event.target===this)fecharPreview()">
+  <div class="modal-preview">
+    <div class="modal-preview-header">
+      <h3><i class="fas fa-eye" style="color:var(--azul);"></i> Pré-visualização</h3>
+      <button onclick="fecharPreview()" style="background:rgba(229,57,53,0.1);border:none;color:var(--vermelho);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-preview-body" id="modal-preview-body"></div>
+    <div class="preview-footer">
+      <button onclick="fecharPreview()" style="padding:9px 18px;border:1.5px solid var(--borda);border-radius:8px;background:transparent;color:var(--texto2);cursor:pointer;font-family:inherit;font-weight:700;font-size:0.88rem;">Fechar</button>
+      <button id="btn-preview-aprovar" style="padding:9px 18px;border:none;border-radius:8px;background:var(--verde);color:#fff;cursor:pointer;font-family:inherit;font-weight:700;font-size:0.88rem;display:inline-flex;align-items:center;gap:7px;"><i class="fas fa-check"></i> Aprovar agora</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

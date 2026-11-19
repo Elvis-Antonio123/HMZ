@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configurações | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;
+      --amarelo:#FFBE00;--verde:#1DB954;--vermelho:#E53935;--laranja:#F59E0B;
+      --roxo:#7C3AED;--roxo-light:#F5F3FF;
+      --bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;
+      --borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);
+      --header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;
+    }
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--roxo:#A78BFA;--roxo-light:#1e1a3d;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{background:var(--azul);height:var(--header-h);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.20);}
+    .logo{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-h{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);font-size:0.84rem;font-weight:700;border:none;cursor:pointer;transition:var(--trans);color:rgba(255,255,255,0.88);background:rgba(255,255,255,0.15);font-family:inherit;}
+    .btn-h:hover{background:rgba(255,255,255,0.28);color:#fff;}
+
+    /* HERO */
+    .hero{background:linear-gradient(135deg,var(--azul-dark),var(--azul));padding:40px 24px 36px;color:#fff;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.05);top:-80px;right:-60px;}
+    .hero-inner{position:relative;z-index:1;max-width:860px;margin:0 auto;display:flex;align-items:center;gap:20px;}
+    .hero-ic{width:64px;height:64px;border-radius:18px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+    .hero-txt h1{font-size:1.55rem;font-weight:800;margin-bottom:4px;}
+    .hero-txt p{font-size:0.88rem;opacity:0.85;line-height:1.6;}
+
+    /* LAYOUT */
+    .layout{max-width:860px;margin:0 auto;padding:32px 24px 80px;display:grid;grid-template-columns:220px 1fr;gap:24px;}
+
+    /* NAV LATERAL */
+    .cfg-nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:calc(var(--header-h) + 20px);align-self:start;}
+    .cfg-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);font-size:0.87rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);border:none;background:none;font-family:inherit;text-align:left;width:100%;}
+    .cfg-nav-item:hover{background:var(--azul-light);color:var(--azul);}
+    .cfg-nav-item.ativo{background:var(--azul-light);color:var(--azul);}
+    .cfg-nav-item i{width:16px;text-align:center;font-size:0.9rem;}
+    .cfg-nav-div{height:1px;background:var(--borda);margin:6px 0;}
+    .cfg-nav-item.perigo:hover{background:#FFF5F5;color:var(--vermelho);}
+    .cfg-nav-item.perigo.ativo{background:#FFF5F5;color:var(--vermelho);}
+
+    /* SECÇÕES */
+    .cfg-conteudo{display:flex;flex-direction:column;gap:20px;}
+    .sec{display:none;animation:fadeUp 0.3s ease both;}
+    .sec.ativa{display:flex;flex-direction:column;gap:20px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* CARD */
+    .card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);overflow:hidden;}
+    .card-header{padding:18px 22px;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:10px;}
+    .card-header-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+    .card-header h3{font-size:0.97rem;font-weight:800;color:var(--texto);}
+    .card-header p{font-size:0.80rem;color:var(--texto2);margin-top:2px;}
+    .card-body{padding:22px;}
+
+    /* CAMPOS */
+    .campo{margin-bottom:18px;}
+    .campo:last-child{margin-bottom:0;}
+    .campo label{display:block;font-size:0.84rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .campo .hint{font-size:0.76rem;color:var(--texto2);margin-top:5px;}
+    .input-wrap{position:relative;}
+    .input-wrap i.ic-esq{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.9rem;pointer-events:none;}
+    .input-wrap:focus-within i.ic-esq{color:var(--azul);}
+    .input-wrap input{width:100%;padding:10px 14px 10px 40px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.90rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;transition:var(--trans);}
+    .input-wrap input:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,87,194,0.10);background:var(--bg2);}
+    .input-wrap .btn-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--texto2);cursor:pointer;font-size:0.9rem;padding:4px;}
+    .input-wrap .btn-eye:hover{color:var(--azul);}
+
+    /* TOGGLE SWITCH */
+    .toggle-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--borda);}
+    .toggle-row:last-child{border-bottom:none;padding-bottom:0;}
+    .toggle-row:first-child{padding-top:0;}
+    .toggle-info h4{font-size:0.88rem;font-weight:700;margin-bottom:3px;}
+    .toggle-info p{font-size:0.78rem;color:var(--texto2);line-height:1.5;}
+    .toggle{position:relative;width:44px;height:24px;flex-shrink:0;margin-top:2px;}
+    .toggle input{opacity:0;width:0;height:0;}
+    .toggle-slider{position:absolute;inset:0;background:var(--borda);border-radius:12px;cursor:pointer;transition:var(--trans);}
+    .toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:var(--trans);box-shadow:0 1px 4px rgba(0,0,0,0.20);}
+    .toggle input:checked+.toggle-slider{background:var(--azul);}
+    .toggle input:checked+.toggle-slider::before{transform:translateX(20px);}
+
+    /* SELECT */
+    .select-field{width:100%;padding:10px 14px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.90rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;cursor:pointer;transition:var(--trans);}
+    .select-field:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,87,194,0.10);}
+
+    /* BOTÕES */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 22px;border-radius:var(--radius-sm);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);}
+    .btn-azul{background:var(--azul);color:#fff;}
+    .btn-azul:hover{background:var(--azul-dark);transform:translateY(-1px);}
+    .btn-outline{background:transparent;border:1.5px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--azul);color:var(--azul);}
+    .btn-vermelho{background:var(--vermelho);color:#fff;}
+    .btn-vermelho:hover{opacity:0.88;}
+    .btn-vermelho-outline{background:transparent;border:1.5px solid var(--vermelho);color:var(--vermelho);}
+    .btn-vermelho-outline:hover{background:var(--vermelho);color:#fff;}
+    .btn-row{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;}
+
+    /* SESSÕES ACTIVAS */
+    .sessao-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--borda);}
+    .sessao-item:last-child{border-bottom:none;}
+    .sessao-ic{width:40px;height:40px;border-radius:10px;background:var(--azul-light);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .sessao-info h4{font-size:0.87rem;font-weight:700;margin-bottom:2px;}
+    .sessao-info p{font-size:0.77rem;color:var(--texto2);}
+    .sessao-atual{font-size:0.72rem;font-weight:700;color:var(--verde);background:#D4EDDA;padding:2px 8px;border-radius:10px;margin-left:6px;}
+    .btn-terminar{margin-left:auto;font-size:0.78rem;padding:5px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--borda);background:transparent;color:var(--texto2);cursor:pointer;font-family:inherit;transition:var(--trans);}
+    .btn-terminar:hover{border-color:var(--vermelho);color:var(--vermelho);}
+
+    /* ZONA PERIGO */
+    .perigo-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid #FFCDD2;}
+    .perigo-card .card-header{background:#FFF5F5;border-bottom-color:#FFCDD2;}
+    body.dark .perigo-card{border-color:#5c2222;}
+    body.dark .perigo-card .card-header{background:#2d1a1a;border-bottom-color:#5c2222;}
+    .perigo-item{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid #FFCDD2;}
+    body.dark .perigo-item{border-bottom-color:#5c2222;}
+    .perigo-item:last-child{border-bottom:none;}
+    .perigo-item-info h4{font-size:0.88rem;font-weight:700;margin-bottom:3px;color:var(--vermelho);}
+    .perigo-item-info p{font-size:0.78rem;color:var(--texto2);line-height:1.5;}
+
+    /* ALERTA */
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.86rem;margin-bottom:16px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.sucesso{background:#F0FFF4;border-color:#C8E6C9;color:#1B5E20;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    body.dark .alerta.sucesso{background:#1a2d1a;border-color:#225c22;color:#80ff9e;}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    .alerta.visivel{display:flex;}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.60);z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+    .modal-overlay.visivel{display:flex;}
+    .modal{background:var(--bg2);border-radius:var(--radius);padding:32px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,0.35);border:1.5px solid var(--borda);animation:modalIn 0.3s ease both;}
+    @keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal h3{font-size:1.05rem;font-weight:800;margin-bottom:8px;color:var(--vermelho);}
+    .modal p{font-size:0.86rem;color:var(--texto2);line-height:1.65;margin-bottom:20px;}
+    .modal-campo{margin-bottom:16px;}
+    .modal-campo label{display:block;font-size:0.83rem;font-weight:700;margin-bottom:6px;}
+    .modal-campo input{width:100%;padding:10px 14px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.90rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;transition:var(--trans);}
+    .modal-campo input:focus{border-color:var(--vermelho);box-shadow:0 0 0 3px rgba(229,57,53,0.10);}
+    .modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+
+    /* TOAST */
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--azul);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    .toast.sucesso{border-left-color:var(--verde);}
+    .toast.erro{border-left-color:var(--vermelho);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;margin-top:40px;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:700px){
+      .layout{grid-template-columns:1fr;gap:16px;}
+      .cfg-nav{flex-direction:row;flex-wrap:wrap;position:static;gap:6px;}
+      .cfg-nav-div{display:none;}
+      .cfg-nav-item{flex:1;min-width:120px;justify-content:center;font-size:0.80rem;padding:8px 10px;}
+      .cfg-nav-item span{display:none;}
+    }
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+
+<!-- HMZ MOBILE HEADER COMPACT FIX -->
+<style id="hmz-mobile-header-compact-final">
+/* Apenas mobile: compacta o cabeçalho sem alterar o desktop ou o menu lateral. */
+@media (max-width: 720px){
+  header{
+    min-width:0!important;
+    max-width:100%!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+    gap:8px!important;
+  }
+  header .h-esq, header .h-dir{
+    min-width:0!important;
+    gap:6px!important;
+    flex-shrink:1;
+  }
+  header .logo{
+    font-size:1.22rem!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media (max-width: 600px){
+  header{min-height:64px!important;}
+
+  /* Todos os controlos do cabeçalho passam a ter uma área de toque consistente. */
+  header .h-dir .btn-dark,
+  header .h-dir .btn-h,
+  header .h-dir .btn-cfg-header,
+  header .h-dir .btn-sair,
+  header .h-dir .hmz-back-page{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    padding:0!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:0!important;
+    font-size:0!important;
+    white-space:nowrap!important;
+    flex:0 0 42px!important;
+  }
+  header .h-dir .btn-dark i,
+  header .h-dir .btn-h i,
+  header .h-dir .btn-cfg-header i,
+  header .h-dir .btn-sair i,
+  header .h-dir .hmz-back-page i{
+    font-size:1rem!important;
+    margin:0!important;
+  }
+
+  /* Chips do cabeçalho: mantém o avatar/ícone, remove apenas o texto no mobile. */
+  header .user-chip,
+  header .emp-chip,
+  header .inst-chip,
+  header .admin-chip{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    padding:0!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:0!important;
+    flex:0 0 42px!important;
+    overflow:hidden!important;
+    font-size:0!important;
+  }
+  header .user-chip span,
+  header .emp-chip span,
+  header .inst-chip span{display:none!important;}
+  header .user-avatar,
+  header .emp-avatar,
+  header .inst-avatar,
+  header .emp-av,
+  header .inst-av{
+    flex-shrink:0!important;
+  }
+  header .admin-chip .admin-ic,
+  header .admin-chip .admin-ic i{font-size:1rem!important;}
+
+  /* Evita que o grupo direito force o cabeçalho para fora do ecrã. */
+  header .h-dir{flex-wrap:nowrap!important;}
+}
+
+@media (max-width: 420px){
+  header{padding-left:10px!important;padding-right:10px!important;gap:6px!important;}
+  header .h-esq, header .h-dir{gap:4px!important;}
+  header .logo{font-size:1.08rem!important;}
+  header .h-dir .btn-dark,
+  header .h-dir .btn-h,
+  header .h-dir .btn-cfg-header,
+  header .h-dir .btn-sair,
+  header .h-dir .hmz-back-page,
+  header .user-chip,
+  header .emp-chip,
+  header .inst-chip,
+  header .admin-chip{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+    flex-basis:38px!important;
+  }
+}
+</style>
+
+
+<style id="hmz-config-nav-responsive-fix">
+/* Em ecrãs intermédios e mobile, a navegação passa para uma grelha legível. */
+@media (max-width: 900px){
+  .layout{width:100%!important;max-width:860px!important;grid-template-columns:minmax(0,1fr)!important;gap:18px!important;padding:24px 18px 60px!important;}
+  .cfg-nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;position:static!important;width:100%!important;min-width:0!important;}
+  .cfg-nav-item{display:flex!important;min-width:0!important;width:100%!important;justify-content:flex-start!important;white-space:normal!important;padding:10px 12px!important;font-size:.82rem!important;gap:8px!important;}
+  .cfg-nav-item span{display:inline!important;min-width:0!important;}
+  .cfg-nav-item i{flex:0 0 18px!important;}
+  .cfg-nav-div{display:none!important;}
+  .cfg-conteudo{width:100%!important;min-width:0!important;}
+  .sec,.card,.card-body{min-width:0!important;max-width:100%!important;}
+}
+@media (max-width: 420px){
+  .layout{padding:18px 12px 48px!important;}
+  .cfg-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
+  .cfg-nav-item{font-size:.76rem!important;padding:9px 8px!important;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <button class="btn-dark" onclick="toggleDark()"><i class="fas fa-moon" id="dark-icon"></i></button>
+    <button class="btn-h" onclick="history.back()"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-ic"><i class="fas fa-cog"></i></div>
+    <div class="hero-txt">
+      <h1>Configurações</h1>
+      <p>Gere a tua conta, privacidade, notificações e preferências do HorizonteMZ.</p>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+
+  <!-- NAV LATERAL -->
+  <nav class="cfg-nav">
+    <button class="cfg-nav-item ativo" onclick="irSec('conta')"><i class="fas fa-user-circle"></i> <span>Conta</span></button>
+    <button class="cfg-nav-item" onclick="irSec('senha')"><i class="fas fa-lock"></i> <span>Senha</span></button>
+    <button class="cfg-nav-item" onclick="irSec('notificacoes')"><i class="fas fa-bell"></i> <span>Notificações</span></button>
+    <button class="cfg-nav-item" onclick="irSec('privacidade')"><i class="fas fa-shield-alt"></i> <span>Privacidade</span></button>
+    <button class="cfg-nav-item" onclick="irSec('preferencias')"><i class="fas fa-sliders-h"></i> <span>Preferências</span></button>
+    <button class="cfg-nav-item" onclick="irSec('sessoes')"><i class="fas fa-desktop"></i> <span>Sessões</span></button>
+    <div class="cfg-nav-div"></div>
+    <button class="cfg-nav-item perigo" onclick="irSec('perigo')"><i class="fas fa-exclamation-triangle"></i> <span>Zona de perigo</span></button>
+  </nav>
+
+  <!-- CONTEÚDO -->
+  <div class="cfg-conteudo">
+
+    <!-- ── CONTA ── -->
+    <div class="sec ativa" id="sec-conta">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--azul-light);color:var(--azul);"><i class="fas fa-envelope"></i></div>
+          <div><h3>Alterar Email</h3><p>O email é usado para login e notificações</p></div>
+        </div>
+        <div class="card-body">
+          <div class="alerta" id="alerta-email"><i class="fas fa-check-circle"></i><span id="alerta-email-msg"></span></div>
+          <div class="campo">
+            <label>Email actual</label>
+            <div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email-atual" readonly style="opacity:0.65;cursor:not-allowed;"/></div>
+          </div>
+          <div class="campo">
+            <label>Novo email</label>
+            <div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email-novo" placeholder="novoemail@exemplo.com"/></div>
+          </div>
+          <div class="campo">
+            <label>Confirmar novo email</label>
+            <div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email-confirmar" placeholder="Repete o novo email"/></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-azul" onclick="alterarEmail()"><i class="fas fa-save"></i> Guardar email</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#D4EDDA;color:#155724;"><i class="fas fa-check-circle"></i></div>
+          <div><h3>Estado da Conta</h3><p>Informações sobre o teu registo</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Conta verificada</h4><p>O teu email foi confirmado com sucesso</p></div>
+            <span style="font-size:0.82rem;font-weight:700;color:var(--verde);"><i class="fas fa-check-circle"></i> Verificada</span>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Tipo de conta</h4><p>Utilizador — perfil pessoal</p></div>
+            <span style="font-size:0.82rem;font-weight:700;color:var(--azul);">Utilizador</span>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Membro desde</h4><p>Data de criação da conta</p></div>
+            <span id="data-registo" style="font-size:0.82rem;color:var(--texto2);">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SENHA ── -->
+    <div class="sec" id="sec-senha">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:var(--roxo-light);color:var(--roxo);"><i class="fas fa-lock"></i></div>
+          <div><h3>Alterar Senha</h3><p>Usa uma senha forte com pelo menos 8 caracteres</p></div>
+        </div>
+        <div class="card-body">
+          <div class="alerta" id="alerta-senha"><i class="fas fa-check-circle"></i><span id="alerta-senha-msg"></span></div>
+          <div class="campo">
+            <label>Senha actual</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock ic-esq"></i>
+              <input type="password" id="senha-atual" placeholder="A tua senha actual"/>
+              <button class="btn-eye" onclick="verSenha('senha-atual',this)"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="campo">
+            <label>Nova senha</label>
+            <div class="input-wrap">
+              <i class="fas fa-key ic-esq"></i>
+              <input type="password" id="senha-nova" placeholder="Mínimo 8 caracteres" oninput="avaliarForca(this.value)"/>
+              <button class="btn-eye" onclick="verSenha('senha-nova',this)"><i class="fas fa-eye"></i></button>
+            </div>
+            <div id="forca-wrap" style="margin-top:8px;display:none;">
+              <div style="display:flex;gap:4px;margin-bottom:4px;">
+                <div id="f1" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div>
+                <div id="f2" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div>
+                <div id="f3" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div>
+                <div id="f4" style="flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);"></div>
+              </div>
+              <div id="forca-label" style="font-size:0.75rem;color:var(--texto2);"></div>
+            </div>
+          </div>
+          <div class="campo">
+            <label>Confirmar nova senha</label>
+            <div class="input-wrap">
+              <i class="fas fa-key ic-esq"></i>
+              <input type="password" id="senha-confirmar" placeholder="Repete a nova senha"/>
+              <button class="btn-eye" onclick="verSenha('senha-confirmar',this)"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="hint" style="font-size:0.78rem;color:var(--texto2);margin-bottom:4px;"><i class="fas fa-info-circle"></i> A senha deve ter pelo menos 8 caracteres, incluindo letras e números.</div>
+          <div class="btn-row">
+            <button class="btn btn-azul" onclick="alterarSenha()"><i class="fas fa-lock"></i> Actualizar senha</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NOTIFICAÇÕES ── -->
+    <div class="sec" id="sec-notificacoes">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#FEF3C7;color:#D97706;"><i class="fas fa-bell"></i></div>
+          <div><h3>Notificações por Email</h3><p>Escolhe o que pretendes receber no teu email</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Novas vagas de emprego</h4><p>Recebe alertas de vagas que correspondem ao teu perfil</p></div>
+            <label class="toggle"><input type="checkbox" id="not-vagas" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Novas oportunidades (bolsas, cursos)</h4><p>Alertas de bolsas, estágios e cursos publicados</p></div>
+            <label class="toggle"><input type="checkbox" id="not-oportunidades" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Estado das candidaturas</h4><p>Sabe quando o estado da tua candidatura muda</p></div>
+            <label class="toggle"><input type="checkbox" id="not-candidaturas" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Sugestões personalizadas</h4><p>Recomendações baseadas no teu perfil e actividade</p></div>
+            <label class="toggle"><input type="checkbox" id="not-sugestoes" onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Dicas de carreira e formação</h4><p>Conteúdos úteis para o teu desenvolvimento profissional</p></div>
+            <label class="toggle"><input type="checkbox" id="not-dicas" onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Novidades do HorizonteMZ</h4><p>Actualizações da plataforma e novos recursos</p></div>
+            <label class="toggle"><input type="checkbox" id="not-novidades" onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#EEF4FF;color:#0057C2;"><i class="fas fa-mobile-alt"></i></div>
+          <div><h3>Notificações na Plataforma</h3><p>Alertas visíveis dentro do HorizonteMZ</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Mensagens e interacções</h4><p>Notificações de respostas e actividade no teu perfil</p></div>
+            <label class="toggle"><input type="checkbox" id="not-msg" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Prazos a expirar</h4><p>Alerta quando um prazo de candidatura está próximo</p></div>
+            <label class="toggle"><input type="checkbox" id="not-prazos" checked onchange="guardarNotif()"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PRIVACIDADE ── -->
+    <div class="sec" id="sec-privacidade">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#F0FFF4;color:#16A34A;"><i class="fas fa-shield-alt"></i></div>
+          <div><h3>Visibilidade do Perfil</h3><p>Controla quem pode ver o teu perfil e as tuas informações públicas</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Perfil público</h4><p>O teu perfil pode ser visualizado por outras pessoas no HorizonteMZ</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-publico" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Visível para empresas recrutadoras</h4><p>Empresas podem encontrar o teu perfil ao pesquisar candidatos</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-empresas" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Visível para instituições</h4><p>Instituições podem encontrar e visualizar o teu perfil quando autorizado</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-instituicoes" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Mostrar email no perfil</h4><p>O teu email fica visível no perfil público</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-email" onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Mostrar telefone no perfil</h4><p>O teu número de telefone fica visível no perfil público</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-tel" onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#EFF6FF;color:#2563EB;"><i class="fas fa-eye"></i></div>
+          <div><h3>O que aparece no teu perfil público</h3><p>Escolhe quais informações, além da identidade básica, queres exibir</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row"><div class="toggle-info"><h4>Sobre mim</h4><p>A tua apresentação ou objetivo profissional</p></div><label class="toggle"><input type="checkbox" id="priv-sobre" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Formação académica</h4><p>Cursos, instituições e anos informados no teu CV</p></div><label class="toggle"><input type="checkbox" id="priv-edu" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Experiência profissional</h4><p>Experiências registadas no teu CV</p></div><label class="toggle"><input type="checkbox" id="priv-exp" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Competências</h4><p>Competências e habilidades que adicionaste</p></div><label class="toggle"><input type="checkbox" id="priv-comp" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Áreas de interesse</h4><p>Áreas profissionais e temas que selecionaste</p></div><label class="toggle"><input type="checkbox" id="priv-int" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Idiomas</h4><p>Idiomas que escolheste adicionar ao teu perfil</p></div><label class="toggle"><input type="checkbox" id="priv-idiomas" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Escolaridade</h4><p>Nível de escolaridade mostrado na área de informações</p></div><label class="toggle"><input type="checkbox" id="priv-escolaridade" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Área de estudo</h4><p>Área de estudo mostrada no perfil</p></div><label class="toggle"><input type="checkbox" id="priv-areaestudo" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><h4>Instituição de ensino</h4><p>Instituição de ensino mostrada nas informações públicas</p></div><label class="toggle"><input type="checkbox" id="priv-instituicao" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label></div>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-azul" onclick="verComoPublico()"><i class="fas fa-eye"></i> Ver como público</button>
+            <button class="btn btn-outline" onclick="guardarPriv(true)"><i class="fas fa-save"></i> Guardar visibilidade</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#F5F3FF;color:#7C3AED;"><i class="fas fa-history"></i></div>
+          <div><h3>Dados e Histórico</h3><p>Controla os teus dados de actividade na plataforma</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Guardar histórico de pesquisas</h4><p>Melhora as sugestões com base no que pesquisas</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-historico" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Permitir análise de actividade</h4><p>Ajuda-nos a melhorar a plataforma com dados anónimos</p></div>
+            <label class="toggle"><input type="checkbox" id="priv-analise" checked onchange="guardarPriv()"><span class="toggle-slider"></span></label>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-outline" onclick="limparHistorico()" style="font-size:0.83rem;"><i class="fas fa-trash-alt"></i> Limpar histórico de pesquisas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PREFERÊNCIAS ── -->
+    <div class="sec" id="sec-preferencias">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#FEF3C7;color:#D97706;"><i class="fas fa-sliders-h"></i></div>
+          <div><h3>Aparência</h3><p>Personaliza a experiência visual da plataforma</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Modo escuro</h4><p>Reduz o brilho do ecrã para ambientes com pouca luz</p></div>
+            <label class="toggle"><input type="checkbox" id="pref-dark" onchange="toggleDarkPref(this.checked)"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#F0FFF4;color:#16A34A;"><i class="fas fa-search"></i></div>
+          <div><h3>Preferências de Pesquisa</h3><p>Define os teus critérios de pesquisa padrão</p></div>
+        </div>
+        <div class="card-body">
+          <div class="campo">
+            <label>Província preferida</label>
+            <select class="select-field" id="pref-provincia" onchange="guardarPrefs()">
+              <option value="">Todas as províncias</option>
+              <option>Maputo</option><option>Gaza</option><option>Inhambane</option>
+              <option>Sofala</option><option>Manica</option><option>Tete</option>
+              <option>Zambézia</option><option>Nampula</option><option>Cabo Delgado</option>
+              <option>Niassa</option><option>Maputo Cidade</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label>Área de interesse principal</label>
+            <select class="select-field" id="pref-area" onchange="guardarPrefs()">
+              <option value="">Todas as áreas</option>
+              <option>Tecnologia de Informação</option><option>Saúde e Medicina</option>
+              <option>Educação e Formação</option><option>Engenharia e Construção</option>
+              <option>Agricultura e Agronegócio</option><option>Finanças e Banca</option>
+              <option>Comunicação e Media</option><option>Direito e Justiça</option>
+              <option>Turismo e Hotelaria</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label>Tipo de oportunidade preferida</label>
+            <select class="select-field" id="pref-tipo" onchange="guardarPrefs()">
+              <option value="">Todos os tipos</option>
+              <option>Emprego a tempo inteiro</option><option>Estágio profissional</option>
+              <option>Bolsas de estudo</option><option>Voluntariado</option><option>Cursos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#EEF4FF;color:#0057C2;"><i class="fas fa-download"></i></div>
+          <div><h3>Os Meus Dados</h3><p>Exporta ou gere os teus dados pessoais</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Exportar os meus dados</h4><p>Faz download de toda a informação associada à tua conta em formato JSON</p></div>
+            <button class="btn btn-outline" onclick="exportarDados()" style="font-size:0.82rem;padding:7px 14px;white-space:nowrap;"><i class="fas fa-download"></i> Exportar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SESSÕES ── -->
+    <div class="sec" id="sec-sessoes">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#EEF4FF;color:#0057C2;"><i class="fas fa-desktop"></i></div>
+          <div><h3>Sessões Activas</h3><p>Dispositivos onde a tua conta está ligada</p></div>
+        </div>
+        <div class="card-body">
+          <div class="sessao-item">
+            <div class="sessao-ic"><i class="fas fa-desktop"></i></div>
+            <div class="sessao-info">
+              <h4>Este dispositivo <span class="sessao-atual">Actual</span></h4>
+              <p>Navegador web · <span id="sessao-data">Agora</span></p>
+            </div>
+          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--borda);">
+            <button class="btn btn-outline" disabled style="font-size:0.84rem;opacity:.65;cursor:not-allowed;"><i class="fas fa-info-circle"></i> Gestão de sessões requer backend</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#FEF3C7;color:#D97706;"><i class="fas fa-shield-alt"></i></div>
+          <div><h3>Segurança da Conta</h3><p>Actividade recente e protecção da conta</p></div>
+        </div>
+        <div class="card-body">
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Autenticação em dois passos</h4><p>Adiciona uma camada extra de segurança ao teu login</p></div>
+            <label class="toggle"><input type="checkbox" id="seg-2fa" disabled><span class="toggle-slider"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><h4>Alerta de login em novo dispositivo</h4><p>Recebe um email quando a tua conta é acedida num dispositivo novo</p></div>
+            <label class="toggle"><input type="checkbox" id="seg-alerta" checked onchange="guardarSeg()"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ZONA DE PERIGO ── -->
+    <div class="sec" id="sec-perigo">
+      <div class="card perigo-card">
+        <div class="card-header">
+          <div class="card-header-ic" style="background:#FFF5F5;color:var(--vermelho);"><i class="fas fa-exclamation-triangle"></i></div>
+          <div><h3 style="color:var(--vermelho);">Zona de Perigo</h3><p>Acções irreversíveis — procede com cuidado</p></div>
+        </div>
+        <div class="perigo-item">
+          <div class="perigo-item-info">
+            <h4><i class="fas fa-user-slash"></i> Desactivar conta temporariamente</h4>
+            <p>O teu perfil fica invisível e as candidaturas ficam suspensas. Podes reactivar a qualquer momento fazendo login.</p>
+          </div>
+          <button class="btn btn-vermelho-outline" onclick="desativarConta()" style="white-space:nowrap;font-size:0.83rem;"><i class="fas fa-pause-circle"></i> Desactivar</button>
+        </div>
+        <div class="perigo-item">
+          <div class="perigo-item-info">
+            <h4><i class="fas fa-trash-alt"></i> Eliminar conta permanentemente</h4>
+            <p>Todos os teus dados, CV, candidaturas e histórico serão apagados definitivamente. Esta acção não pode ser revertida.</p>
+          </div>
+          <button class="btn btn-vermelho" onclick="abrirModalEliminar()" style="white-space:nowrap;font-size:0.83rem;"><i class="fas fa-trash-alt"></i> Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fim cfg-conteudo -->
+</div><!-- fim layout -->
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+
+<!-- MODAL ELIMINAR CONTA -->
+<div class="modal-overlay" id="modal-eliminar">
+  <div class="modal">
+    <h3><i class="fas fa-exclamation-triangle"></i> Eliminar conta permanentemente</h3>
+    <p>Esta acção é <strong>irreversível</strong>. Todos os teus dados, CV e candidaturas serão apagados. Para confirmar, escreve a tua senha abaixo.</p>
+    <div class="modal-campo">
+      <label>Senha actual</label>
+      <input type="password" id="conf-senha-eliminar" placeholder="A tua senha"/>
+    </div>
+    <div class="modal-campo">
+      <label>Escreve o nome exacto da conta</label>
+      <input type="text" id="conf-nome-eliminar" placeholder="Nome exacto"/>
+    </div>
+    <div class="modal-campo">
+      <label>Escreve <strong>ELIMINAR</strong> para confirmar</label>
+      <input type="text" id="conf-texto-eliminar" placeholder="ELIMINAR"/>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="fecharModal()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-vermelho" onclick="confirmarEliminar()"><i class="fas fa-trash-alt"></i> Eliminar conta</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<script>
+  const KEYS={tema:'hmz_tema',sessao:'hmz_sessao_utilizador',utils:'hmz_utilizadores',config:'hmz_config_util'};
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+  /* ── TEMA ── */
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';const cb=document.getElementById('pref-dark');if(cb)cb.checked=dark;}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  function toggleDarkPref(val){lsSet(KEYS.tema,val?'dark':'light');aplicarTema(val);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  /* ── TOAST ── */
+  function toast(msg,tipo=''){const c=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+
+  /* ── NAVEGAÇÃO ── */
+  function irSec(id){
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ativa'));
+    document.querySelectorAll('.cfg-nav-item').forEach(b=>b.classList.remove('ativo'));
+    document.getElementById('sec-'+id).classList.add('ativa');
+    const btn=document.querySelector(`.cfg-nav-item[onclick*="'${id}'"]`);
+    if(btn)btn.classList.add('ativo');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  /* ── VER SENHA ── */
+  function verSenha(id,btn){const inp=document.getElementById(id);const mostrar=inp.type==='password';inp.type=mostrar?'text':'password';btn.innerHTML=mostrar?'<i class="fas fa-eye-slash"></i>':'<i class="fas fa-eye"></i>';}
+
+  /* ── FORÇA DA SENHA ── */
+  function avaliarForca(v){
+    const w=document.getElementById('forca-wrap');
+    if(!v){w.style.display='none';return;}
+    w.style.display='block';
+    let score=0;
+    if(v.length>=8)score++;
+    if(/[A-Z]/.test(v))score++;
+    if(/[0-9]/.test(v))score++;
+    if(/[^A-Za-z0-9]/.test(v))score++;
+    const cores=['#E53935','#F59E0B','#16A34A','#0057C2'];
+    const labels=['Muito fraca','Fraca','Boa','Forte'];
+    for(let i=1;i<=4;i++){const el=document.getElementById('f'+i);el.style.background=i<=score?cores[score-1]:'';}
+    document.getElementById('forca-label').textContent=labels[score-1]||'';
+    document.getElementById('forca-label').style.color=cores[score-1]||'';
+  }
+
+  /* ── ALTERAR EMAIL ── */
+  function alterarEmail(){
+    const novo=document.getElementById('email-novo').value.trim();
+    const conf=document.getElementById('email-confirmar').value.trim();
+    const el=document.getElementById('alerta-email');
+    const msg=document.getElementById('alerta-email-msg');
+    if(!novo||!conf){mostrarAlerta(el,msg,'Preenche ambos os campos de email.','erro');return;}
+    if(novo!==conf){mostrarAlerta(el,msg,'Os emails não coincidem.','erro');return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(novo)){mostrarAlerta(el,msg,'Email inválido.','erro');return;}
+    const sessao=lsGet(KEYS.sessao);
+    const utils=lsGet(KEYS.utils,[]);
+    const idx=utils.findIndex(u=>String(u.id)===String(sessao?.id));
+    const duplicado=utils.some((u,i)=>i!==idx && (u.email||'').toLowerCase()===novo.toLowerCase());
+    if(duplicado){mostrarAlerta(el,msg,'Este e-mail já está em uso.','erro');return;}
+    if(idx!==-1){utils[idx].email=novo.toLowerCase();lsSet(KEYS.utils,utils);sessao.email=novo.toLowerCase();lsSet(KEYS.sessao,sessao);}
+    document.getElementById('email-atual').value=novo;
+    document.getElementById('email-novo').value='';
+    document.getElementById('email-confirmar').value='';
+    mostrarAlerta(el,msg,'Email actualizado com sucesso!','sucesso');
+    toast('Email actualizado!','sucesso');
+  }
+
+  /* ── ALTERAR SENHA ── */
+  function alterarSenha(){
+    const atual=document.getElementById('senha-atual').value;
+    const nova=document.getElementById('senha-nova').value;
+    const conf=document.getElementById('senha-confirmar').value;
+    const el=document.getElementById('alerta-senha');
+    const msg=document.getElementById('alerta-senha-msg');
+    if(!atual||!nova||!conf){mostrarAlerta(el,msg,'Preenche todos os campos.','erro');return;}
+    if(nova.length<8){mostrarAlerta(el,msg,'A nova senha deve ter pelo menos 8 caracteres.','erro');return;}
+    if(nova!==conf){mostrarAlerta(el,msg,'As senhas não coincidem.','erro');return;}
+    const sessao=lsGet(KEYS.sessao);
+    const utils=lsGet(KEYS.utils,[]);
+    const u=utils.find(u=>u.id===sessao?.id);
+    if(u&&u.senha!==atual){mostrarAlerta(el,msg,'A senha actual está incorrecta.','erro');return;}
+    const idx=utils.findIndex(u=>String(u.id)===String(sessao?.id));
+    if(idx!==-1){utils[idx].senha=nova;lsSet(KEYS.utils,utils);}
+    document.getElementById('senha-atual').value='';
+    document.getElementById('senha-nova').value='';
+    document.getElementById('senha-confirmar').value='';
+    document.getElementById('forca-wrap').style.display='none';
+    mostrarAlerta(el,msg,'Senha actualizada com sucesso!','sucesso');
+    toast('Senha actualizada!','sucesso');
+  }
+
+  /* ── GUARDAR CONFIGURAÇÕES ── */
+  function guardarNotif(){
+    const cfg=lsGet(KEYS.config,{});
+    cfg.notif={
+      vagas:document.getElementById('not-vagas').checked,
+      oportunidades:document.getElementById('not-oportunidades').checked,
+      candidaturas:document.getElementById('not-candidaturas').checked,
+      sugestoes:document.getElementById('not-sugestoes').checked,
+      dicas:document.getElementById('not-dicas').checked,
+      novidades:document.getElementById('not-novidades').checked,
+      msg:document.getElementById('not-msg').checked,
+      prazos:document.getElementById('not-prazos').checked,
+    };
+    lsSet(KEYS.config,cfg);
+    toast('Preferências de notificações guardadas.','sucesso');
+  }
+
+  function guardarPriv(silencioso=false){
+    const cfg=lsGet(KEYS.config,{});
+    const priv={
+      publico:document.getElementById('priv-publico').checked,
+      empresas:document.getElementById('priv-empresas').checked,
+      instituicoes:document.getElementById('priv-instituicoes').checked,
+      email:document.getElementById('priv-email').checked,
+      tel:document.getElementById('priv-tel').checked,
+      sobre:document.getElementById('priv-sobre').checked,
+      edu:document.getElementById('priv-edu').checked,
+      exp:document.getElementById('priv-exp').checked,
+      comp:document.getElementById('priv-comp').checked,
+      int:document.getElementById('priv-int').checked,
+      idiomas:document.getElementById('priv-idiomas').checked,
+      escolaridade:document.getElementById('priv-escolaridade').checked,
+      areaestudo:document.getElementById('priv-areaestudo').checked,
+      instituicao:document.getElementById('priv-instituicao').checked,
+      sugestoes:cfg.priv?.sugestoes!==false, historico:cfg.priv?.historico!==false, analise:cfg.priv?.analise!==false
+    };
+    cfg.priv=priv; lsSet(KEYS.config,cfg);
+    const sessao=lsGet(KEYS.sessao); const utils=lsGet(KEYS.utils,[]);
+    const idx=utils.findIndex(u=>String(u.id)===String(sessao?.id));
+    if(idx!==-1){
+      const anterior=utils[idx].privacidade||{};
+      utils[idx].privacidade={...anterior, publico:priv.publico!==false, empresas:priv.empresas!==false, instituicoes:priv.instituicoes!==false, ocultarEmail:!priv.email, ocultarTel:!priv.tel, ocultarExperiencia:!priv.exp, ocultarEducacao:!priv.edu, ocultarCompetencias:!priv.comp, ocultarInteresses:!priv.int, ocultarSobre:!priv.sobre, ocultarIdiomas:!priv.idiomas, ocultarEscolaridade:!priv.escolaridade, ocultarAreaEstudo:!priv.areaestudo, ocultarInstituicao:!priv.instituicao};
+      lsSet(KEYS.utils,utils);
+    }
+    if(!silencioso) toast('Definições de visibilidade guardadas.','sucesso');
+  }
+
+  function verComoPublico(){
+    guardarPriv(true);
+    const sessao=lsGet(KEYS.sessao);
+    if(sessao?.id) window.location.href='perfil-publico-utilizador.html?id='+encodeURIComponent(sessao.id);
+  }
+
+  function guardarPrefs(){
+    const cfg=lsGet(KEYS.config,{});
+    cfg.prefs={
+      provincia:document.getElementById('pref-provincia').value,
+      area:document.getElementById('pref-area').value,
+      tipo:document.getElementById('pref-tipo').value,
+    };
+    lsSet(KEYS.config,cfg);
+    toast('Preferências guardadas.','sucesso');
+  }
+
+  function guardarSeg(){
+    const cfg=lsGet(KEYS.config,{});
+    cfg.seg={alerta:document.getElementById('seg-alerta').checked};
+    lsSet(KEYS.config,cfg);
+    toast('Definições de segurança guardadas.','sucesso');
+  }
+
+  /* ── FUNÇÕES EXTRA ── */
+  function limparHistorico(){lsSet('hmz_historico_pesquisa',[]);toast('Histórico de pesquisas limpo.','sucesso');}
+  function terminarTodasSessoes(){toast('A gestão de sessões múltiplas será disponibilizada com o backend.','');}
+  function toggle2FA(){toast('A autenticação em dois passos requer backend.','');}
+
+  function exportarDados(){
+    const sessao=lsGet(KEYS.sessao);
+    const utils=lsGet(KEYS.utils,[]);
+    const u=utils.find(u=>u.id===sessao?.id)||{};
+    const id=sessao.id;
+    const dados={perfil:u,cv:lsGet('hmz_cv_data:'+id,null),candidaturasOportunidades:lsGet('hmz_candidaturas',[]).filter(c=>String(c.utilizadorId)===String(id)),candidaturasVagas:lsGet('hmz_candidaturas_emp',[]).filter(c=>String(c.utilizadorId)===String(id)),notificacoes:lsGet('hmz_notificacoes:'+id,[]),configuracoes:lsGet(KEYS.config,{}),exportadoEm:new Date().toISOString()};
+    const blob=new Blob([JSON.stringify(dados,null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hmz_meus_dados.json';a.click();
+    toast('Dados exportados com sucesso!','sucesso');
+  }
+
+  function desativarConta(){
+    const sessao=lsGet(KEYS.sessao);
+    const utils=lsGet(KEYS.utils,[]);
+    const idx=utils.findIndex(u=>String(u.id)===String(sessao?.id));
+    if(idx!==-1){utils[idx].desativada=true;lsSet(KEYS.utils,utils);}
+    toast('Conta desactivada. Faz login para reactivar.');
+    setTimeout(()=>{lsSet(KEYS.sessao,null);window.location.href='index.html';},1500);
+  }
+
+  /* ── MODAL ELIMINAR ── */
+  function abrirModalEliminar(){document.getElementById('modal-eliminar').classList.add('visivel');document.body.style.overflow='hidden';}
+  function fecharModal(){document.getElementById('modal-eliminar').classList.remove('visivel');document.body.style.overflow='';}
+  function confirmarEliminar(){
+    const txt=document.getElementById('conf-texto-eliminar').value.trim();
+    const senha=document.getElementById('conf-senha-eliminar')?.value||'';
+    const sess=lsGet(KEYS.sessao);
+    const utilizadores=lsGet(KEYS.utils,[]);
+    const actual=utilizadores.find(u=>String(u.id)===String(sess?.id));
+    if(txt!=='ELIMINAR'){toast('Escreve ELIMINAR para confirmar.','erro');return;}
+    if(actual && actual.senha && senha!==actual.senha){toast('A senha está incorrecta.','erro');return;}
+    const sessao=lsGet(KEYS.sessao);
+    const id=sessao?.id;
+    const utils=lsGet(KEYS.utils,[]).filter(u=>String(u.id)!==String(id));
+    lsSet(KEYS.utils,utils);
+    // Remover dados relacionados à conta para não deixar registos órfãos.
+    const c1=lsGet('hmz_candidaturas',[]).filter(c=>String(c.utilizadorId)!==String(id));
+    const c2=lsGet('hmz_candidaturas_emp',[]).filter(c=>String(c.utilizadorId)!==String(id));
+    lsSet('hmz_candidaturas',c1); lsSet('hmz_candidaturas_emp',c2);
+    localStorage.removeItem('hmz_cv_data:'+id);
+    localStorage.removeItem('hmz_notificacoes:'+id);
+    lsSet('hmz_sessao_utilizador',null);lsSet(KEYS.config,{});
+    fecharModal();toast('Conta eliminada. Adeus!');
+    setTimeout(()=>{window.location.href='index.html';},1500);
+  }
+
+  /* ── ALERTA INLINE ── */
+  function mostrarAlerta(el,msg,txt,tipo){el.className='alerta '+tipo+' visivel';msg.textContent=txt;setTimeout(()=>{el.className='alerta';},5000);}
+
+  /* ── INIT ── */
+  document.addEventListener('DOMContentLoaded',function(){
+    const sessaoInicial=lsGet(KEYS.sessao);
+    if(!sessaoInicial){window.location.href='login-utilizador.html';return;}
+    const utils=lsGet(KEYS.utils,[]);
+    const contaAtual=utils.find(u=>String(u.id)===String(sessaoInicial.id));
+    if(!contaAtual){lsSet(KEYS.sessao,null);window.location.href='login-utilizador.html';return;}
+    const sessao=contaAtual;
+    const u=contaAtual;
+    document.getElementById('email-atual').value=u.email||sessao.email||'';
+    document.getElementById('data-registo').textContent=u.criadoEm?new Date(u.criadoEm).toLocaleDateString('pt-MZ',{day:'2-digit',month:'long',year:'numeric'}):'—';
+    document.getElementById('sessao-data').textContent=new Date().toLocaleDateString('pt-MZ',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    // Carregar configs guardadas
+    const cfg=lsGet(KEYS.config,{});
+    if(cfg.notif){Object.entries(cfg.notif).forEach(([k,v])=>{const el=document.getElementById('not-'+k);if(el)el.checked=v;});}
+    if(cfg.priv){
+      const defaults={publico:true,empresas:true,instituicoes:true,email:false,tel:false,sobre:true,edu:true,exp:true,comp:true,int:true,idiomas:true,escolaridade:true,areaestudo:true,instituicao:true};
+      Object.entries(defaults).forEach(([k,v])=>{const el=document.getElementById('priv-'+k);if(el)el.checked=cfg.priv[k]!==undefined?cfg.priv[k]:v;});
+    }
+    if(cfg.prefs){if(cfg.prefs.provincia)document.getElementById('pref-provincia').value=cfg.prefs.provincia;if(cfg.prefs.area)document.getElementById('pref-area').value=cfg.prefs.area;if(cfg.prefs.tipo)document.getElementById('pref-tipo').value=cfg.prefs.tipo;}
+    if(cfg.seg){if(document.getElementById('seg-alerta'))document.getElementById('seg-alerta').checked=cfg.seg.alerta!==false;}
+    document.getElementById('pref-dark').checked=lsGet(KEYS.tema)==='dark';
+  });
+
+  document.getElementById('modal-eliminar').addEventListener('click',function(e){if(e.target===this)fecharModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharModal();});
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel da Empresa | HorizonteMZ</title>
+  <meta name="description" content="Painel de gestão da sua empresa no HorizonteMZ."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --laranja:#D97706;--laranja-dark:#92400E;--laranja-light:#FEF3C7;
+      --azul:#0057C2;--azul-light:#EEF4FF;
+      --amarelo:#FFBE00;--verde:#1DB954;--vermelho:#E53935;
+      --bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;
+      --borda:#DDE3F0;--sombra:rgba(217,119,6,0.08);--sombra-hover:rgba(217,119,6,0.18);
+      --sidebar-w:260px;--header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;
+    }
+    body.dark{--laranja:#F59E0B;--laranja-dark:#78350F;--laranja-light:#2d1f0a;--azul:#4A9EFF;--azul-light:#0D1B3E;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);--sombra-hover:rgba(0,0,0,0.40);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}ul{list-style:none;}
+    header{background:linear-gradient(135deg,var(--laranja-dark),var(--laranja));height:var(--header-h);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.20);}
+    .h-esq{display:flex;align-items:center;gap:16px;}
+    .logo{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:#FEF3C7;}
+    .btn-burger{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-burger:hover{background:rgba(255,255,255,0.18);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-cfg-header{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:7px;border-radius:var(--radius-sm);font-size:1rem;cursor:pointer;transition:var(--trans);display:inline-flex;align-items:center;}
+    .btn-cfg-header:hover{background:rgba(255,255,255,0.28);}
+    .emp-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 14px 5px 6px;color:#fff;font-size:0.85rem;font-weight:600;cursor:pointer;transition:var(--trans);;text-decoration:none}
+    .emp-chip:hover{background:rgba(255,255,255,0.25);}
+    .emp-avatar{width:30px;height:30px;border-radius:50%;background:#FEF3C7;color:#92400E;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:800;flex-shrink:0;}
+    .btn-sair{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 12px;border-radius:var(--radius-sm);font-size:0.82rem;cursor:pointer;font-weight:600;font-family:inherit;transition:var(--trans);display:inline-flex;align-items:center;gap:5px;}
+    .btn-sair:hover{background:rgba(255,255,255,0.28);}
+    .layout{display:flex;min-height:calc(100vh - var(--header-h));}
+    .sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--borda);padding:24px 0;position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;flex-shrink:0;transition:var(--trans);}
+    .sidebar::-webkit-scrollbar{width:4px;}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--borda);border-radius:2px;}
+    .sidebar-label{font-size:0.70rem;font-weight:700;letter-spacing:0.8px;color:var(--texto2);padding:0 20px;margin-bottom:4px;text-transform:uppercase;opacity:0.7;}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:10px 20px;font-size:0.88rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);border-left:3px solid transparent;}
+    .nav-item:hover{background:var(--laranja-light);color:var(--laranja);border-left-color:var(--laranja);}
+    .nav-item.ativo{background:var(--laranja-light);color:var(--laranja);border-left-color:var(--laranja);}
+    .nav-item i{width:18px;text-align:center;font-size:0.95rem;}
+    .nav-badge{margin-left:auto;background:var(--vermelho);color:#fff;font-size:0.68rem;font-weight:800;padding:2px 7px;border-radius:50px;min-width:20px;text-align:center;}
+    .nav-badge.laranja{background:var(--laranja);}
+    .sidebar-div{height:1px;background:var(--borda);margin:12px 16px;}
+    .conteudo{flex:1;padding:28px;overflow-x:hidden;}
+    .pg-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:16px;}
+    .pg-header h1{font-size:1.6rem;font-weight:800;letter-spacing:-0.3px;}
+    .pg-header p{font-size:0.88rem;color:var(--texto2);margin-top:4px;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:var(--radius-sm);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);text-decoration:none;}
+    .btn-laranja{background:var(--laranja);color:#fff;}
+    .btn-laranja:hover{background:var(--laranja-dark);transform:translateY(-1px);box-shadow:0 6px 20px var(--sombra-hover);}
+    .btn-outline{background:transparent;border:1.5px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--laranja);color:var(--laranja);}
+    .btn-vermelho{background:var(--vermelho);color:#fff;}
+    .btn-vermelho:hover{opacity:0.88;}
+    .sec{display:none;animation:fadeUp 0.35s ease both;}
+    .sec.ativa{display:block;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;}
+    .stat-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:20px 20px 16px;transition:var(--trans);position:relative;overflow:hidden;}
+    .stat-card:hover{box-shadow:0 8px 24px var(--sombra);transform:translateY(-2px);}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--cor-stat,var(--laranja));border-radius:var(--radius) var(--radius) 0 0;}
+    .stat-ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:12px;}
+    .stat-num{font-size:1.9rem;font-weight:800;line-height:1;color:var(--texto);margin-bottom:4px;}
+    .stat-lbl{font-size:0.8rem;color:var(--texto2);}
+    .sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+    .sec-header h2{font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+    .sec-header h2 i{color:var(--laranja);}
+    .tabela-wrap{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);overflow:hidden;margin-bottom:20px;}
+    .tabela-filtros{padding:16px 20px;border-bottom:1px solid var(--borda);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .input-busca{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:8px 14px;flex:1;min-width:180px;}
+    .input-busca i{color:var(--texto2);font-size:0.88rem;}
+    .input-busca input{border:none;background:none;outline:none;color:var(--texto);font-family:inherit;font-size:0.88rem;width:100%;}
+    .filtro-sel{padding:8px 12px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg);color:var(--texto);font-family:inherit;font-size:0.85rem;outline:none;cursor:pointer;}
+    table{width:100%;border-collapse:collapse;}
+    thead th{background:var(--bg);padding:12px 16px;font-size:0.80rem;font-weight:700;color:var(--texto2);text-align:left;border-bottom:1px solid var(--borda);white-space:nowrap;}
+    tbody tr{border-bottom:1px solid var(--borda);transition:var(--trans);}
+    tbody tr:last-child{border-bottom:none;}
+    tbody tr:hover{background:var(--bg);}
+    tbody td{padding:13px 16px;font-size:0.86rem;vertical-align:middle;}
+    .td-titulo{font-weight:700;max-width:200px;}
+    .td-titulo p{font-size:0.78rem;color:var(--texto2);font-weight:400;margin-top:2px;}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.73rem;font-weight:700;}
+    .badge-verde{background:#D4EDDA;color:#155724;}
+    .badge-azul{background:#CCE5FF;color:#004085;}
+    .badge-amarelo{background:#FFF3CD;color:#856404;}
+    .badge-cinza{background:#E2E3E5;color:#383D41;}
+    .badge-vermelho{background:#F8D7DA;color:#721C24;}
+    .badge-laranja{background:#FEF3C7;color:#92400E;}
+    body.dark .badge-verde{background:#1a3d28;color:#7ddb9e;}
+    body.dark .badge-azul{background:#0d2d4a;color:#7ab8f5;}
+    body.dark .badge-amarelo{background:#3d2e00;color:#f0c040;}
+    body.dark .badge-cinza{background:#2a2a3a;color:#aaaacc;}
+    body.dark .badge-vermelho{background:#3d1a1e;color:#f5a0a8;}
+    body.dark .badge-laranja{background:#2d1f0a;color:#fcd34d;}
+    .acoes{display:flex;gap:6px;}
+    .btn-ic{width:32px;height:32px;border-radius:var(--radius-sm);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.82rem;transition:var(--trans);}
+    .btn-ver{background:var(--laranja-light);color:var(--laranja);}
+    .btn-ver:hover{background:var(--laranja);color:#fff;}
+    .btn-cv{background:var(--azul-light);color:var(--azul);}.btn-cv:hover{background:var(--azul);color:#fff;}
+    .btn-editar{background:var(--azul-light);color:var(--azul);}
+    .btn-editar:hover{background:var(--azul);color:#fff;}
+    .btn-pausar{background:#FFF3CD;color:#856404;}
+    .btn-pausar:hover{background:var(--amarelo);color:#1a1a2e;}
+    .btn-apagar{background:#FFF5F5;color:var(--vermelho);}
+    .btn-apagar:hover{background:var(--vermelho);color:#fff;}
+    body.dark .btn-ver{background:rgba(217,119,6,0.18);}
+    body.dark .btn-editar{background:rgba(0,87,194,0.18);}
+    body.dark .btn-pausar{background:rgba(245,158,11,0.18);}
+    body.dark .btn-apagar{background:rgba(229,57,53,0.15);}
+    .cand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
+    .cand-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:20px;transition:var(--trans);display:flex;flex-direction:column;gap:14px;min-width:0;}
+    .cand-card:hover{box-shadow:0 8px 24px var(--sombra);transform:translateY(-2px);}
+    .cand-topo{display:flex;align-items:center;gap:14px;margin-bottom:0;}
+    .cand-avatar{width:48px;height:48px;border-radius:50%;background:var(--laranja);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;flex-shrink:0;}
+    .cand-nome h4{font-size:0.95rem;font-weight:700;margin-bottom:2px;}
+    .cand-nome p{font-size:0.80rem;color:var(--texto2);}
+    .cand-dados{display:flex;flex-direction:column;gap:8px;margin-bottom:0;padding:12px 0;border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);}
+    .cand-dado{display:flex;align-items:center;gap:8px;font-size:0.83rem;color:var(--texto2);}
+    .cand-dado i{color:var(--laranja);width:14px;text-align:center;}
+    .cand-dado span{color:var(--texto);}
+    .cand-acoes{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+    .empty-state{text-align:center;padding:52px 24px;background:var(--bg2);border-radius:var(--radius);border:1.5px dashed var(--borda);}
+    .empty-ic{width:72px;height:72px;border-radius:50%;background:var(--laranja-light);color:var(--laranja);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 18px;}
+    .empty-state h3{font-size:1rem;font-weight:700;margin-bottom:8px;}
+    .empty-state p{font-size:0.86rem;color:var(--texto2);margin-bottom:20px;line-height:1.6;}
+    .emp-hero{background:linear-gradient(135deg,var(--laranja-dark),var(--laranja));border-radius:var(--radius);padding:32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;}
+    .emp-hero::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06);top:-60px;right:-40px;}
+    .emp-hero-inner{display:flex;align-items:center;gap:24px;position:relative;z-index:1;flex-wrap:wrap;}
+    .emp-logo{width:80px;height:80px;border-radius:20px;background:rgba(255,255,255,0.20);border:3px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;flex-shrink:0;}
+    .emp-info h1{font-size:1.5rem;font-weight:800;margin-bottom:4px;}
+    .emp-info p{font-size:0.88rem;opacity:0.88;margin-bottom:8px;}
+    .emp-badges{display:flex;flex-wrap:wrap;gap:8px;}
+    .emp-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);padding:4px 12px;border-radius:50px;font-size:0.78rem;font-weight:600;}
+    .emp-badge.verificada{background:rgba(255,190,0,0.25);border-color:rgba(255,190,0,0.40);color:#FEF3C7;}
+    .form-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:28px;margin-bottom:20px;}
+    .form-card-titulo{font-size:1rem;font-weight:800;color:var(--laranja);margin-bottom:20px;display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--borda);}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+    .campo{margin-bottom:18px;}
+    .campo label{display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .input-wrap{position:relative;}
+    .input-wrap i.ic-esq{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.92rem;pointer-events:none;transition:var(--trans);}
+    .input-wrap.textarea-wrap i.ic-esq{top:14px;transform:none;}
+    .input-wrap:focus-within i.ic-esq{color:var(--laranja);}
+    .input-wrap input,.input-wrap select,.input-wrap textarea{width:100%;padding:11px 14px 11px 42px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;transition:var(--trans);outline:none;}
+    .input-wrap select{cursor:pointer;}
+    .input-wrap textarea{resize:vertical;min-height:90px;padding-top:10px;line-height:1.55;}
+    .input-wrap input:focus,.input-wrap select:focus,.input-wrap textarea:focus{border-color:var(--laranja);box-shadow:0 0 0 3px rgba(217,119,6,0.12);background:var(--bg2);}
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.87rem;margin-bottom:20px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.sucesso{background:#F0FFF4;border-color:#C8E6C9;color:#1B5E20;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    body.dark .alerta.sucesso{background:#1a2d1a;border-color:#225c22;color:#80ff9e;}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    .alerta.visivel{display:flex;}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.60);z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+    .modal-overlay.visivel{display:flex;}
+    .modal{background:var(--bg2);border-radius:var(--radius);padding:32px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,0.35);border:1.5px solid var(--borda);animation:modalIn 0.3s ease both;}
+    @keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal h3{font-size:1.1rem;font-weight:800;margin-bottom:10px;color:var(--vermelho);}
+    .modal p{font-size:0.88rem;color:var(--texto2);line-height:1.65;margin-bottom:24px;}
+    .modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--laranja);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    .toast.erro{border-left-color:var(--vermelho);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+    @media(max-width:900px){.sidebar{position:fixed;top:var(--header-h);left:0;height:calc(100vh - var(--header-h));transform:translateX(-100%);z-index:150;box-shadow:4px 0 20px rgba(0,0,0,0.15);}.sidebar.aberta{transform:translateX(0);}.btn-burger{display:flex;}.conteudo{padding:20px 16px;}}
+    @media(max-width:640px){.stats-grid{grid-template-columns:1fr 1fr;}.grid-2{grid-template-columns:1fr;}.cand-grid{grid-template-columns:1fr;}.emp-hero-inner{flex-direction:column;text-align:center;}}
+    @media(max-width:480px){table thead{display:none;}tbody td{display:block;padding:8px 16px;}tbody td::before{content:attr(data-label);font-size:0.75rem;font-weight:700;color:var(--texto2);display:block;margin-bottom:2px;}tbody tr{display:block;border:1.5px solid var(--borda);border-radius:var(--radius-sm);margin:10px 16px;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+    /* V7.9 — cartões de candidatos mais completos */
+    .cand-grid{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;}
+    .cand-card{padding:22px;gap:16px;}
+    .cand-topo{align-items:flex-start;}
+    .cand-avatar{width:56px;height:56px;font-size:1.2rem;}
+    .cand-nome{min-width:0;flex:1}.cand-nome h4{font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cand-nome p{margin-top:4px;line-height:1.4;}
+    .cand-resumo{padding:12px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--borda);font-size:.81rem;color:var(--texto2);line-height:1.55;}
+    .cand-dados{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;padding:14px 0;}
+    .cand-dado{min-width:0;align-items:flex-start}.cand-dado span{white-space:normal;overflow-wrap:anywhere;}
+    .cand-acoes{border-top:0;padding-top:0;align-items:center;}
+    .cand-btn{border:1px solid var(--borda);background:var(--bg2);color:var(--texto);border-radius:9px;padding:8px 10px;font-size:.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--trans);font-family:inherit}.cand-btn:hover{transform:translateY(-1px);border-color:var(--laranja)}.cand-btn.perfil{color:var(--laranja)}.cand-btn.cv{color:var(--azul);}
+    .cand-status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%}.cand-status-row select{margin-left:auto;max-width:150px;}
+    @media(max-width:760px){.cand-grid{grid-template-columns:1fr}.cand-dados{grid-template-columns:1fr}.cand-status-row select{width:100%;max-width:none;margin-left:0}.cand-btn{flex:1;justify-content:center;}}
+
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+    .emp-avatar img{width:100%;height:100%;display:block;object-fit:cover;border-radius:inherit;}
+  
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+
+/* HMZ — cabeçalho dos dashboards simplificado */
+header .h-esq{flex-shrink:0;min-width:0;}
+header .logo{white-space:nowrap;flex-shrink:0;}
+header .h-dir{min-width:0;}
+.emp-chip{min-width:0;max-width:170px;}
+.emp-chip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media(max-width:560px){
+  header{gap:8px!important;padding-left:12px!important;padding-right:12px!important;}
+  header .h-esq{gap:10px!important;}
+  header .logo{font-size:clamp(1rem,4.1vw,1.16rem)!important;letter-spacing:-.6px;}
+  .btn-burger{width:36px!important;min-width:36px!important;padding:0!important;justify-content:center;}
+  header .h-dir{gap:6px!important;}
+  .user-chip,.emp-chip,.inst-chip{max-width:104px;padding-right:9px!important;gap:6px!important;}
+  .user-chip span,.emp-chip span,.inst-chip span{font-size:.78rem;}
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="h-esq">
+    <button class="btn-burger" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars" id="burger-icon"></i></button>
+    <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  </div>
+  <div class="h-dir">
+    <a class="emp-chip" href="perfil-empresa.html" title="Abrir perfil" aria-label="Abrir perfil Empresa">
+      <div class="emp-avatar" id="avatar-iniciais">?</div>
+      <span id="chip-nome">Empresa</span>
+    </a>
+    <button class="btn-sair" id="header-action" type="button" onclick="sair()" aria-label="Sair"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-label" style="margin-bottom:8px;">Gestão</div>
+    <div class="nav-item ativo" onclick="irSec('visao-geral')"><i class="fas fa-home"></i> Visão Geral</div>
+    <div class="nav-item" onclick="irSec('vagas')"><i class="fas fa-briefcase"></i> Vagas <span class="nav-badge laranja" id="badge-vagas">0</span></div>
+    <div class="nav-item" onclick="irSec('candidatos')"><i class="fas fa-users"></i> Candidatos <span class="nav-badge" id="badge-cand">0</span></div>
+    <div class="nav-item" onclick="irParaPagina('criar-vaga.html')"><i class="fas fa-plus-circle"></i> Publicar Vaga</div>
+    <div class="sidebar-div"></div>
+    <div class="sidebar-label" style="margin-bottom:8px;">Conta</div>
+    <div class="nav-item" onclick="irSec('perfil')"><i class="fas fa-building"></i> Perfil da Empresa</div>
+    <!-- ✅ CONFIGURAÇÕES NA SIDEBAR -->
+    <div class="nav-item" onclick="irParaPagina('configuracoes-empresa.html')"><i class="fas fa-cog"></i> Configurações</div>
+    <div class="nav-item" onclick="sair()"><i class="fas fa-sign-out-alt"></i> Sair</div>
+  </aside>
+
+  <div id="overlay" onclick="fecharSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:140;"></div>
+
+  <main class="conteudo">
+
+    <!-- VISÃO GERAL -->
+    <div class="sec ativa" id="sec-visao-geral">
+      <div class="pg-header">
+        <div>
+          <h1>Olá, <span id="pg-nome">Empresa</span>! 👋</h1>
+          <p>Aqui tens um resumo da actividade da tua empresa no HorizonteMZ.</p>
+        </div>
+        <button class="btn btn-laranja" onclick="irParaPagina('criar-vaga.html')">
+          <i class="fas fa-plus"></i> Publicar Vaga
+        </button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" style="--cor-stat:var(--laranja)">
+          <div class="stat-ic" style="background:var(--laranja-light);color:var(--laranja);"><i class="fas fa-briefcase"></i></div>
+          <div class="stat-num" id="st-total">0</div>
+          <div class="stat-lbl">Vagas publicadas</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--azul)">
+          <div class="stat-ic" style="background:var(--azul-light);color:var(--azul);"><i class="fas fa-eye"></i></div>
+          <div class="stat-num" id="st-views">0</div>
+          <div class="stat-lbl">Visualizações totais</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:var(--verde)">
+          <div class="stat-ic" style="background:#D4EDDA;color:#155724;"><i class="fas fa-paper-plane"></i></div>
+          <div class="stat-num" id="st-cand">0</div>
+          <div class="stat-lbl">Candidaturas recebidas</div>
+        </div>
+        <div class="stat-card" style="--cor-stat:#7C3AED">
+          <div class="stat-ic" style="background:#E2D9F3;color:#4B0082;"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-num" id="st-ativas">0</div>
+          <div class="stat-lbl">Vagas activas</div>
+        </div>
+      </div>
+      <div class="sec-header">
+        <h2><i class="fas fa-fire"></i> Vagas Recentes</h2>
+        <button class="btn btn-outline" onclick="irSec('vagas')" style="font-size:0.82rem;padding:7px 14px;">Ver todas</button>
+      </div>
+      <div class="tabela-wrap">
+        <table>
+          <thead><tr><th>Título da Vaga</th><th>Tipo</th><th>Estado</th><th>Candidatos</th><th>Acções</th></tr></thead>
+          <tbody id="tabela-recentes"><tr><td colspan="5" style="text-align:center;padding:32px;color:var(--texto2);">A carregar...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VAGAS -->
+    <div class="sec" id="sec-vagas">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-briefcase" style="color:var(--laranja)"></i> Vagas de Emprego</h1><p>Gere todas as vagas publicadas pela tua empresa.</p></div>
+        <button class="btn btn-laranja" onclick="irParaPagina('criar-vaga.html')"><i class="fas fa-plus"></i> Nova Vaga</button>
+      </div>
+      <div class="tabela-wrap">
+        <div class="tabela-filtros">
+          <div class="input-busca"><i class="fas fa-search"></i><input type="text" id="busca-vaga" placeholder="Pesquisar vaga..." oninput="filtrarVagas()"/></div>
+          <select class="filtro-sel" id="filtro-tipo-vaga" onchange="filtrarVagas()">
+            <option value="">Todos os tipos</option>
+            <option>Emprego a tempo inteiro</option><option>Emprego a tempo parcial</option>
+            <option>Estágio profissional</option><option>Estágio curricular</option>
+            <option>Trabalho remoto</option><option>Freelance / Projecto</option>
+          </select>
+          <select class="filtro-sel" id="filtro-estado-vaga" onchange="filtrarVagas()">
+            <option value="">Todos os estados</option>
+            <option value="ativa">Activa</option><option value="pendente">Pendente</option>
+            <option value="pausada">Pausada</option><option value="fechada">Fechada</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Título</th><th>Tipo</th><th>Estado</th><th>Prazo</th><th>Candidatos</th><th>Acções</th></tr></thead>
+          <tbody id="tabela-vagas"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--texto2);">A carregar...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CANDIDATOS -->
+    <div class="sec" id="sec-candidatos">
+      <div class="pg-header">
+        <div><h1><i class="fas fa-users" style="color:var(--laranja)"></i> Candidatos</h1><p>Vê os CVs e perfis de quem se candidatou às tuas vagas.</p></div>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <label style="font-size:0.85rem;font-weight:700;color:var(--texto);">Filtrar por vaga:</label>
+        <select class="filtro-sel" id="filtro-vaga-cand" onchange="carregarCandidatos()" style="flex:1;min-width:200px;"><option value="">Todas as vagas</option></select>
+      </div>
+      <div class="cand-grid" id="lista-candidatos">
+        <div class="empty-state" style="grid-column:1/-1;">
+          <div class="empty-ic"><i class="fas fa-users"></i></div>
+          <h3>Sem candidatos ainda</h3>
+          <p>Quando alguém se candidatar a uma das tuas vagas, o perfil e CV aparecerão aqui.</p>
+          <button class="btn btn-laranja" onclick="irParaPagina('criar-vaga.html')"><i class="fas fa-plus"></i> Publicar primeira vaga</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="sec" id="sec-perfil">
+      <div class="emp-hero">
+        <div class="emp-hero-inner">
+          <div class="emp-logo" id="emp-logo-ic">E</div>
+          <div class="emp-info">
+            <h1 id="emp-nome-hero">Nome da Empresa</h1>
+            <p id="emp-sector-hero">Sector de actividade</p>
+            <div class="emp-badges">
+              <span class="emp-badge"><i class="fas fa-map-marker-alt"></i> <span id="emp-prov-hero">Moçambique</span></span>
+              <span class="emp-badge"><i class="fas fa-users"></i> <span id="emp-dim-hero">—</span></span>
+              <span class="emp-badge verificada" id="badge-verificada" style="display:none;"><i class="fas fa-check-circle"></i> Verificada</span>
+              <span class="emp-badge" id="badge-pendente"><i class="fas fa-clock"></i> Aprovação pendente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alerta" id="alerta-perfil"><i class="fas fa-check-circle"></i><span id="alerta-perfil-msg"></span></div>
+      <div class="form-card">
+        <div class="form-card-titulo"><i class="fas fa-building"></i> Dados da Empresa</div>
+        <div class="grid-2">
+          <div class="campo"><label>Nome da empresa</label><div class="input-wrap"><i class="fas fa-building ic-esq"></i><input type="text" id="emp-nome" maxlength="150"/></div></div>
+          <div class="campo"><label>Telefone</label><div class="input-wrap"><i class="fas fa-phone ic-esq"></i><input type="tel" id="emp-tel" maxlength="18"/></div></div>
+        </div>
+        <div class="grid-2">
+          <div class="campo"><label>Website</label><div class="input-wrap"><i class="fas fa-globe ic-esq"></i><input type="url" id="emp-website" maxlength="200"/></div></div>
+          <div class="campo"><label>Responsável de RH</label><div class="input-wrap"><i class="fas fa-user-tie ic-esq"></i><input type="text" id="emp-contacto" maxlength="100"/></div></div>
+        </div>
+        <div class="campo"><label>Descrição da empresa</label><div class="input-wrap textarea-wrap"><i class="fas fa-align-left ic-esq"></i><textarea id="emp-descricao" maxlength="700"></textarea></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <!-- ✅ ATALHO CONFIGURAÇÕES NO PERFIL -->
+          <button class="btn btn-outline" onclick="irParaPagina('configuracoes-empresa.html')" style="font-size:0.84rem;">
+            <i class="fas fa-cog"></i> Configurações da conta
+          </button>
+          <button class="btn btn-laranja" onclick="guardarPerfil()"><i class="fas fa-save"></i> Guardar alterações</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+
+<div class="modal-overlay" id="modal-apagar">
+  <div class="modal">
+    <h3><i class="fas fa-exclamation-triangle"></i> Eliminar vaga</h3>
+    <p>Tens a certeza que queres eliminar esta vaga? Esta acção é permanente e todas as candidaturas associadas serão apagadas.</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="fecharModal()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-vermelho" onclick="confirmarApagar()"><i class="fas fa-trash-alt"></i> Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<script>
+  const KEYS={tema:'hmz_tema',sessaoEmp:'hmz_sessao_empresa',empresas:'hmz_empresas',vagas:'hmz_vagas',candidaturas:'hmz_candidaturas_emp',utilizadores:'hmz_utilizadores'};
+  let sessao=null,empresa=null,todasVagas=[],vagaApagarId=null;
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function criarNotificacaoCandidato(c,estado){if(!c||!c.utilizadorId)return;const cfg=lsGet('hmz_config_util',{});if(cfg.notif&&cfg.notif.candidaturas===false)return;const key='hmz_notificacoes:'+c.utilizadorId;const n=lsGet(key,[]);n.unshift({id:'notif_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),tipo:'candidaturas',titulo:'Estado da candidatura actualizado',msg:'A tua candidatura para vaga <strong>'+(c.tituloVaga||c.tituloOp||'')+'</strong> foi alterada para <strong>'+estado+'</strong>.',data:new Date().toISOString(),lida:false,ic:'fa-file-circle-check',bg:'var(--azul-light)',cor:'var(--azul)'});lsSet(key,n);}
+
+  function iniciais(nome){if(!nome)return'E';const p=nome.split(' ');return(p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+  function truncar(txt,max){return txt&&txt.length>max?txt.substring(0,max)+'...':txt||'';}
+  function formatarData(iso){if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('pt-MZ',{day:'2-digit',month:'short',year:'numeric'});}
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+  function mostrarToast(msg,tipo=''){const cont=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;cont.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+  function irParaPagina(p){window.location.href=p;}
+  let sbAberta=false;
+  function toggleSidebar(){sbAberta?fecharSidebar():abrirSidebar();}
+  function abrirSidebar(){sbAberta=true;document.getElementById('sidebar').classList.add('aberta');document.getElementById('overlay').style.display='block';document.getElementById('burger-icon').className='fas fa-times';}
+  function fecharSidebar(){sbAberta=false;document.getElementById('sidebar').classList.remove('aberta');document.getElementById('overlay').style.display='none';document.getElementById('burger-icon').className='fas fa-bars';}
+  function atualizarAcaoHeader(secao){const b=document.getElementById('header-action');if(!b)return;if(secao==='visao-geral'){b.setAttribute('onclick','sair()');b.setAttribute('aria-label','Sair');b.innerHTML='<i class="fas fa-sign-out-alt"></i> <span>Sair</span>';}else{b.setAttribute('onclick',"location.href='dashboard-empresa.html'");b.setAttribute('aria-label','Voltar à Visão Geral');b.innerHTML='<i class="fas fa-arrow-left"></i> <span>Voltar</span>';}}
+  function irSec(id){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ativa'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('ativo'));document.getElementById('sec-'+id).classList.add('ativa');const nav=document.querySelector(`.nav-item[onclick*="'${id}'"]`);if(nav)nav.classList.add('ativo');atualizarAcaoHeader(id);fecharSidebar();if(id==='vagas')renderizarTabela(todasVagas);if(id==='candidatos')carregarCandidatos();if(id==='perfil')preencherPerfil();window.scrollTo({top:0,behavior:'smooth'});}
+  function sair(){lsSet(KEYS.sessaoEmp,null);mostrarToast('Sessão terminada.');setTimeout(()=>{window.location.href='index.html';},800);}
+  function badgeEstado(v){if(v.fechada)return'<span class="badge badge-vermelho">Fechada</span>';if(v.pausada)return'<span class="badge badge-cinza">Pausada</span>';if(!v.aprovada)return'<span class="badge badge-amarelo">Pendente</span>';return'<span class="badge badge-verde">Activa</span>';}
+  function badgeTipo(tipo){const m={'Emprego a tempo inteiro':'badge-azul','Emprego a tempo parcial':'badge-laranja','Estágio profissional':'badge-verde','Estágio curricular':'badge-verde','Trabalho remoto':'badge-azul','Freelance / Projecto':'badge-cinza'};return`<span class="badge ${m[tipo]||'badge-cinza'}">${truncar(tipo,20)||'—'}</span>`;}
+  function carregarDados(){const idEmp=String(sessao.id||'');todasVagas=lsGet(KEYS.vagas,[]).filter(v=>String(v.empresaId||v.empresa_id||v.ownerId||'')===idEmp);const idsVagas=new Set(todasVagas.map(v=>String(v.id)));const cands=lsGet(KEYS.candidaturas,[]).filter(c=>idsVagas.has(String(c.vagaId||c.vaga_id||'')));document.getElementById('st-total').textContent=todasVagas.length;document.getElementById('st-views').textContent=todasVagas.reduce((s,v)=>s+Number(v.views??v.visualizacoes??v.visualizacoesTotal??0),0);document.getElementById('st-cand').textContent=cands.length;document.getElementById('st-ativas').textContent=todasVagas.filter(v=>v.aprovada!==false&&!v.pausada&&!v.fechada&&!v.encerrada&&!v.suspensa).length;document.getElementById('badge-vagas').textContent=todasVagas.length;document.getElementById('badge-cand').textContent=cands.length;renderizarTabelaRecentes(todasVagas.slice(-5).reverse());const sel=document.getElementById('filtro-vaga-cand');sel.innerHTML='<option value="">Todas as vagas</option>';todasVagas.forEach(v=>sel.innerHTML+=`<option value="${v.id}">${truncar(v.titulo,50)}</option>`);}
+  function renderizarTabelaRecentes(vagas){const tbody=document.getElementById('tabela-recentes');if(!vagas.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--texto2);">Nenhuma vaga publicada ainda.</td></tr>';return;}const cands=lsGet(KEYS.candidaturas,[]);tbody.innerHTML=vagas.map(v=>`<tr><td data-label="Título" class="td-titulo">${truncar(v.titulo,40)}</td><td data-label="Tipo">${badgeTipo(v.tipo)}</td><td data-label="Estado">${badgeEstado(v)}</td><td data-label="Candidatos">${cands.filter(c=>String(c.vagaId||c.vaga_id||'')===String(v.id)).length}</td><td data-label="Acções"><div class="acoes"><button class="btn-ic btn-ver" onclick="verVaga('${v.id}')" title="Ver"><i class="fas fa-eye"></i></button><button class="btn-ic btn-editar" onclick="editarVaga('${v.id}')" title="Editar"><i class="fas fa-edit"></i></button><button class="btn-ic btn-apagar" onclick="abrirModalApagar('${v.id}')" title="Eliminar"><i class="fas fa-trash-alt"></i></button></div></td></tr>`).join('');}
+  function renderizarTabela(vagas){const tbody=document.getElementById('tabela-vagas');if(!vagas.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--texto2);">Nenhuma vaga encontrada.</td></tr>';return;}const cands=lsGet(KEYS.candidaturas,[]);tbody.innerHTML=vagas.map(v=>`<tr><td data-label="Título" class="td-titulo">${truncar(v.titulo,40)}<p>${v.provincia||'Nacional'}</p></td><td data-label="Tipo">${badgeTipo(v.tipo)}</td><td data-label="Estado">${badgeEstado(v)}</td><td data-label="Prazo">${v.prazo?formatarData(v.prazo):'—'}</td><td data-label="Candidatos">${cands.filter(c=>String(c.vagaId||c.vaga_id||'')===String(v.id)).length}</td><td data-label="Acções"><div class="acoes"><button class="btn-ic btn-ver" onclick="verVaga('${v.id}')" title="Ver"><i class="fas fa-eye"></i></button><button class="btn-ic btn-editar" onclick="editarVaga('${v.id}')" title="Editar"><i class="fas fa-edit"></i></button><button class="btn-ic btn-pausar" onclick="togglePausar('${v.id}')" title="${v.pausada?'Activar':'Pausar'}"><i class="fas ${v.pausada?'fa-play':'fa-pause'}"></i></button><button class="btn-ic btn-apagar" onclick="abrirModalApagar('${v.id}')" title="Eliminar"><i class="fas fa-trash-alt"></i></button></div></td></tr>`).join('');}
+  function filtrarVagas(){const busca=document.getElementById('busca-vaga').value.toLowerCase();const tipo=document.getElementById('filtro-tipo-vaga').value;const estado=document.getElementById('filtro-estado-vaga').value;let f=todasVagas;if(busca)f=f.filter(v=>v.titulo.toLowerCase().includes(busca));if(tipo)f=f.filter(v=>v.tipo===tipo);if(estado==='ativa')f=f.filter(v=>v.aprovada&&!v.pausada&&!v.fechada);else if(estado==='pendente')f=f.filter(v=>!v.aprovada&&!v.pausada);else if(estado==='pausada')f=f.filter(v=>v.pausada);else if(estado==='fechada')f=f.filter(v=>v.fechada);renderizarTabela(f);}
+  function verVaga(id){window.location.href='detalhe-vaga.html?id='+encodeURIComponent(id);}
+  function editarVaga(id){window.location.href='criar-vaga.html?editar='+encodeURIComponent(id);}
+  function togglePausar(id){const vagas=lsGet(KEYS.vagas,[]);const idx=vagas.findIndex(v=>String(v.id)===String(id));if(idx!==-1){vagas[idx].pausada=!vagas[idx].pausada;lsSet(KEYS.vagas,vagas);todasVagas=vagas.filter(v=>String(v.empresaId||v.empresa_id||v.ownerId||'')===String(sessao.id));renderizarTabela(todasVagas);mostrarToast(vagas[idx].pausada?'Vaga pausada.':'Vaga reactivada.');}}
+  function abrirModalApagar(id){vagaApagarId=id;document.getElementById('modal-apagar').classList.add('visivel');document.body.style.overflow='hidden';}
+  function fecharModal(){document.getElementById('modal-apagar').classList.remove('visivel');document.body.style.overflow='';vagaApagarId=null;}
+  function confirmarApagar(){if(!vagaApagarId)return;const vagas=lsGet(KEYS.vagas,[]).filter(v=>String(v.id)!==String(vagaApagarId));lsSet(KEYS.vagas,vagas);const cands=lsGet(KEYS.candidaturas,[]).filter(c=>String(c.vagaId||c.vaga_id||'')!==String(vagaApagarId));lsSet(KEYS.candidaturas,cands);todasVagas=vagas.filter(v=>String(v.empresaId||v.empresa_id||v.ownerId||'')===String(sessao.id));renderizarTabela(todasVagas);carregarDados();fecharModal();mostrarToast('Vaga eliminada.');}
+  function carregarCandidatos(){const vagaId=document.getElementById('filtro-vaga-cand').value;let cands=lsGet(KEYS.candidaturas,[]).filter(c=>todasVagas.some(v=>String(v.id)===String(c.vagaId||c.vaga_id||'')));if(vagaId)cands=cands.filter(c=>String(c.vagaId||c.vaga_id||'')===String(vagaId));const utils=lsGet(KEYS.utilizadores,[]);const wrap=document.getElementById('lista-candidatos');if(!cands.length){wrap.innerHTML=`<div class="empty-state" style="grid-column:1/-1;"><div class="empty-ic"><i class="fas fa-users"></i></div><h3>Sem candidatos${vagaId?' para esta vaga':''}</h3><p>Quando alguém se candidatar, o perfil e o CV aparecerão aqui.</p></div>`;return;}const statusMap={Pendente:{cls:'badge-amarelo',ic:'fa-clock'},'Em análise':{cls:'badge-azul',ic:'fa-search'},Entrevista:{cls:'badge-laranja',ic:'fa-user-tie'},Aceite:{cls:'badge-verde',ic:'fa-check-circle'},Rejeitado:{cls:'badge-vermelho',ic:'fa-times-circle'}};wrap.innerHTML=cands.map(c=>{const u=utils.find(u=>String(u.id)===String(c.utilizadorId||c.utilizador_id||''))||{nome:c.nomeUtil||'Candidato',email:'',provincia:''};const ini=iniciais(u.nome);const vaga=todasVagas.find(v=>String(v.id)===String(c.vagaId||c.vaga_id||''));const s=statusMap[c.estado]||statusMap.Pendente;const cv=lsGet('hmz_cv_data:'+u.id,null);const resumo=(cv&&cv.perfil)||u.objectivo||u.bio||'';return`<div class="cand-card"><div class="cand-topo"><div class="cand-avatar">${ini}</div><div class="cand-nome"><h4>${u.nome||'Candidato'}</h4><p><i class="fas fa-briefcase"></i> ${vaga?truncar(vaga.titulo,48):'Vaga não encontrada'}</p></div></div>${resumo?`<div class="cand-resumo"><strong>Resumo:</strong> ${truncar(resumo,150)}</div>`:''}<div class="cand-dados">${u.email?`<div class="cand-dado"><i class="fas fa-envelope"></i><span>${u.email}</span></div>`:''}${u.provincia?`<div class="cand-dado"><i class="fas fa-map-marker-alt"></i><span>${u.provincia}</span></div>`:''}${u.nivelEscolaridade?`<div class="cand-dado"><i class="fas fa-graduation-cap"></i><span>${u.nivelEscolaridade}</span></div>`:''}${u.areaEstudo?`<div class="cand-dado"><i class="fas fa-book-open"></i><span>${u.areaEstudo}</span></div>`:''}${cv&&cv.titulo?`<div class="cand-dado"><i class="fas fa-id-badge"></i><span>${cv.titulo}</span></div>`:''}<div class="cand-dado"><i class="fas fa-calendar"></i><span>Candidatou-se em ${formatarData(c.data)}</span></div></div><div class="cand-acoes"><button class="cand-btn perfil" onclick="verPerfilCandidato('${u.id||''}')"><i class="fas fa-user"></i> Ver perfil público</button><button class="cand-btn cv" onclick="verCVCandidato('${u.id||''}')"><i class="fas fa-file-lines"></i> Ver CV</button><div class="cand-status-row"><span class="badge ${s.cls}" style="display:inline-flex;align-items:center;gap:5px;font-size:0.75rem;"><i class="fas ${s.ic}"></i>${c.estado||'Pendente'}</span><select onchange="alterarEstado('${c.id}',this.value)" style="padding:7px 9px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg);color:var(--texto);font-family:inherit;font-size:0.80rem;cursor:pointer;outline:none;"><option ${c.estado==='Pendente'?'selected':''}>Pendente</option><option ${c.estado==='Em análise'?'selected':''}>Em análise</option><option ${c.estado==='Entrevista'?'selected':''}>Entrevista</option><option ${c.estado==='Aceite'?'selected':''}>Aceite</option><option ${c.estado==='Rejeitado'?'selected':''}>Rejeitado</option></select></div></div></div>`;}).join('');}
+  function verPerfilCandidato(id){if(!id){mostrarToast('Perfil não disponível.','erro');return;}window.location.href='perfil-publico-utilizador.html?id='+encodeURIComponent(id);}
+  function verCVCandidato(id){if(!id){mostrarToast('CV não disponível.','erro');return;}window.location.href='meu-cv.html?id='+encodeURIComponent(id); }
+  function alterarEstado(id,estado){const cands=lsGet(KEYS.candidaturas,[]);const idx=cands.findIndex(c=>c.id===id);if(idx!==-1){const anterior=cands[idx].estado;if(anterior!==estado){cands[idx].estado=estado;lsSet(KEYS.candidaturas,cands);criarNotificacaoCandidato(cands[idx],estado);}mostrarToast('Estado actualizado: '+estado);carregarCandidatos();}}
+  function preencherPerfil(){if(!empresa)return;const ini=iniciais(empresa.nome);document.getElementById('emp-logo-ic').textContent=ini;document.getElementById('emp-nome-hero').textContent=empresa.nome||'';document.getElementById('emp-sector-hero').textContent=empresa.sector||'';document.getElementById('emp-prov-hero').textContent=empresa.cidade?empresa.cidade+', '+empresa.provincia:empresa.provincia||'';document.getElementById('emp-dim-hero').textContent=empresa.dimensao||'—';document.getElementById('badge-verificada').style.display=empresa.verificada?'inline-flex':'none';document.getElementById('badge-pendente').style.display=empresa.aprovada?'none':'inline-flex';document.getElementById('emp-nome').value=empresa.nome||'';document.getElementById('emp-tel').value=empresa.tel||'';document.getElementById('emp-website').value=empresa.website||'';document.getElementById('emp-contacto').value=empresa.contactoRH||'';document.getElementById('emp-descricao').value=empresa.descricao||'';}
+  function guardarPerfil(){const emps=lsGet(KEYS.empresas,[]);const idx=emps.findIndex(e=>e.id===sessao.id);if(idx!==-1){emps[idx].nome=document.getElementById('emp-nome').value.trim();emps[idx].tel=document.getElementById('emp-tel').value.trim();emps[idx].website=document.getElementById('emp-website').value.trim();emps[idx].contactoRH=document.getElementById('emp-contacto').value.trim();emps[idx].descricao=document.getElementById('emp-descricao').value.trim();lsSet(KEYS.empresas,emps);empresa=emps[idx];sessao.nome=emps[idx].nome;lsSet(KEYS.sessaoEmp,sessao);document.getElementById('chip-nome').textContent=empresa.nome?empresa.nome.split(' ')[0]:'Empresa';preencherPerfil();const el=document.getElementById('alerta-perfil');document.getElementById('alerta-perfil-msg').textContent='Perfil actualizado com sucesso!';el.className='alerta sucesso visivel';setTimeout(()=>{el.className='alerta';},4000);mostrarToast('Perfil guardado!');}}
+  function preencherAvatarDashboard(elemento,imagem,nome){
+    if(!elemento)return;
+    const fallback=iniciais(nome);
+    elemento.textContent=fallback;
+    if(typeof imagem!=='string'||!imagem.trim())return;
+    const img=document.createElement('img');
+    img.alt=''; img.src=imagem.trim();
+    img.onerror=function(){elemento.textContent=fallback;};
+    elemento.textContent=''; elemento.appendChild(img);
+  }
+  document.addEventListener('DOMContentLoaded',function(){sessao=lsGet(KEYS.sessaoEmp);if(!sessao){window.location.href='login-empresa.html';return;}const emps=lsGet(KEYS.empresas,[]);empresa=emps.find(e=>String(e.id)===String(sessao.id));if(!empresa){window.location.href='login-empresa.html';return;}const ini=iniciais(empresa.nome);preencherAvatarDashboard(document.getElementById('avatar-iniciais'),empresa?.logo, empresa?.nome||sessao.nome);document.getElementById('chip-nome').textContent=empresa.nome?empresa.nome.split(' ')[0]:'Empresa';document.getElementById('pg-nome').textContent=empresa.nome.split(' ')[0];carregarDados();});
+  document.getElementById('modal-apagar').addEventListener('click',function(e){if(e.target===this)fecharModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharModal();});
+</script>
+</body>
+</html>

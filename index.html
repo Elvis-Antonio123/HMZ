@@ -1,0 +1,2187 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HorizonteMZ – Oportunidades, Emprego & Carreira em Moçambique</title>
+  <meta name="description" content="Plataforma moçambicana de oportunidades de aprendizagem, emprego, bolsas, estágios e orientação profissional para jovens."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ══════════════════════════════════════════
+       VARIÁVEIS E RESET
+    ══════════════════════════════════════════ */
+    :root {
+      --azul:        #0057C2;
+      --azul-dark:   #003F8F;
+      --azul-light:  #EEF4FF;
+      --amarelo:     #FFBE00;
+      --amarelo-dark:#E5AA00;
+      --laranja:     #F59E0B;
+      --verde:       #1DB954;
+      --vermelho:    #E53935;
+      --bg:          #F4F7FF;
+      --bg2:         #FFFFFF;
+      --texto:       #1A1A2E;
+      --texto2:      #555577;
+      --borda:       #DDE3F0;
+      --sombra:      rgba(0,87,194,0.10);
+      --sombra-hover:rgba(0,87,194,0.18);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --header-h:    65px;
+      --trans:       all 0.25s ease;
+    }
+
+    body.dark {
+      --azul:        #4A9EFF;
+      --azul-dark:   #2979D9;
+      --azul-light:  #0D1B3E;
+      --laranja:     #F59E0B;
+      --bg:          #0D1117;
+      --bg2:         #161B27;
+      --texto:       #E8EEFF;
+      --texto2:      #8899BB;
+      --borda:       #253050;
+      --sombra:      rgba(0,0,0,0.30);
+      --sombra-hover:rgba(0,0,0,0.45);
+    }
+
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--texto);
+      transition: background 0.3s, color 0.3s;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { font-family: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ══════════════════════════════════════════
+       HEADER / NAVBAR
+    ══════════════════════════════════════════ */
+    header {
+      background: var(--azul);
+      height: var(--header-h);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.22);
+    }
+
+    /* Logo */
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      white-space: nowrap;
+    }
+    .logo span { color: var(--amarelo); }
+
+    /* Nav desktop pública (não logado) */
+    #nav-pub,
+    #nav-util,
+    #nav-inst,
+    #nav-emp {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+    #nav-util,
+    #nav-inst,
+    #nav-emp { display: none; }
+
+    .nav-link {
+      color: rgba(255,255,255,0.88);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.87rem;
+      font-weight: 500;
+      transition: var(--trans);
+      white-space: nowrap;
+    }
+    .nav-link:hover,
+    .nav-link.ativo {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    /* Lado direito do header */
+    .h-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Botões do header */
+    .btn-h {
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--trans);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+    .btn-h-outline {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    .btn-h-outline:hover { background: rgba(255,255,255,0.28); }
+
+    .btn-h-amarelo {
+      background: var(--amarelo);
+      color: #1a1a2e;
+    }
+    .btn-h-amarelo:hover { background: var(--amarelo-dark); }
+
+    /* Sessão logada */
+    .sessao-bar {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+    .sessao-bar strong { color: var(--amarelo); }
+
+    .btn-sair {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--trans);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-sair:hover { background: rgba(255,255,255,0.28); }
+
+    /* Botão modo escuro */
+    .btn-dark {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.05rem;
+      cursor: pointer;
+      padding: 7px;
+      border-radius: var(--radius-sm);
+      transition: var(--trans);
+      display: flex;
+      align-items: center;
+    }
+    .btn-dark:hover { background: rgba(255,255,255,0.18); }
+
+    /* Botão hambúrguer */
+    .btn-burger {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 7px;
+      border-radius: var(--radius-sm);
+      transition: var(--trans);
+    }
+    .btn-burger:hover { background: rgba(255,255,255,0.18); }
+
+    /* ══════════════════════════════════════════
+       MENU MOBILE
+    ══════════════════════════════════════════ */
+    /* ── DRAWER LATERAL ── */
+    .mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:299;backdrop-filter:blur(2px);}
+    .mob-overlay.visivel{display:block;}
+
+    .mob-menu{
+      position:fixed;top:0;left:0;
+      width:280px;height:100vh;
+      background:#0D1B3E;
+      z-index:300;
+      display:flex;flex-direction:column;
+      transform:translateX(-100%);
+      transition:transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
+      box-shadow:4px 0 28px rgba(0,0,0,0.40);
+      overflow:hidden;
+    }
+    .mob-menu.aberto{transform:translateX(0);}
+
+    .mob-menu-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 20px;
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      flex-shrink:0;
+      background:#0A1628;
+    }
+    .mob-menu-logo{font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-0.3px;}
+    .mob-menu-logo span{color:var(--amarelo);}
+    .mob-menu-close{
+      background:rgba(255,255,255,0.10);border:none;color:#fff;
+      width:34px;height:34px;border-radius:8px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1rem;transition:var(--trans);
+    }
+    .mob-menu-close:hover{background:rgba(255,255,255,0.22);}
+
+    .mob-menu-body{flex:1;overflow-y:auto;padding:10px 10px 24px;}
+    .mob-menu-body::-webkit-scrollbar{width:3px;}
+    .mob-menu-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px;}
+
+    .mob-label{
+      font-size:0.68rem;font-weight:700;letter-spacing:1px;
+      text-transform:uppercase;color:rgba(255,255,255,0.32);
+      padding:12px 14px 4px;
+    }
+    .mob-menu a,.mob-menu button{
+      color:rgba(255,255,255,0.82);
+      padding:11px 14px;border-radius:var(--radius-sm);
+      font-size:0.90rem;font-weight:600;
+      transition:var(--trans);background:none;border:none;
+      cursor:pointer;text-align:left;width:100%;
+      display:flex;align-items:center;gap:10px;
+      text-decoration:none;font-family:inherit;
+    }
+    .mob-menu a i,.mob-menu button i{
+      width:18px;text-align:center;
+      color:rgba(255,255,255,0.40);font-size:0.88rem;
+    }
+    .mob-menu a:hover,.mob-menu button:hover{
+      background:rgba(255,255,255,0.09);color:#fff;
+    }
+    .mob-menu a:hover i,.mob-menu button:hover i{color:var(--amarelo);}
+
+    .mob-div{height:1px;background:rgba(255,255,255,0.09);margin:6px 2px;}
+
+    /* ══════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════ */
+    /* ── HERO CARROSSEL ── */
+    .hero {
+      position: relative;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Slides de fundo */
+    .hero-slides { position:absolute;inset:0;z-index:0; }
+    .hero-slide {
+      position:absolute;inset:0;
+      background-size:cover;background-position:center;background-repeat:no-repeat;
+      opacity:0;transition:opacity 1.2s ease;
+    }
+    .hero-slide.ativo { opacity:1; }
+    .hero-slide::after {
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(0,30,90,0.82) 0%,rgba(0,60,140,0.70) 100%);
+    }
+    /* Indicadores */
+    .hero-dots {
+      position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+      display:flex;gap:8px;z-index:3;
+    }
+    .hero-dot {
+      width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.45);
+      border:none;cursor:pointer;transition:all 0.3s;padding:0;
+    }
+    .hero-dot.ativo { background:#fff;width:22px;border-radius:4px; }
+    /* Setas */
+    /* Conteúdo */
+    .hero-inner-wrap {
+      position:relative;z-index:2;
+      padding:110px 24px 90px;width:100%;
+    }
+    .hero-badge  { animation: fadeSlideDown 0.7s ease both; }
+    .hero h1     { animation: fadeSlideUp 0.7s ease 0.15s both; }
+    .hero p      { animation: fadeSlideUp 0.7s ease 0.28s both; }
+    .hero-btns   { animation: fadeSlideUp 0.7s ease 0.40s both; }
+    .hero-stats  { animation: fadeSlideUp 0.7s ease 0.52s both; }
+    @keyframes fadeSlideDown { from{opacity:0;transform:translateY(-14px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes fadeSlideUp   { from{opacity:0;transform:translateY(22px);}  to{opacity:1;transform:translateY(0);} }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,190,0,0.18);
+      border: 1px solid rgba(255,190,0,0.40);
+      color: var(--amarelo);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 2.9rem;
+      font-weight: 800;
+      line-height: 1.18;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 span { color: var(--amarelo); }
+
+    .hero p {
+      font-size: 1.08rem;
+      opacity: 0.90;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ══════════════════════════════════════════
+       BOTÕES GERAIS
+    ══════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--trans);
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .btn-amarelo {
+      background: var(--amarelo);
+      color: #1a1a2e;
+    }
+    .btn-amarelo:hover {
+      background: var(--amarelo-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+    }
+
+    .btn-outline-white {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.75);
+      color: #fff;
+    }
+    .btn-outline-white:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-azul {
+      background: var(--azul);
+      color: #fff;
+    }
+    .btn-azul:hover {
+      background: var(--azul-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--sombra-hover);
+    }
+
+    .btn-branco {
+      background: #fff;
+      color: var(--azul);
+      font-weight: 700;
+    }
+    .btn-branco:hover {
+      background: #f0f4ff;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-azul {
+      background: transparent;
+      border: 2px solid var(--azul);
+      color: var(--azul);
+    }
+    .btn-outline-azul:hover {
+      background: var(--azul);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* ══════════════════════════════════════════
+       BARRA DE ESTATÍSTICAS
+    ══════════════════════════════════════════ */
+    .stats-bar {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .stats-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 24px;
+      text-align: center;
+    }
+
+    .stat-item {}
+    .stat-num {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--azul);
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 0.81rem;
+      color: var(--texto2);
+      margin-top: 6px;
+    }
+
+    /* ══════════════════════════════════════════
+       SECÇÕES GERAIS
+    ══════════════════════════════════════════ */
+    .sec {
+      padding: 72px 24px;
+    }
+    .sec-alt { background: var(--bg2); }
+
+    /* Separador simples e bem visível entre blocos principais */
+    .sec-separador {
+      height: 1px;
+      margin: 0;
+      background: var(--borda);
+      border: 0;
+    }
+
+
+    .cont {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .sec-titulo {
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--azul);
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+    .sec-sub {
+      text-align: center;
+      color: var(--texto2);
+      font-size: 0.98rem;
+      margin-bottom: 50px;
+    }
+
+    /* ══════════════════════════════════════════
+       CATEGORIAS
+    ══════════════════════════════════════════ */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+    }
+
+    .cat-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 28px 16px 22px;
+      text-align: center;
+      border: 1.5px solid var(--borda);
+      transition: var(--trans);
+      cursor: pointer;
+      display: block;
+      color: var(--texto);
+    }
+    .cat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 36px var(--sombra-hover);
+      border-color: var(--azul);
+    }
+
+    .cat-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 1.6rem;
+    }
+    .ci-bolsas      { background:#EEF2FF; color:#4F46E5; }
+    .ci-empregos    { background:#FEF3C7; color:#D97706; }
+    .ci-estagios    { background:#F0FDF4; color:#16A34A; }
+    .ci-voluntariado{ background:#FFF7ED; color:#EA580C; }
+    .ci-cursos      { background:#F0F9FF; color:#0284C7; }
+    .ci-concursos   { background:#FEF9C3; color:#CA8A04; }
+    .ci-workshops   { background:#FDF4FF; color:#9333EA; }
+
+    body.dark .ci-bolsas       { background:rgba(79,70,229,.15);  }
+    body.dark .ci-empregos     { background:rgba(217,119,6,.15);  }
+    body.dark .ci-estagios     { background:rgba(22,163,74,.15);  }
+    body.dark .ci-voluntariado { background:rgba(234,88,12,.15);  }
+    body.dark .ci-cursos       { background:rgba(2,132,199,.15);  }
+    body.dark .ci-concursos    { background:rgba(202,138,4,.15);  }
+    body.dark .ci-workshops    { background:rgba(147,51,234,.15); }
+
+    .cat-card h3 {
+      font-size: 0.96rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .cat-contagem {
+      font-size: 0.81rem;
+      color: var(--texto2);
+    }
+
+
+    /* ══════════════════════════════════════════
+       VAGAS DE EMPREGO EM DESTAQUE
+    ══════════════════════════════════════════ */
+    .vagas-destaque-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:22px;
+    }
+    .vaga-card-home {
+      background:var(--bg2);
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1.5px solid var(--borda);
+      transition:var(--trans);
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+    }
+    .vaga-card-home:hover {
+      transform:translateY(-5px);
+      box-shadow:0 14px 36px var(--sombra-hover);
+    }
+    .vaga-topo-home {
+      background:linear-gradient(135deg,#92400E,var(--laranja));
+      padding:18px 20px;
+      color:#fff;
+    }
+    body.dark .vaga-topo-home {
+      background:linear-gradient(135deg,#78350F,#D97706);
+    }
+    .vaga-topo-home small {
+      font-size:.75rem;
+      opacity:.9;
+      display:flex;
+      align-items:center;
+      gap:5px;
+      margin-bottom:7px;
+    }
+    .vaga-topo-home h3 {
+      font-size:1rem;
+      font-weight:800;
+      line-height:1.35;
+    }
+    .vaga-corpo-home {
+      padding:16px 20px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .vaga-corpo-home p {
+      font-size:.84rem;
+      color:var(--texto2);
+      margin-bottom:14px;
+      line-height:1.55;
+    }
+    .vaga-meta-home {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:7px;
+    }
+    .vaga-data-home {
+      font-size:.78rem;
+      color:var(--texto2);
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .salario-home {
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      background:rgba(29,185,84,.12);
+      color:var(--verde);
+      padding:3px 10px;
+      border-radius:20px;
+      font-size:.73rem;
+      font-weight:700;
+    }
+    @media(max-width:560px){
+      .vagas-destaque-grid { grid-template-columns:1fr; }
+    }
+
+    /* ══════════════════════════════════════════
+       COMO FUNCIONA
+    ══════════════════════════════════════════ */
+    .como-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .como-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 30px 24px;
+      text-align: center;
+      border: 1.5px solid var(--borda);
+      transition: var(--trans);
+    }
+    .como-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px var(--sombra);
+      border-color: var(--azul);
+    }
+
+    .como-ic {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--azul-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 1.5rem;
+      color: var(--azul);
+      border: 2px solid var(--borda);
+    }
+
+    .como-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+    .como-card p {
+      font-size: 0.87rem;
+      color: var(--texto2);
+      line-height: 1.65;
+    }
+
+    /* ══════════════════════════════════════════
+       CARDS DE OPORTUNIDADES
+    ══════════════════════════════════════════ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 22px;
+    }
+
+    .op-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1.5px solid var(--borda);
+      transition: var(--trans);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .op-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 36px var(--sombra-hover);
+    }
+
+    .op-topo {
+      background: var(--azul);
+      padding: 18px 20px;
+      color: #fff;
+    }
+    .op-topo small {
+      font-size: 0.77rem;
+      opacity: 0.82;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+    .op-topo h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .op-corpo {
+      padding: 16px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .op-corpo p {
+      font-size: 0.85rem;
+      color: var(--texto2);
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+
+    .op-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+    .badge-verde  { background:#D4EDDA; color:#155724; }
+    .badge-azul   { background:#CCE5FF; color:#004085; }
+    .badge-amarelo{ background:#FFF3CD; color:#856404; }
+    .badge-cinza  { background:#E2E3E5; color:#383D41; }
+    .badge-roxo   { background:#E2D9F3; color:#4B0082; }
+
+    body.dark .badge-verde  { background:#1a3d28; color:#7ddb9e; }
+    body.dark .badge-azul   { background:#0d2d4a; color:#7ab8f5; }
+    body.dark .badge-amarelo{ background:#3d2e00; color:#f0c040; }
+    body.dark .badge-cinza  { background:#2a2a3a; color:#aaaacc; }
+    body.dark .badge-roxo   { background:#2a1a3d; color:#c49df5; }
+
+    .op-data {
+      font-size: 0.79rem;
+      color: var(--texto2);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .ver-mais {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    /* ══════════════════════════════════════════
+       SECÇÃO DO NOVO — EMPREGO & CV
+    ══════════════════════════════════════════ */
+    .novidades-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .novidade-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 34px 28px;
+      border: 1.5px solid var(--borda);
+      transition: var(--trans);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .novidade-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 36px var(--sombra);
+      border-color: var(--azul);
+    }
+
+    .novidade-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .ni-emprego    { background:#FEF3C7; color:#D97706; }
+    .ni-cv         { background:#EEF2FF; color:#4F46E5; }
+    .ni-orientacao { background:#F0FDF4; color:#16A34A; }
+
+    body.dark .ni-emprego    { background:rgba(217,119,6,.15);  }
+    body.dark .ni-cv         { background:rgba(79,70,229,.15);  }
+    body.dark .ni-orientacao { background:rgba(22,163,74,.15);  }
+
+    .novidade-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .novidade-card p {
+      font-size: 0.88rem;
+      color: var(--texto2);
+      line-height: 1.65;
+    }
+    .novidade-card a {
+      color: var(--azul);
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--trans);
+      margin-top: auto;
+    }
+    .novidade-card a:hover { gap: 9px; }
+
+    /* ══════════════════════════════════════════
+       CTA INSTITUIÇÕES
+    ══════════════════════════════════════════ */
+    .cta-inst {
+      background: linear-gradient(135deg, var(--azul), var(--azul-dark));
+      color: #fff;
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .cta-inst h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      letter-spacing: -0.3px;
+    }
+    .cta-inst p {
+      font-size: 0.99rem;
+      opacity: 0.88;
+      margin-bottom: 36px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+    .cta-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ══════════════════════════════════════════
+       CTA EMPRESAS
+    ══════════════════════════════════════════ */
+    .cta-emp {
+      background: var(--bg2);
+      border-top: 1px solid var(--borda);
+      border-bottom: 1px solid var(--borda);
+      padding: 72px 24px;
+      text-align: center;
+    }
+    .cta-emp h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--azul);
+      margin-bottom: 12px;
+    }
+    .cta-emp p {
+      color: var(--texto2);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════════
+       TESTEMUNHOS
+    ══════════════════════════════════════════ */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .test-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      border: 1.5px solid var(--borda);
+      transition: var(--trans);
+    }
+    .test-card:hover {
+      box-shadow: 0 10px 28px var(--sombra);
+    }
+
+    .test-estrelas {
+      color: var(--amarelo);
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+    .test-card blockquote {
+      font-size: 0.9rem;
+      color: var(--texto2);
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+    .test-autor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .test-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .test-info strong {
+      font-size: 0.9rem;
+      display: block;
+    }
+    .test-info span {
+      font-size: 0.79rem;
+      color: var(--texto2);
+    }
+
+    /* ══════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════ */
+    footer {
+      background: #0D1B3E;
+      color: rgba(255,255,255,0.65);
+      padding: 50px 24px 30px;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .footer-sobre .logo {
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .footer-sobre p {
+      font-size: 0.87rem;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+    .footer-col ul li a {
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.60);
+      transition: var(--trans);
+    }
+    .footer-col ul li a:hover {
+      color: var(--amarelo);
+    }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 28px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p {
+      font-size: 0.84rem;
+    }
+    .footer-bottom strong { color: #fff; }
+
+    /* ══════════════════════════════════════════
+       TOAST NOTIFICATIONS
+    ══════════════════════════════════════════ */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--bg2);
+      border: 1px solid var(--borda);
+      border-left: 4px solid var(--azul);
+      color: var(--texto);
+      padding: 13px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      animation: toastIn 0.3s ease;
+      pointer-events: all;
+      max-width: 320px;
+    }
+    .toast.sucesso { border-left-color: var(--verde); }
+    .toast.erro    { border-left-color: var(--vermelho); }
+
+    @keyframes toastIn {
+      from { opacity:0; transform: translateX(40px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+    @keyframes toastOut {
+      from { opacity:1; transform: translateX(0); }
+      to   { opacity:0; transform: translateX(40px); }
+    }
+
+    /* ══════════════════════════════════════════
+       BACK TO TOP
+    ══════════════════════════════════════════ */
+    #btn-topo {
+      position: fixed;
+      bottom: 28px;
+      left: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--azul);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px var(--sombra);
+      transition: var(--trans);
+      z-index: 500;
+    }
+    #btn-topo:hover {
+      background: var(--azul-dark);
+      transform: translateY(-3px);
+    }
+    #btn-topo.visivel { display: flex; }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVIDADE
+    ══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      #nav-pub,
+      #nav-util,
+      #nav-inst,
+      #nav-emp,
+      .h-right .btn-h:not(.btn-dark) {
+        display: none !important;
+      }
+      .sessao-bar { display: none !important; }
+      .btn-burger { display: flex !important; }
+      .hero h1 { font-size: 1.95rem; }
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero { padding: 80px 20px 60px; }
+      .hero h1 { font-size: 1.65rem; }
+      .hero p { font-size: 0.95rem; }
+      .sec { padding: 52px 18px; }
+      .sec-titulo { font-size: 1.5rem; }
+      .stats-inner { gap: 18px; }
+      .stat-num { font-size: 1.6rem; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+  
+    /* ── FRASES ANIMADAS ── */
+    #hero-frase {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      display: block;
+      min-height: 52px;
+    }
+    #hero-frase.frase-visivel  { opacity:1; transform:translateY(0); }
+    #hero-frase.frase-saindo   { opacity:0; transform:translateY(10px); }
+
+    /* ── PARTÍCULAS HMZ + BOLINHAS ── */
+    .hero-particles {
+      position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;
+    }
+    .hp-item {
+      position:absolute;
+      pointer-events:none;
+      opacity:0;
+      animation: hpFloat linear infinite;
+      will-change: transform, opacity;
+      user-select:none;
+    }
+    .hp-bolinha {
+      border-radius:50%;
+      background: rgba(255,255,255,0.18);
+    }
+    .hp-letra {
+      font-family:'Segoe UI',system-ui,sans-serif;
+      font-weight:900;
+      color: rgba(255,255,255,0.12);
+      line-height:1;
+      letter-spacing:-1px;
+    }
+    @keyframes hpFloat {
+      0%   { transform:translateY(100%) rotate(0deg) scale(0.5); opacity:0; }
+      8%   { opacity:1; }
+      88%  { opacity:0.7; }
+      100% { transform:translateY(-80px) rotate(25deg) scale(1.1); opacity:0; }
+    }
+
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+
+  <!-- Nav pública (não logado) -->
+  <nav id="nav-pub">
+    <a href="index.html" class="nav-link ativo">Início</a>
+    <a href="explorar.html" class="nav-link">Oportunidades</a>
+    <a href="empregos.html" class="nav-link">Emprego</a>
+    <a href="orientacao.html" class="nav-link">Orientação</a>
+    <a href="sobre.html" class="nav-link">Sobre</a>
+  </nav>
+
+  <!-- Nav utilizador logado -->
+  <nav id="nav-util">
+    <a href="index.html" class="nav-link ativo">Início</a>
+    <a href="explorar.html" class="nav-link">Oportunidades</a>
+    <a href="empregos.html" class="nav-link">Emprego</a>
+    <a href="orientacao.html" class="nav-link">Orientação</a>
+    <a href="meu-cv.html" class="nav-link">Meu CV</a>
+    <a href="dashboard-utilizador.html" class="nav-link">Painel</a>
+  </nav>
+
+  <!-- Nav instituição logada -->
+  <nav id="nav-inst">
+    <a href="index.html" class="nav-link ativo">Início</a>
+    <a href="explorar.html" class="nav-link">Explorar</a>
+    <a href="dashboard-instituicao.html" class="nav-link">Painel</a>
+    <a href="criar-oportunidade.html" class="nav-link">Publicar</a>
+    <a href="dashboard-instituicao.html" class="nav-link">Gerir</a>
+  </nav>
+
+  <!-- Nav empresa logada -->
+  <nav id="nav-emp">
+    <a href="index.html" class="nav-link ativo">Início</a>
+    <a href="explorar.html" class="nav-link">Explorar</a>
+    <a href="dashboard-empresa.html" class="nav-link">Painel</a>
+    <a href="criar-vaga.html" class="nav-link">Publicar Vaga</a>
+    <a href="dashboard-empresa.html" class="nav-link">Gerir Vagas</a>
+  </nav>
+
+  <div class="h-right">
+    <!-- Acções não logado -->
+    <div id="acoes-pub">
+      <a href="escolha-conta.html" class="btn-h btn-h-outline"><i class="fas fa-sign-in-alt"></i> Entrar</a>
+      <a href="escolha-conta.html" class="btn-h btn-h-amarelo" style="margin-left:4px;"><i class="fas fa-user-plus"></i> Registar</a>
+    </div>
+
+    <!-- Sessão utilizador -->
+    <div class="sessao-bar" id="sessao-util">
+      <i class="fas fa-user-circle"></i>
+      <strong id="s-nome-util"></strong>
+      <a href="perfil-utilizador.html" class="btn-sair"><i class="fas fa-user"></i> Perfil</a>
+      <button class="btn-sair" onclick="sair('utilizador')"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+
+    <!-- Sessão instituição -->
+    <div class="sessao-bar" id="sessao-inst">
+      <i class="fas fa-building"></i>
+      <strong id="s-nome-inst"></strong>
+      <a href="dashboard-instituicao.html" class="btn-sair"><i class="fas fa-tachometer-alt"></i> Painel</a>
+      <button class="btn-sair" onclick="sair('instituicao')"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+
+    <!-- Sessão empresa -->
+    <div class="sessao-bar" id="sessao-emp">
+      <i class="fas fa-briefcase"></i>
+      <strong id="s-nome-emp"></strong>
+      <a href="dashboard-empresa.html" class="btn-sair"><i class="fas fa-tachometer-alt"></i> Painel</a>
+      <button class="btn-sair" onclick="sair('empresa')"><i class="fas fa-sign-out-alt"></i> Sair</button>
+    </div>
+
+    <button class="btn-dark" onclick="toggleDark()" title="Alternar modo escuro">
+      <i class="fas fa-moon" id="dark-icon"></i>
+    </button>
+    <button class="btn-burger" onclick="toggleMenu()" title="Menu" aria-label="Abrir menu">
+      <i class="fas fa-bars" id="burger-icon"></i>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     MENU MOBILE
+══════════════════════════════════════════ -->
+<!-- OVERLAY -->
+<div class="mob-overlay" id="mob-overlay" onclick="fecharMenu()"></div>
+
+<!-- DRAWER LATERAL -->
+<div class="mob-menu" id="mobile-menu" role="navigation" aria-label="Menu mobile">
+  <div class="mob-menu-header">
+    <div class="mob-menu-logo">Horizonte<span>MZ</span></div>
+    <button class="mob-menu-close" onclick="fecharMenu()" aria-label="Fechar"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="mob-menu-body">
+  <div class="mob-label">Navegação</div>
+  <a href="index.html" id="mob-inicio"><i class="fas fa-home"></i> Início</a>
+  <a href="explorar.html"><i class="fas fa-search"></i> Oportunidades</a>
+  <a href="empregos.html"><i class="fas fa-briefcase"></i> Emprego</a>
+  <a href="orientacao.html"><i class="fas fa-compass"></i> Orientação Profissional</a>
+  <a href="sobre.html"><i class="fas fa-info-circle"></i> Sobre o HMZ</a>
+  <div class="mob-div"></div>
+
+  <div class="mob-label">Utilizador</div>
+  <!-- Links utilizador -->
+  <a href="dashboard-utilizador.html" id="mob-dash-util" style="display:none;"><i class="fas fa-tachometer-alt"></i> Meu Painel</a>
+  <a href="perfil-utilizador.html" id="mob-perfil-util" style="display:none;"><i class="fas fa-user"></i> Meu Perfil</a>
+  <a href="meu-cv.html" id="mob-cv" style="display:none;"><i class="fas fa-file-alt"></i> Meu CV</a>
+  <a href="minhas-candidaturas.html" id="mob-cand" style="display:none;"><i class="fas fa-paper-plane"></i> Candidaturas</a>
+
+  <div class="mob-label">Instituição</div>
+  <!-- Links instituição -->
+  <a href="dashboard-instituicao.html" id="mob-dash-inst" style="display:none;"><i class="fas fa-tachometer-alt"></i> Painel Instituição</a>
+  <a href="criar-oportunidade.html" id="mob-criar-op" style="display:none;"><i class="fas fa-plus-circle"></i> Publicar Oportunidade</a>
+  <a href="dashboard-instituicao.html" id="mob-gerir-op" style="display:none;"><i class="fas fa-list"></i> Gerir Oportunidades</a>
+
+  <div class="mob-label">Empresa</div>
+  <!-- Links empresa -->
+  <a href="dashboard-empresa.html" id="mob-dash-emp" style="display:none;"><i class="fas fa-tachometer-alt"></i> Painel Empresa</a>
+  <a href="criar-vaga.html" id="mob-criar-vaga" style="display:none;"><i class="fas fa-plus-circle"></i> Publicar Vaga</a>
+  <a href="dashboard-empresa.html" id="mob-gerir-vaga" style="display:none;"><i class="fas fa-list"></i> Gerir Vagas</a>
+
+  <div class="mob-div"></div>
+
+  <div class="mob-label">Conta</div>
+  <!-- Auth -->
+  <a href="escolha-conta.html" id="mob-entrar"><i class="fas fa-sign-in-alt"></i> Entrar</a>
+  <a href="escolha-conta.html" id="mob-registar"><i class="fas fa-user-plus"></i> Criar Conta</a>
+
+  <!-- Sair (mostrado quando logado) -->
+  <button id="mob-sair" style="display:none;" onclick="sair(tipoSessaoAtiva())">
+    <i class="fas fa-sign-out-alt"></i> Sair da Conta
+  </button>
+
+  <div class="mob-div"></div>
+  <button onclick="toggleDark()" style="color:rgba(255,255,255,0.9);">
+    <i class="fas fa-moon" id="dark-icon-mob"></i>
+    <span id="dark-label-mob">Modo Escuro</span>
+  </button>
+  </div><!-- fim mob-menu-body -->
+</div><!-- fim mob-menu -->
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero">
+
+  <!-- PARTÍCULAS -->
+  <div class="hero-particles" id="hero-particles"></div>
+
+  <!-- SLIDES DE FUNDO -->
+  <div class="hero-slides" id="hero-slides">
+    <div class="hero-slide ativo" style="background-image:url('https://images.unsplash.com/photo-1529390079861-591de354faf5?w=1470&q=80&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1470&q=80&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1470&q=80&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?w=1470&q=80&fit=crop')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1470&q=80&fit=crop')"></div>
+  </div>
+
+  <!-- SETAS -->
+
+  <!-- CONTEÚDO -->
+  <div class="hero-inner-wrap">
+    <div class="hero-badge">
+      <i class="fas fa-map-marker-alt"></i> A plataforma #1 de oportunidades em Moçambique
+    </div>
+    <h1>O teu horizonte<br>começa <span>aqui</span></h1>
+    <p><span id="hero-frase" class="frase-visivel">Descobre bolsas, estágios e empregos feitos para ti — tudo num só lugar, gratuitamente.</span></p>
+    <div class="hero-btns">
+      <a href="explorar.html" class="btn btn-amarelo">
+        <i class="fas fa-search"></i> Explorar Oportunidades
+      </a>
+      <a href="meu-cv.html" class="btn btn-outline-white" id="btn-cv-hero">
+        <i class="fas fa-file-alt"></i> Criar o Meu CV
+      </a>
+    </div>
+  </div>
+
+  <!-- DOTS -->
+  <div class="hero-dots" id="hero-dots">
+    <button class="hero-dot ativo" onclick="heroIrPara(0)"></button>
+    <button class="hero-dot" onclick="heroIrPara(1)"></button>
+    <button class="hero-dot" onclick="heroIrPara(2)"></button>
+    <button class="hero-dot" onclick="heroIrPara(3)"></button>
+    <button class="hero-dot" onclick="heroIrPara(4)"></button>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════
+     ESTATÍSTICAS
+══════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num" id="s-op">0</div>
+      <div class="stat-lbl">Oportunidades publicadas</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="s-inst">0</div>
+      <div class="stat-lbl">Instituições verificadas</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="s-emp">0</div>
+      <div class="stat-lbl">Empresas parceiras</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="s-us">0</div>
+      <div class="stat-lbl">Utilizadores registados</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" id="s-cand">0</div>
+      <div class="stat-lbl">Candidaturas realizadas</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CATEGORIAS
+══════════════════════════════════════════ -->
+<section class="sec">
+  <div class="cont">
+    <h2 class="sec-titulo">Explorar por Categoria</h2>
+    <p class="sec-sub">Encontra o que procuras mais facilmente</p>
+    <div class="cat-grid">
+      <a href="explorar.html?cat=Bolsas" class="cat-card">
+        <div class="cat-icon ci-bolsas"><i class="fas fa-graduation-cap"></i></div>
+        <h3>Bolsas</h3>
+        <div class="cat-contagem" id="cc-bolsas">0 activas</div>
+      </a>
+      <a href="empregos.html" class="cat-card">
+        <div class="cat-icon ci-empregos"><i class="fas fa-briefcase"></i></div>
+        <h3>Empregos</h3>
+        <div class="cat-contagem" id="cc-empregos">0 activos</div>
+      </a>
+      <a href="explorar.html?cat=Estágios" class="cat-card">
+        <div class="cat-icon ci-estagios"><i class="fas fa-building"></i></div>
+        <h3>Estágios</h3>
+        <div class="cat-contagem" id="cc-estagios">0 activos</div>
+      </a>
+      <a href="explorar.html?cat=Voluntariado" class="cat-card">
+        <div class="cat-icon ci-voluntariado"><i class="fas fa-hands-helping"></i></div>
+        <h3>Voluntariado</h3>
+        <div class="cat-contagem" id="cc-voluntariado">0 activos</div>
+      </a>
+      <a href="explorar.html?cat=Cursos" class="cat-card">
+        <div class="cat-icon ci-cursos"><i class="fas fa-book-open"></i></div>
+        <h3>Cursos</h3>
+        <div class="cat-contagem" id="cc-cursos">0 activos</div>
+      </a>
+      <a href="explorar.html?cat=Concursos" class="cat-card">
+        <div class="cat-icon ci-concursos"><i class="fas fa-trophy"></i></div>
+        <h3>Concursos</h3>
+        <div class="cat-contagem" id="cc-concursos">0 activos</div>
+      </a>
+      <a href="explorar.html?cat=Workshops" class="cat-card">
+        <div class="cat-icon ci-workshops"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h3>Workshops</h3>
+        <div class="cat-contagem" id="cc-workshops">0 activos</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     NOVIDADES DO HMZ (vs OP MZ)
+══════════════════════════════════════════ -->
+<section class="sec sec-alt">
+  <div class="cont">
+    <h2 class="sec-titulo">Mais do que oportunidades</h2>
+    <p class="sec-sub">O HorizonteMZ é um ecossistema completo para o teu desenvolvimento profissional</p>
+    <div class="novidades-grid">
+      <div class="novidade-card">
+        <div class="novidade-icon ni-emprego"><i class="fas fa-briefcase"></i></div>
+        <h3>Área de Emprego</h3>
+        <p>Empresas moçambicanas verificadas publicam vagas reais. Encontra o teu próximo emprego e candidata-te directamente pela plataforma.</p>
+        <a href="empregos.html">Ver vagas disponíveis <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="novidade-card">
+        <div class="novidade-icon ni-cv"><i class="fas fa-file-alt"></i></div>
+        <h3>Gerador de CV Automático</h3>
+        <p>Preenche o teu perfil uma vez e gera um CV profissional em PDF automaticamente. Candidata-te a qualquer oportunidade com um clique.</p>
+        <a href="meu-cv.html">Criar o meu CV <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="novidade-card">
+        <div class="novidade-icon ni-orientacao"><i class="fas fa-compass"></i></div>
+        <h3>Orientação Profissional</h3>
+        <p>Não sabes que caminho seguir? Faz o nosso quiz de orientação e recebe recomendações personalizadas de carreiras e oportunidades.</p>
+        <a href="orientacao.html">Descobrir a minha carreira <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     OPORTUNIDADES EM DESTAQUE
+══════════════════════════════════════════ -->
+<section class="sec">
+  <div class="cont">
+    <h2 class="sec-titulo">Oportunidades em Destaque</h2>
+    <p class="sec-sub">As mais recentes publicadas na plataforma</p>
+    <div class="cards-grid" id="cards-destaque"></div>
+    <div class="ver-mais">
+      <a href="explorar.html" class="btn btn-amarelo">
+        <i class="fas fa-arrow-right"></i> Ver todas as oportunidades
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ══════════════════════════════════════════
+     VAGAS DE EMPREGO EM DESTAQUE
+══════════════════════════════════════════ -->
+<section class="sec sec-alt">
+  <div class="cont">
+    <h2 class="sec-titulo" style="color:var(--laranja);">Vagas de Emprego em Destaque</h2>
+    <p class="sec-sub">Encontra oportunidades profissionais e candidata-te ao teu próximo emprego</p>
+    <div class="vagas-destaque-grid" id="cards-vagas-destaque"></div>
+    <div class="ver-mais">
+      <a href="empregos.html" class="btn btn-amarelo">
+        <i class="fas fa-arrow-right"></i> Ver todas as vagas
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="sec-separador" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════
+     COMO FUNCIONA
+══════════════════════════════════════════ -->
+<section class="sec sec-alt">
+  <div class="cont">
+    <h2 class="sec-titulo">Como funciona</h2>
+    <p class="sec-sub">Simples, rápido e acessível para todos os moçambicanos</p>
+    <div class="como-grid">
+      <div class="como-card">
+        <div class="como-ic"><i class="fas fa-user-plus"></i></div>
+        <h3>1. Cria a tua conta</h3>
+        <p>Regista-te gratuitamente em segundos e acede a todas as oportunidades disponíveis em Moçambique.</p>
+      </div>
+      <div class="como-card">
+        <div class="como-ic"><i class="fas fa-file-alt"></i></div>
+        <h3>2. Completa o teu perfil</h3>
+        <p>Preenche os teus dados uma vez e o HMZ gera automaticamente o teu CV profissional pronto a descarregar.</p>
+      </div>
+      <div class="como-card">
+        <div class="como-ic"><i class="fas fa-search"></i></div>
+        <h3>3. Encontra oportunidades</h3>
+        <p>Filtra por categoria, tipo, localização e prazo. Encontra bolsas, empregos, estágios e muito mais.</p>
+      </div>
+      <div class="como-card">
+        <div class="como-ic"><i class="fas fa-paper-plane"></i></div>
+        <h3>4. Candidata-te</h3>
+        <p>Candidata-te com o teu CV gerado automaticamente e acompanha o estado das tuas candidaturas no painel.</p>
+      </div>
+      <div class="como-card">
+        <div class="como-ic"><i class="fas fa-shield-alt"></i></div>
+        <h3>Conteúdo verificado</h3>
+        <p>Apenas instituições e empresas aprovadas pelo administrador publicam oportunidades e vagas no HMZ.</p>
+      </div>
+      <div class="como-card">
+        <div class="como-ic"><i class="fas fa-compass"></i></div>
+        <h3>Orientação gratuita</h3>
+        <p>O nosso quiz de orientação profissional ajuda-te a descobrir a carreira certa para o teu perfil e interesses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CTA — INSTITUIÇÕES
+══════════════════════════════════════════ -->
+<section class="cta-inst">
+  <h2>A tua instituição tem oportunidades?</h2>
+  <p>Regista a tua organização, aguarda aprovação e começa a publicar bolsas, cursos e workshops para milhares de jovens moçambicanos.</p>
+  <div class="cta-btns">
+    <a href="registo-instituicao.html" class="btn btn-amarelo">
+      <i class="fas fa-building"></i> Registar Instituição
+    </a>
+    <a href="login-instituicao.html" class="btn btn-branco">
+      <i class="fas fa-sign-in-alt"></i> Já tenho conta
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CTA — EMPRESAS
+══════════════════════════════════════════ -->
+<section class="cta-emp">
+  <h2>A tua empresa procura talentos?</h2>
+  <p>Publica vagas de emprego e encontra os melhores profissionais moçambicanos. Processo de validação seguro e transparente.</p>
+  <div class="cta-btns">
+    <a href="registo-empresa.html" class="btn btn-azul">
+      <i class="fas fa-briefcase"></i> Registar Empresa
+    </a>
+    <a href="login-empresa.html" class="btn btn-outline-azul">
+      <i class="fas fa-sign-in-alt"></i> Já tenho conta
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     TESTEMUNHOS
+══════════════════════════════════════════ -->
+<section class="sec sec-alt">
+  <div class="cont">
+    <h2 class="sec-titulo">O que dizem os utilizadores</h2>
+    <p class="sec-sub">Histórias reais de jovens moçambicanos que usam o HorizonteMZ</p>
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-estrelas">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <blockquote>"Encontrei a minha bolsa de estudos no HMZ em menos de uma semana. A plataforma é muito fácil de usar e o gerador de CV poupou-me muito tempo!"</blockquote>
+        <div class="test-autor">
+          <div class="test-avatar" style="background:#4F46E5;">AM</div>
+          <div class="test-info">
+            <strong>Ana Macuácua</strong>
+            <span>Estudante, Maputo</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-estrelas">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <blockquote>"O quiz de orientação profissional ajudou-me a perceber que queria seguir a área de tecnologia. Hoje trabalho numa empresa de software graças ao HMZ!"</blockquote>
+        <div class="test-autor">
+          <div class="test-avatar" style="background:#16A34A;">JC</div>
+          <div class="test-info">
+            <strong>João Cossa</strong>
+            <span>Desenvolvedor, Beira</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-estrelas">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+        </div>
+        <blockquote>"Como directora de RH, uso o HMZ para publicar vagas. A qualidade dos candidatos é excelente e o processo de validação da plataforma dá-nos muita confiança."</blockquote>
+        <div class="test-autor">
+          <div class="test-avatar" style="background:#D97706;">FM</div>
+          <div class="test-info">
+            <strong>Fátima Mutola</strong>
+            <span>Directora RH, Empresa Parceira</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-sobre">
+      <span class="logo">Horizonte<span>MZ</span></span>
+      <p>Plataforma moçambicana que conecta jovens a oportunidades de aprendizagem, emprego e desenvolvimento profissional. Gratuita para todos.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Plataforma</h4>
+      <ul>
+        <li><a href="explorar.html">Oportunidades</a></li>
+        <li><a href="empregos.html">Emprego</a></li>
+        <li><a href="meu-cv.html">Gerador de CV</a></li>
+        <li><a href="orientacao.html">Orientação Profissional</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Organizações</h4>
+      <ul>
+        <li><a href="registo-instituicao.html">Registar Instituição</a></li>
+        <li><a href="registo-empresa.html">Registar Empresa</a></li>
+        <li><a href="login-instituicao.html">Login Instituição</a></li>
+        <li><a href="login-empresa.html">Login Empresa</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informação</h4>
+      <ul>
+        <li><a href="sobre.html">Sobre o HMZ</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="termos.html">Termos de Uso</a></li>
+        <li><a href="termos.html#privacidade">Privacidade</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p><strong>HorizonteMZ</strong> &copy; 2026 — Nacala-Porto, Moçambique</p>
+    <p>Desenvolvido por <a href="">Elvis António Salomão Chato</a></p>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     BOTÃO VOLTAR AO TOPO
+══════════════════════════════════════════ -->
+<button id="btn-topo" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo" aria-label="Voltar ao topo">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ══════════════════════════════════════════
+     CONTAINER DE TOASTS
+══════════════════════════════════════════ -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+  /* ─── CONSTANTES DE CHAVES localStorage ─── */
+  const KEYS = {
+    tema:          'hmz_tema',
+    sessaoUtil:    'hmz_sessao_utilizador',
+    sessaoInst:    'hmz_sessao_instituicao',
+    sessaoEmp:     'hmz_sessao_empresa',
+    utilizadores:  'hmz_utilizadores',
+    instituicoes:  'hmz_instituicoes',
+    empresas:      'hmz_empresas',
+    oportunidades: 'hmz_oportunidades',
+    vagas:         'hmz_vagas',
+    candidaturas:  'hmz_candidaturas',
+  };
+
+  /* ─── UTILITÁRIOS localStorage ─── */
+  function lsGet(key, def = null) {
+    try {
+      const v = localStorage.getItem(key);
+      return v !== null ? JSON.parse(v) : def;
+    } catch { return def; }
+  }
+
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch (e) { console.warn('Erro ao guardar localStorage:', e); }
+  }
+
+  /* ─── MODO ESCURO ─── */
+  function aplicarTema(dark) {
+    document.body.classList.toggle('dark', dark);
+    const icon = dark ? 'fa-sun' : 'fa-moon';
+    document.getElementById('dark-icon').className    = 'fas ' + icon;
+    document.getElementById('dark-icon-mob').className = 'fas ' + icon;
+    document.getElementById('dark-label-mob').textContent = dark ? 'Modo Claro' : 'Modo Escuro';
+  }
+
+  function toggleDark() {
+    const dark = !document.body.classList.contains('dark');
+    lsSet(KEYS.tema, dark ? 'dark' : 'light');
+    aplicarTema(dark);
+  }
+
+  // Aplicar tema guardado ao carregar
+  if (lsGet(KEYS.tema) === 'dark') aplicarTema(true);
+
+  /* ─── MENU MOBILE ─── */
+  let menuAberto = false;
+
+  function toggleMenu(){ menuAberto ? fecharMenu() : abrirMenu(); }
+
+  function abrirMenu(){
+    menuAberto = true;
+    document.getElementById('mobile-menu').classList.add('aberto');
+    document.getElementById('mob-overlay').classList.add('visivel');
+    document.getElementById('burger-icon').className = 'fas fa-times';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function fecharMenu(){
+    menuAberto = false;
+    document.getElementById('mobile-menu').classList.remove('aberto');
+    document.getElementById('mob-overlay').classList.remove('visivel');
+    document.getElementById('burger-icon').className = 'fas fa-bars';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') fecharMenu(); });
+
+  /* ─── TIPO DE SESSÃO ACTIVA ─── */
+  function tipoSessaoAtiva() {
+    if (lsGet(KEYS.sessaoUtil))  return 'utilizador';
+    if (lsGet(KEYS.sessaoInst))  return 'instituicao';
+    if (lsGet(KEYS.sessaoEmp))   return 'empresa';
+    return null;
+  }
+
+  /* ─── VERIFICAR SESSÃO E ACTUALIZAR UI ─── */
+  function inicializarSessao() {
+    const sUtil = lsGet(KEYS.sessaoUtil);
+    const sInst = lsGet(KEYS.sessaoInst);
+    const sEmp  = lsGet(KEYS.sessaoEmp);
+
+    // Esconder tudo por defeito
+    document.getElementById('nav-pub').style.display  = 'flex';
+    document.getElementById('nav-util').style.display = 'none';
+    document.getElementById('nav-inst').style.display = 'none';
+    document.getElementById('nav-emp').style.display  = 'none';
+    document.getElementById('acoes-pub').style.display    = 'flex';
+    document.getElementById('sessao-util').style.display  = 'none';
+    document.getElementById('sessao-inst').style.display  = 'none';
+    document.getElementById('sessao-emp').style.display   = 'none';
+
+    // Mobile — esconder tudo por defeito
+    ['mob-dash-util','mob-perfil-util','mob-cv','mob-cand',
+     'mob-dash-inst','mob-criar-op','mob-gerir-op',
+     'mob-dash-emp','mob-criar-vaga','mob-gerir-vaga',
+     'mob-sair'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    ['mob-entrar','mob-registar'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    });
+
+    if (sUtil) {
+      // Utilizador logado
+      document.getElementById('nav-pub').style.display   = 'none';
+      document.getElementById('nav-util').style.display  = 'flex';
+      document.getElementById('acoes-pub').style.display = 'none';
+      document.getElementById('sessao-util').style.display = 'flex';
+      document.getElementById('s-nome-util').textContent = sUtil.nome.split(' ')[0];
+      // Hero botão CV
+      document.getElementById('btn-cv-hero').href = 'meu-cv.html';
+      // Mobile
+      ['mob-dash-util','mob-perfil-util','mob-cv','mob-cand'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'flex';
+      });
+      ['mob-entrar','mob-registar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      document.getElementById('mob-sair').style.display = 'flex';
+
+    } else if (sInst) {
+      // Instituição logada
+      document.getElementById('nav-pub').style.display   = 'none';
+      document.getElementById('nav-inst').style.display  = 'flex';
+      document.getElementById('acoes-pub').style.display = 'none';
+      document.getElementById('sessao-inst').style.display = 'flex';
+      document.getElementById('s-nome-inst').textContent = sInst.nome.split(' ')[0];
+      // Mobile
+      ['mob-dash-inst','mob-criar-op','mob-gerir-op'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'flex';
+      });
+      ['mob-entrar','mob-registar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      document.getElementById('mob-sair').style.display = 'flex';
+
+    } else if (sEmp) {
+      // Empresa logada
+      document.getElementById('nav-pub').style.display   = 'none';
+      document.getElementById('nav-emp').style.display   = 'flex';
+      document.getElementById('acoes-pub').style.display = 'none';
+      document.getElementById('sessao-emp').style.display = 'flex';
+      document.getElementById('s-nome-emp').textContent  = sEmp.nome.split(' ')[0];
+      // Mobile
+      ['mob-dash-emp','mob-criar-vaga','mob-gerir-vaga'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'flex';
+      });
+      ['mob-entrar','mob-registar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      document.getElementById('mob-sair').style.display = 'flex';
+    }
+  }
+
+  /* ─── SAIR ─── */
+  function sair(tipo) {
+    if (tipo === 'utilizador')  lsSet(KEYS.sessaoUtil, null);
+    if (tipo === 'instituicao') lsSet(KEYS.sessaoInst, null);
+    if (tipo === 'empresa')     lsSet(KEYS.sessaoEmp, null);
+    mostrarToast('Sessão terminada com sucesso.', 'sucesso');
+    setTimeout(() => { window.location.href = 'index.html'; }, 800);
+  }
+
+  /* ─── TOAST ─── */
+  function mostrarToast(msg, tipo = '') {
+    const cont  = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'toast ' + tipo;
+    toast.textContent = msg;
+    cont.appendChild(toast);
+    setTimeout(() => {
+      toast.style.animation = 'toastOut 0.3s ease forwards';
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  /* ─── ANIMAÇÃO DOS NÚMEROS ─── */
+  function animarNumero(id, fim) {
+    const el = document.getElementById(id);
+    if (!el || !fim) return;
+    let n = 0;
+    const passo = Math.max(1, Math.ceil(fim / 40));
+    const timer = setInterval(() => {
+      n = Math.min(n + passo, fim);
+      el.textContent = n.toLocaleString('pt-MZ');
+      if (n >= fim) clearInterval(timer);
+    }, 30);
+  }
+
+  /* ─── CONFIGURAÇÕES GLOBAIS ─── */
+  function aplicarConfiguracoesGlobais(){
+    const cfg=lsGet('hmz_admin_config',{});
+    if(cfg.manut===true){
+      const sess=lsGet(KEYS.sessaoUtil)||lsGet(KEYS.sessaoInst)||lsGet(KEYS.sessaoEmp);
+      if(!sess){
+        const banner=document.createElement('div');banner.style.cssText='position:fixed;inset:0;z-index:99999;background:#0D1117;color:#fff;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;';
+        banner.innerHTML='<div><i class="fas fa-screwdriver-wrench" style="font-size:2rem;color:#FFBE00;margin-bottom:14px"></i><h2>Plataforma em manutenção</h2><p style="opacity:.75;margin-top:8px">O HorizonteMZ está temporariamente indisponível para manutenção.</p></div>';document.body.appendChild(banner);
+      }
+    }
+    if(cfg.orient===false){document.querySelectorAll('#cta-orientacao,.orientacao-cta').forEach(el=>el.style.display='none');}
+  }
+
+  /* ─── CARREGAR ESTATÍSTICAS ─── */
+  function carregarEstatisticas() {
+    const ops   = lsGet(KEYS.oportunidades, []);
+    const inst  = lsGet(KEYS.instituicoes, []);
+    const emps  = lsGet(KEYS.empresas, []);
+    const users = lsGet(KEYS.utilizadores, []);
+    const cands = lsGet(KEYS.candidaturas, []);
+    const vagas = lsGet(KEYS.vagas, []);
+
+    animarNumero('s-op',   ops.filter(o => o.aprovada).length);
+    animarNumero('s-inst', inst.filter(i => i.aprovada).length);
+    animarNumero('s-emp',  emps.filter(e => e.aprovada).length);
+    animarNumero('s-us',   users.length);
+    animarNumero('s-cand', cands.length);
+
+    // Contagens por categoria
+    const cats = [
+      { id: 'cc-bolsas',       cat: 'Bolsas',       suf: 'activas'  },
+      { id: 'cc-empregos',     cat: null,            suf: 'activos'  },
+      { id: 'cc-estagios',     cat: 'Estágios',      suf: 'activos'  },
+      { id: 'cc-voluntariado', cat: 'Voluntariado',  suf: 'activos'  },
+      { id: 'cc-cursos',       cat: 'Cursos',        suf: 'activos'  },
+      { id: 'cc-concursos',    cat: 'Concursos',     suf: 'activos'  },
+      { id: 'cc-workshops',    cat: 'Workshops',     suf: 'activos'  },
+    ];
+
+    cats.forEach(c => {
+      const el = document.getElementById(c.id);
+      if (!el) return;
+      let n;
+      if (c.id === 'cc-empregos') {
+        n = vagas.filter(v => v.aprovada).length;
+      } else {
+        n = ops.filter(o => o.aprovada && o.categoria === c.cat).length;
+      }
+      el.textContent = n + ' ' + c.suf;
+    });
+  }
+
+  /* ─── OPORTUNIDADES EM DESTAQUE ─── */
+  const EXEMPLOS_DESTAQUE=[];
+
+  function badgePorTipo(tipo) {
+    if (tipo === 'Gratuito') return 'badge-verde';
+    if (tipo === 'Pago')     return 'badge-amarelo';
+    return 'badge-cinza';
+  }
+
+  function renderizarCardOp(op) {
+    const desc = op.descricao.length > 95
+      ? op.descricao.substring(0, 95) + '...'
+      : op.descricao;
+    return `
+      <div class="op-card" onclick="location.href='detalhe.html?id=${encodeURIComponent(op.id)}'" role="button" tabindex="0" onkeypress="if(event.key==='Enter')location.href='detalhe.html?id=${encodeURIComponent(op.id)}'">
+        <div class="op-topo">
+          <small><i class="fas fa-building"></i> ${op.instituicao || 'Instituição'}</small>
+          <h3>${op.titulo}</h3>
+        </div>
+        <div class="op-corpo">
+          <p>${desc}</p>
+          <div class="op-meta">
+            <span class="badge ${badgePorTipo(op.tipo)}">${op.tipo || 'Aberto'}</span>
+            ${op.categoria ? `<span class="badge badge-azul">${op.categoria}</span>` : ''}
+            ${op.data ? `<span class="op-data"><i class="fas fa-calendar-alt"></i> ${op.data}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function carregarDestaque() {
+    const ops   = lsGet(KEYS.oportunidades, []);
+    const reais = ops.filter(o => o.aprovada && !o.pausada).slice(-3).reverse();
+    const lista = reais;
+    const cont  = document.getElementById('cards-destaque');
+    if (!cont) return;
+    cont.innerHTML = lista.map(renderizarCardOp).join('');
+  }
+
+
+
+  function renderizarCardVagaHome(v) {
+    const desc = (v.descricao || '').length > 95
+      ? v.descricao.substring(0, 95) + '...'
+      : (v.descricao || '');
+    const prazo = v.prazo
+      ? `<span class="vaga-data-home"><i class="fas fa-calendar-alt"></i> ${v.prazo}</span>`
+      : '';
+    return `
+      <div class="vaga-card-home" onclick="location.href='detalhe-vaga.html?id=${encodeURIComponent(v.id)}'" role="button" tabindex="0" onkeypress="if(event.key==='Enter')location.href='detalhe-vaga.html?id=${encodeURIComponent(v.id)}'">
+        <div class="vaga-topo-home">
+          <small><i class="fas fa-building"></i> ${v.empresa || 'Empresa'}</small>
+          <h3>${v.titulo || 'Vaga de emprego'}</h3>
+        </div>
+        <div class="vaga-corpo-home">
+          <p>${desc}</p>
+          <div class="vaga-meta-home">
+            <span class="badge badge-laranja">${v.tipo || 'Vaga de emprego'}</span>
+            ${v.regime ? `<span class="badge badge-cinza">${v.regime}</span>` : ''}
+            ${v.salario ? `<span class="salario-home"><i class="fas fa-money-bill-wave"></i> ${v.salario}</span>` : ''}
+            ${v.provincia ? `<span class="vaga-data-home"><i class="fas fa-map-marker-alt"></i> ${v.provincia}</span>` : ''}
+            ${prazo}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function carregarVagasDestaque() {
+    const vagas = lsGet(KEYS.vagas, []);
+    const reais = vagas.filter(v => v.aprovada && !v.pausada && !v.fechada).slice(-3).reverse();
+    const cont = document.getElementById('cards-vagas-destaque');
+    if (!cont) return;
+    cont.innerHTML = reais.map(renderizarCardVagaHome).join('');
+  }
+
+  /* ─── BOTÃO VOLTAR AO TOPO ─── */
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('btn-topo');
+    if (!btn) return;
+    btn.classList.toggle('visivel', window.scrollY > 400);
+  });
+
+  /* ─── INICIALIZAR TUDO ─── */
+  document.addEventListener('DOMContentLoaded', () => {
+    inicializarSessao();
+    aplicarConfiguracoesGlobais();
+    carregarEstatisticas();
+    carregarDestaque();
+    carregarVagasDestaque();
+  });
+</script>
+
+
+
+
+<script>
+/* ══════════════════════════════════════
+   HERO — Carrossel + Frases + Partículas
+══════════════════════════════════════ */
+(function(){
+
+  /* ── FRASES ── */
+  var FRASES = [
+    'Descobre bolsas, estágios e empregos feitos para ti — tudo num só lugar, gratuitamente.',
+    'O teu primeiro emprego começa com uma boa candidatura. Estamos aqui para te ajudar.',
+    'Jovens moçambicanos que investem no seu futuro constroem um país melhor.',
+    'Do teu bairro para o mundo — as oportunidades certas estão a um clique de distância.',
+    'Orienta a tua carreira com confiança. O HorizonteMZ guia-te em cada passo.'
+  ];
+
+  /* ── CARROSSEL ── */
+  var slides  = document.querySelectorAll('.hero-slide');
+  var dots    = document.querySelectorAll('.hero-dot');
+  var fraseEl = document.getElementById('hero-frase');
+  var total   = slides.length;
+  var atual   = 0;
+  var autoTimer = null;
+  var fraseTimer = null;
+
+  function animarFrase(idx){
+    if(!fraseEl) return;
+    fraseEl.classList.remove('frase-visivel');
+    fraseEl.classList.add('frase-saindo');
+    clearTimeout(fraseTimer);
+    fraseTimer = setTimeout(function(){
+      fraseEl.textContent = FRASES[idx % FRASES.length];
+      fraseEl.classList.remove('frase-saindo');
+      fraseEl.classList.add('frase-visivel');
+    }, 1000);
+  }
+
+  function irPara(n){
+    slides[atual].classList.remove('ativo');
+    dots[atual].classList.remove('ativo');
+    atual = (n + total) % total;
+    slides[atual].classList.add('ativo');
+    dots[atual].classList.add('ativo');
+    animarFrase(atual);
+  }
+
+  function proximo(){ irPara(atual + 1); }
+  function anterior(){ irPara(atual - 1); }
+
+  function iniciarAuto(){
+    clearInterval(autoTimer);
+    autoTimer = setInterval(proximo, 5500);
+  }
+
+  window.heroProximo  = function(){ proximo(); iniciarAuto(); };
+  window.heroAnterior = function(){ anterior(); iniciarAuto(); };
+  window.heroIrPara   = function(n){ irPara(n); iniciarAuto(); };
+
+  /* Swipe mobile */
+  var touchX = 0;
+  var heroEl = document.querySelector('.hero');
+  if(heroEl){
+    heroEl.addEventListener('touchstart', function(e){ touchX = e.touches[0].clientX; }, {passive:true});
+    heroEl.addEventListener('touchend', function(e){
+      var diff = touchX - e.changedTouches[0].clientX;
+      if(Math.abs(diff) > 40){ diff > 0 ? window.heroProximo() : window.heroAnterior(); }
+    }, {passive:true});
+  }
+
+  /* Primeira frase visível */
+  if(fraseEl){
+    fraseEl.textContent = FRASES[0];
+    fraseEl.classList.add('frase-visivel');
+  }
+
+  iniciarAuto();
+
+  /* ── PARTÍCULAS HMZ + BOLINHAS ── */
+  var container = document.getElementById('hero-particles');
+  if(!container) return;
+
+  var LETRAS   = ['H','M','Z','HMZ'];
+  var CORES    = [
+    'rgba(255,255,255,0.13)',
+    'rgba(255,190,0,0.12)',
+    'rgba(100,180,255,0.10)',
+    'rgba(255,255,255,0.08)'
+  ];
+
+  var TOTAL_ITEMS = 36;
+
+  for(var i = 0; i < TOTAL_ITEMS; i++){
+    var el = document.createElement('div');
+    var ehLetra = i % 3 !== 0; /* 2/3 letras, 1/3 bolinhas */
+
+    if(ehLetra){
+      el.className = 'hp-item hp-letra';
+      el.textContent = LETRAS[i % LETRAS.length];
+      var fs = Math.floor(Math.random() * 28) + 14; /* 14px a 42px */
+      el.style.fontSize = fs + 'px';
+      el.style.color = CORES[i % CORES.length];
+    } else {
+      el.className = 'hp-item hp-bolinha';
+      var sz = Math.floor(Math.random() * 18) + 6; /* 6px a 24px */
+      el.style.width  = sz + 'px';
+      el.style.height = sz + 'px';
+      el.style.background = CORES[i % CORES.length];
+    }
+
+    el.style.left             = (Math.random() * 98) + '%';
+    el.style.animationDuration = (Math.random() * 16 + 10) + 's';
+    el.style.animationDelay   = (Math.random() * 14) + 's';
+
+    container.appendChild(el);
+  }
+
+})();
+</script>
+</body>
+</html>

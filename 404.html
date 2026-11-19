@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página não encontrada | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--amarelo:#FFBE00;--amarelo-dark:#E5AA00;--verde:#1DB954;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{background:var(--azul);height:65px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+
+    /* MAIN */
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;position:relative;overflow:hidden;}
+
+    /* BACKGROUND ANIMADO */
+    .bg-circles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+    .circle{position:absolute;border-radius:50%;background:var(--azul-light);animation:float-circle linear infinite;}
+    @keyframes float-circle{0%{transform:translateY(100vh) scale(0);}100%{transform:translateY(-100px) scale(1);opacity:0;}}
+
+    /* CONTEÚDO */
+    .conteudo{text-align:center;position:relative;z-index:1;max-width:580px;}
+
+    /* NÚMERO 404 */
+    .num-404{font-size:10rem;font-weight:900;line-height:1;letter-spacing:-8px;background:linear-gradient(135deg,var(--azul),var(--amarelo));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;animation:pulse404 3s ease-in-out infinite;}
+    @keyframes pulse404{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+
+    /* ÍCONE */
+    .icone-wrap{margin-bottom:20px;animation:float 4s ease-in-out infinite;}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+    .icone-wrap i{font-size:4rem;color:var(--azul);opacity:0.3;}
+
+    /* TEXTO */
+    .titulo-404{font-size:1.7rem;font-weight:800;margin-bottom:12px;letter-spacing:-0.3px;}
+    .desc-404{font-size:0.97rem;color:var(--texto2);line-height:1.7;margin-bottom:36px;max-width:440px;margin-left:auto;margin-right:auto;}
+
+    /* SUGESTÕES */
+    .sugestoes{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:36px;}
+    .sug-item{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:10px 18px;font-size:0.86rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);text-decoration:none;}
+    .sug-item:hover{border-color:var(--azul);color:var(--azul);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,87,194,0.10);}
+    .sug-item i{color:var(--azul);font-size:1rem;}
+
+    /* BOTÕES PRINCIPAIS */
+    .btns-principais{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:10px;font-size:0.95rem;font-weight:700;border:none;cursor:pointer;transition:var(--trans);text-decoration:none;font-family:inherit;}
+    .btn-azul{background:var(--azul);color:#fff;}
+    .btn-azul:hover{background:var(--azul-dark);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,87,194,0.25);}
+    .btn-amarelo{background:var(--amarelo);color:#1a1a2e;}
+    .btn-amarelo:hover{background:var(--amarelo-dark);transform:translateY(-2px);}
+    .btn-outline{background:transparent;border:2px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--azul);color:var(--azul);}
+
+    /* BUSCA */
+    .busca-wrap{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:24px;max-width:440px;margin:0 auto;}
+    .busca-wrap h3{font-size:0.92rem;font-weight:700;margin-bottom:14px;color:var(--texto);}
+    .busca-input{display:flex;gap:10px;}
+    .busca-input input{flex:1;padding:11px 16px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;outline:none;transition:var(--trans);}
+    .busca-input input:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,87,194,0.12);}
+    .busca-input button{background:var(--azul);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 18px;cursor:pointer;font-size:0.92rem;transition:var(--trans);}
+    .busca-input button:hover{background:var(--azul-dark);}
+
+    /* CONTADOR DE REDIRECIONAMENTO */
+    .redirect-info{margin-top:28px;font-size:0.82rem;color:var(--texto2);}
+    .redirect-info strong{color:var(--azul);}
+
+    /* FOOTER */
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:560px){.num-404{font-size:7rem;letter-spacing:-4px;}.titulo-404{font-size:1.4rem;}.btns-principais{flex-direction:column;align-items:center;}.btns-principais .btn{width:100%;max-width:280px;justify-content:center;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+.hmz-back-page{background:transparent;border:1px solid rgba(255,255,255,.28);color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:inherit;font-weight:700;padding:7px 14px;border-radius:8px;white-space:nowrap;}<button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button> .hmz-back-page:hover{background:rgba(255,255,255,.12);}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+</header>
+
+<!-- MAIN -->
+<main>
+  <!-- Círculos animados de fundo -->
+  <div class="bg-circles" id="bg-circles"></div>
+
+  <div class="conteudo">
+
+    <!-- Ícone flutuante -->
+    <div class="icone-wrap">
+      <i class="fas fa-compass"></i>
+    </div>
+
+    <!-- Número 404 -->
+    <div class="num-404">404</div>
+
+    <!-- Texto -->
+    <h1 class="titulo-404">Página não encontrada</h1>
+    <p class="desc-404">Parece que esta página perdeu o horizonte! O endereço que procuras não existe, foi movido ou ainda está em construção.</p>
+
+    <!-- Botões principais -->
+    <div class="btns-principais">
+      <a href="index.html" class="btn btn-azul">
+        <i class="fas fa-home"></i> Ir para o início
+      </a>
+      <a href="explorar.html" class="btn btn-amarelo">
+        <i class="fas fa-search"></i> Explorar oportunidades
+      </a>
+    </div>
+
+    <!-- Sugestões rápidas -->
+    <div class="sugestoes">
+      <a href="explorar.html?cat=Bolsas" class="sug-item"><i class="fas fa-graduation-cap"></i> Bolsas</a>
+      <a href="explorar.html?cat=Cursos" class="sug-item"><i class="fas fa-book-open"></i> Cursos</a>
+      <a href="explorar.html?cat=Estágios" class="sug-item"><i class="fas fa-building"></i> Estágios</a>
+      <a href="empregos.html" class="sug-item"><i class="fas fa-briefcase"></i> Empregos</a>
+      <a href="orientacao.html" class="sug-item"><i class="fas fa-compass"></i> Orientação</a>
+      <a href="meu-cv.html" class="sug-item"><i class="fas fa-file-alt"></i> Criar CV</a>
+    </div>
+
+    <!-- Busca rápida -->
+    <div class="busca-wrap">
+      <h3><i class="fas fa-search" style="color:var(--azul);margin-right:6px;"></i> Pesquisar na plataforma</h3>
+      <div class="busca-input">
+        <input type="text" id="busca-404" placeholder="O que procuras?" onkeypress="if(event.key==='Enter')pesquisar()"/>
+        <button onclick="pesquisar()"><i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- Contador regressivo -->
+    <div class="redirect-info">
+      A ser redirecionado para o início em <strong id="contador">10</strong> segundos...
+      <br/><a href="index.html" style="color:var(--azul);font-weight:600;" onclick="clearInterval(timerRedir)">Cancelar</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026 — <a href="contacto.html" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Reportar problema</a>
+</footer>
+
+<script>
+  const KEYS={tema:'hmz_tema'};
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+  /* MODO ESCURO */
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  /* PESQUISAR */
+  function pesquisar(){
+    const q=document.getElementById('busca-404').value.trim();
+    if(q)window.location.href='explorar.html?q='+encodeURIComponent(q);
+  }
+
+  /* CONTADOR REGRESSIVO */
+  let timerRedir;
+  let seg=10;
+  timerRedir=setInterval(()=>{
+    seg--;
+    const el=document.getElementById('contador');
+    if(el)el.textContent=seg;
+    if(seg<=0){clearInterval(timerRedir);window.location.href='index.html';}
+  },1000);
+
+  /* CÍRCULOS ANIMADOS */
+  function criarCirculos(){
+    const cont=document.getElementById('bg-circles');
+    for(let i=0;i<8;i++){
+      const c=document.createElement('div');
+      c.className='circle';
+      const size=Math.random()*80+20;
+      c.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:-${size}px;opacity:${Math.random()*0.15+0.05};animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*5}s;`;
+      cont.appendChild(c);
+    }
+  }
+  criarCirculos();
+</script>
+</body>
+</html>

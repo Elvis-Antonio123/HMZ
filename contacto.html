@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contacto | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;--amarelo:#FFBE00;--amarelo-dark:#E5AA00;--verde:#1DB954;--vermelho:#E53935;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+    header{background:var(--azul);height:65px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-voltar{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.88);font-size:0.87rem;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.30);transition:var(--trans);}
+    .btn-voltar:hover{background:rgba(255,255,255,0.18);color:#fff;}
+
+    .hero{background:linear-gradient(135deg,var(--azul-dark),var(--azul));padding:60px 24px;color:#fff;text-align:center;}
+    .hero h1{font-size:2rem;font-weight:800;margin-bottom:10px;}
+    .hero h1 span{color:var(--amarelo);}
+    .hero p{font-size:0.97rem;opacity:0.88;max-width:520px;margin:0 auto;line-height:1.7;}
+
+    main{flex:1;max-width:1000px;margin:0 auto;padding:48px 24px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:flex-start;}
+
+    .form-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:32px;box-shadow:0 4px 24px var(--sombra);}
+    .form-titulo{font-size:1.1rem;font-weight:800;color:var(--azul);margin-bottom:6px;}
+    .form-sub{font-size:0.86rem;color:var(--texto2);margin-bottom:24px;line-height:1.6;}
+    .campo{margin-bottom:18px;}
+    .campo label{display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .campo label span{color:var(--vermelho);margin-left:2px;}
+    .input-wrap{position:relative;}
+    .input-wrap i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.92rem;pointer-events:none;}
+    .input-wrap.ta i{top:14px;transform:none;}
+    .input-wrap input,.input-wrap select,.input-wrap textarea{width:100%;padding:11px 14px 11px 42px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;transition:var(--trans);outline:none;}
+    .input-wrap textarea{resize:vertical;min-height:120px;padding-top:10px;line-height:1.55;}
+    .input-wrap input:focus,.input-wrap select:focus,.input-wrap textarea:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,87,194,0.12);background:var(--bg2);}
+    .btn-enviar{width:100%;padding:13px;background:var(--azul);color:#fff;border:none;border-radius:var(--radius-sm);font-size:0.97rem;font-weight:700;cursor:pointer;font-family:inherit;transition:var(--trans);display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
+    .btn-enviar:hover{background:var(--azul-dark);transform:translateY(-1px);}
+    .spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .btn-enviar.loading .spinner{display:block;}.btn-enviar.loading .btn-txt{display:none;}
+
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.87rem;margin-top:14px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.sucesso{background:#F0FFF4;border-color:#C8E6C9;color:#1B5E20;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    body.dark .alerta.sucesso{background:#1a2d1a;border-color:#225c22;color:#80ff9e;}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    .alerta.visivel{display:flex;}
+
+    .info-lado{display:flex;flex-direction:column;gap:20px;}
+    .info-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:24px;}
+    .info-card h3{font-size:0.95rem;font-weight:800;color:var(--azul);margin-bottom:16px;display:flex;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--borda);}
+    .info-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
+    .info-item:last-child{margin-bottom:0;}
+    .info-ic{width:40px;height:40px;border-radius:10px;background:var(--azul-light);color:var(--azul);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .info-item h4{font-size:0.86rem;font-weight:700;margin-bottom:3px;}
+    .info-item p{font-size:0.83rem;color:var(--texto2);line-height:1.55;}
+    .info-item a{color:var(--azul);font-weight:600;}
+    .info-item a:hover{text-decoration:underline;}
+
+    .faq-item{margin-bottom:14px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);overflow:hidden;}
+    .faq-pergunta{padding:14px 16px;cursor:pointer;font-size:0.88rem;font-weight:700;display:flex;align-items:center;justify-content:space-between;transition:var(--trans);}
+    .faq-pergunta:hover{background:var(--azul-light);color:var(--azul);}
+    .faq-resposta{display:none;padding:0 16px 14px;font-size:0.84rem;color:var(--texto2);line-height:1.65;}
+    .faq-item.aberto .faq-resposta{display:block;}
+    .faq-item.aberto .faq-pergunta{background:var(--azul-light);color:var(--azul);}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;margin-top:auto;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:760px){main{grid-template-columns:1fr;padding:32px 16px;}.hero h1{font-size:1.6rem;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+
+<style id="hmz-standard-back-style">
+/* HMZ: botão Voltar padrão — mesmo design do botão do header dos dashboards */
+.hmz-back-page{background:rgba(255,255,255,.15);border:none;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28);transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+@media print{.hmz-back-page{display:none!important;}}
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+
+
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <a href="index.html" class="btn-voltar"><i class="fas fa-arrow-left"></i> Início</a>
+  <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+    </div>
+</header>
+
+<section class="hero">
+  <h1>Fala <span>connosco</span></h1>
+  <p>Tens dúvidas, sugestões ou precisas de ajuda? A equipa do HorizonteMZ está aqui para te ajudar.</p>
+</section>
+
+<main>
+  <!-- FORMULÁRIO -->
+  <div class="form-card">
+    <div class="form-titulo">Enviar mensagem</div>
+    <div class="form-sub">Preenche o formulário e entraremos em contacto em até 48 horas.</div>
+
+    <div class="campo">
+      <label for="nome">Nome completo <span>*</span></label>
+      <div class="input-wrap"><i class="fas fa-user"></i><input type="text" id="nome" placeholder="O teu nome" maxlength="100"/></div>
+    </div>
+    <div class="campo">
+      <label for="email">E-mail <span>*</span></label>
+      <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="email@exemplo.com" maxlength="120"/></div>
+    </div>
+    <div class="campo">
+      <label for="assunto">Assunto <span>*</span></label>
+      <div class="input-wrap"><i class="fas fa-tag"></i>
+        <select id="assunto">
+          <option value="">Selecionar...</option>
+          <option>Dúvida sobre a plataforma</option>
+          <option>Problema técnico</option>
+          <option>Registar instituição ou empresa</option>
+          <option>Reportar oportunidade falsa</option>
+          <option>Parceria e colaboração</option>
+          <option>Sugestão de melhoria</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="campo">
+      <label for="mensagem">Mensagem <span>*</span></label>
+      <div class="input-wrap ta"><i class="fas fa-align-left"></i>
+        <textarea id="mensagem" placeholder="Descreve a tua questão em detalhe..." maxlength="1000"></textarea>
+      </div>
+    </div>
+    <button class="btn-enviar" id="btn-enviar" onclick="enviarMensagem()">
+      <span class="spinner"></span>
+      <span class="btn-txt"><i class="fas fa-paper-plane"></i> Enviar mensagem</span>
+    </button>
+    <div class="alerta" id="alerta"><i class="fas fa-check-circle"></i><span id="alerta-msg"></span></div>
+  </div>
+
+  <!-- INFO LATERAL -->
+  <div class="info-lado">
+    <div class="info-card">
+      <h3><i class="fas fa-info-circle"></i> Informações de Contacto</h3>
+      <div class="info-item">
+        <div class="info-ic"><i class="fas fa-envelope"></i></div>
+        <div><h4>E-mail</h4><p><a href="mailto:contacto@horizontemz.co.mz">contacto@horizontemz.co.mz</a></p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><i class="fab fa-whatsapp"></i></div>
+        <div><h4>WhatsApp</h4><p><a href="https://wa.me/258000000000" target="_blank">+258 84 000 0000</a></p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><i class="fas fa-map-marker-alt"></i></div>
+        <div><h4>Localização</h4><p>Nacala-Porto, Moçambique</p></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><i class="fas fa-clock"></i></div>
+        <div><h4>Horário de atendimento</h4><p>Segunda a Sexta, 08h – 17h</p></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3><i class="fas fa-question-circle"></i> Perguntas Frequentes</h3>
+      <div class="faq-item">
+        <div class="faq-pergunta" onclick="toggleFaq(this)">O HorizonteMZ é gratuito? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-resposta">Sim! O registo e o uso da plataforma são completamente gratuitos para utilizadores individuais. Instituições e empresas também podem publicar gratuitamente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-pergunta" onclick="toggleFaq(this)">Como registo a minha instituição? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-resposta">Vai à página de registo de instituições, preenche os dados da organização e aguarda a aprovação pelo administrador. O processo demora até 48 horas.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-pergunta" onclick="toggleFaq(this)">Como reporto uma oportunidade falsa? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-resposta">Usa o formulário nesta página com o assunto "Reportar oportunidade falsa" e descreve o problema. A nossa equipa irá investigar e remover o conteúdo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-pergunta" onclick="toggleFaq(this)">Posso editar o meu perfil depois do registo? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-resposta">Sim, podes editar o teu perfil a qualquer momento acedendo ao painel pessoal e clicando em "Meu Perfil".</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer><strong>HorizonteMZ</strong> &copy; 2026 — <a href="termos.html" style="color:rgba(255,255,255,0.55);" onmouseover="this.style.color='#FFBE00'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">Termos de Uso</a></footer>
+
+<script>
+  const KEYS={tema:'hmz_tema'};
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  function toggleFaq(el){const item=el.parentElement;item.classList.toggle('aberto');}
+
+  function enviarMensagem(){
+    const nome=document.getElementById('nome').value.trim();
+    const email=document.getElementById('email').value.trim();
+    const assunto=document.getElementById('assunto').value;
+    const msg=document.getElementById('mensagem').value.trim();
+    const alerta=document.getElementById('alerta');
+    const alertaMsg=document.getElementById('alerta-msg');
+
+    if(!nome||!email||!assunto||!msg){
+      alerta.className='alerta erro visivel';
+      alertaMsg.textContent='Por favor preenche todos os campos obrigatórios.';
+      return;
+    }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+      alerta.className='alerta erro visivel';
+      alertaMsg.textContent='Introduz um endereço de e-mail válido.';
+      return;
+    }
+
+    const btn=document.getElementById('btn-enviar');
+    btn.classList.add('loading');btn.disabled=true;
+
+    setTimeout(()=>{
+      btn.classList.remove('loading');btn.disabled=false;
+      alerta.className='alerta sucesso visivel';
+      alertaMsg.textContent='Mensagem enviada com sucesso! Responderemos em até 48 horas.';
+      document.getElementById('nome').value='';
+      document.getElementById('email').value='';
+      document.getElementById('assunto').value='';
+      document.getElementById('mensagem').value='';
+    },1200);
+  }
+</script>
+</body>
+</html>

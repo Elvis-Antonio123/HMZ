@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meu Perfil | HorizonteMZ</title>
+  <meta name="description" content="Gere o teu perfil pessoal no HorizonteMZ."/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --azul:#0057C2;--azul-dark:#003F8F;--azul-light:#EEF4FF;
+      --amarelo:#FFBE00;--verde:#1DB954;--verde-light:#F0FDF4;
+      --vermelho:#E53935;--laranja:#F59E0B;
+      --bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;
+      --borda:#DDE3F0;--sombra:rgba(0,87,194,0.08);--sombra-hover:rgba(0,87,194,0.16);
+      --sidebar-w:260px;--header-h:65px;--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;
+    }
+    body.dark{--azul:#4A9EFF;--azul-dark:#2979D9;--azul-light:#0D1B3E;--verde:#22C55E;--verde-light:#0f2d1a;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;--sombra:rgba(0,0,0,0.25);--sombra-hover:rgba(0,0,0,0.40);}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{background:var(--azul);height:var(--header-h);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.20);}
+    .h-esq{display:flex;align-items:center;gap:16px;}
+    .logo{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+    .logo span{color:var(--amarelo);}
+    .btn-burger{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-burger:hover{background:rgba(255,255,255,0.18);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .user-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 14px 5px 6px;color:#fff;font-size:0.85rem;font-weight:600;}
+    .user-avatar{width:30px;height:30px;border-radius:50%;background:var(--amarelo);color:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:800;flex-shrink:0;}
+    .btn-sair{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 12px;border-radius:var(--radius-sm);font-size:0.82rem;cursor:pointer;font-weight:600;font-family:inherit;transition:var(--trans);display:inline-flex;align-items:center;gap:5px;}
+    .btn-sair:hover{background:rgba(255,255,255,0.28);}
+
+    /* LAYOUT */
+    .layout{display:flex;min-height:calc(100vh - var(--header-h));}
+
+    /* SIDEBAR */
+    .sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--borda);padding:24px 0;position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;flex-shrink:0;transition:var(--trans);}
+    .sidebar::-webkit-scrollbar{width:4px;}
+    .sidebar::-webkit-scrollbar-thumb{background:var(--borda);border-radius:2px;}
+    .sidebar-label{font-size:0.70rem;font-weight:700;letter-spacing:0.8px;color:var(--texto2);padding:0 20px;margin-bottom:4px;text-transform:uppercase;opacity:0.7;}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:10px 20px;font-size:0.88rem;font-weight:600;color:var(--texto2);cursor:pointer;transition:var(--trans);border-left:3px solid transparent;}
+    .nav-item:hover{background:var(--azul-light);color:var(--azul);border-left-color:var(--azul);}
+    .nav-item.ativo{background:var(--azul-light);color:var(--azul);border-left-color:var(--azul);}
+    .nav-item i{width:18px;text-align:center;font-size:0.95rem;}
+    .sidebar-div{height:1px;background:var(--borda);margin:12px 16px;}
+
+    /* CONTEÚDO */
+    .conteudo{flex:1;padding:28px;overflow-x:hidden;}
+
+    /* HEADER PERFIL */
+    .perfil-hero{background:linear-gradient(135deg,var(--azul-dark),var(--azul));border-radius:var(--radius);padding:32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;}
+    .perfil-hero::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06);top:-60px;right:-40px;}
+    .perfil-hero::after{content:'';position:absolute;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,0.05);bottom:-40px;left:30px;}
+    .hero-inner{display:flex;align-items:center;gap:24px;position:relative;z-index:1;flex-wrap:wrap;}
+    .hero-avatar{width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,0.20);border:3px solid rgba(255,255,255,0.40);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;flex-shrink:0;cursor:pointer;transition:var(--trans);position:relative;overflow:hidden;}
+    .hero-avatar:hover{background:rgba(255,255,255,0.30);}
+    .hero-avatar .overlay-foto{position:absolute;inset:0;background:rgba(0,0,0,0.40);display:none;align-items:center;justify-content:center;font-size:1.2rem;}
+    .hero-avatar:hover .overlay-foto{display:flex;}
+    .hero-info h1{font-size:1.5rem;font-weight:800;margin-bottom:4px;}
+    .hero-info p{font-size:0.88rem;opacity:0.85;margin-bottom:12px;}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:8px;}
+    .hero-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);padding:4px 12px;border-radius:50px;font-size:0.78rem;font-weight:600;}
+    .hero-dir{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;}
+
+    /* COMPLETUDE */
+    .completude-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+    .comp-info{flex:1;}
+    .comp-info h3{font-size:0.95rem;font-weight:700;margin-bottom:6px;}
+    .comp-info p{font-size:0.83rem;color:var(--texto2);}
+    .comp-barra-wrap{flex:2;min-width:200px;}
+    .comp-labels{display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:6px;}
+    .comp-labels strong{color:var(--azul);}
+    .barra-wrap{height:10px;background:var(--borda);border-radius:5px;overflow:hidden;}
+    .barra-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--azul),var(--verde));transition:width 1.2s ease;}
+
+    /* TABS */
+    .tabs{display:flex;gap:0;border-bottom:2px solid var(--borda);margin-bottom:28px;overflow-x:auto;}
+    .tab{padding:10px 20px;font-size:0.88rem;font-weight:700;color:var(--texto2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:var(--trans);white-space:nowrap;display:flex;align-items:center;gap:7px;}
+    .tab:hover{color:var(--azul);}
+    .tab.ativo{color:var(--azul);border-bottom-color:var(--azul);}
+
+    /* SECÇÕES */
+    .sec{display:none;animation:fadeUp 0.35s ease both;}
+    .sec.ativa{display:block;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* FORM CARD */
+    .form-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:28px;margin-bottom:20px;box-shadow:0 2px 12px var(--sombra);}
+    .form-card-titulo{font-size:1rem;font-weight:800;color:var(--azul);margin-bottom:20px;display:flex;align-items:center;gap:8px;padding-bottom:14px;border-bottom:1px solid var(--borda);}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+
+    /* CAMPOS */
+    .campo{margin-bottom:20px;}
+    .campo label{display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .campo label span.obrig{color:var(--vermelho);margin-left:2px;}
+    .campo label span.opc{color:var(--texto2);font-weight:400;font-size:0.78rem;margin-left:4px;}
+    .input-wrap{position:relative;}
+    .input-wrap i.ic-esq{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.92rem;pointer-events:none;transition:var(--trans);}
+    .input-wrap.textarea-wrap i.ic-esq{top:14px;transform:none;}
+    .input-wrap:focus-within i.ic-esq{color:var(--azul);}
+    .input-wrap input,.input-wrap select,.input-wrap textarea{width:100%;padding:11px 14px 11px 42px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.92rem;background:var(--bg);color:var(--texto);font-family:inherit;transition:var(--trans);outline:none;}
+    .input-wrap select{cursor:pointer;}
+    .input-wrap textarea{resize:vertical;min-height:90px;padding-top:10px;line-height:1.55;}
+    .input-wrap input:focus,.input-wrap select:focus,.input-wrap textarea:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,87,194,0.12);background:var(--bg2);}
+    .campo.erro .input-wrap input,.campo.erro .input-wrap select,.campo.erro .input-wrap textarea{border-color:var(--vermelho);box-shadow:0 0 0 3px rgba(229,57,53,0.10);}
+    .campo.valido .input-wrap input,.campo.valido .input-wrap select,.campo.valido .input-wrap textarea{border-color:var(--verde);}
+    .msg-erro{display:none;font-size:0.79rem;color:var(--vermelho);margin-top:5px;align-items:center;gap:5px;}
+    .campo.erro .msg-erro{display:flex;}
+    .char-count{font-size:0.75rem;color:var(--texto2);text-align:right;margin-top:4px;}
+
+    /* CHECKBOXES */
+    .check-grupo{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px;}
+    .check-item{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--borda);border-radius:var(--radius-sm);padding:7px 13px;cursor:pointer;font-size:0.84rem;transition:var(--trans);user-select:none;}
+    .check-item:hover{border-color:var(--azul);}
+    .check-item input[type="checkbox"]{accent-color:var(--azul);width:14px;height:14px;cursor:pointer;}
+    .check-item.selecionado{border-color:var(--azul);background:var(--azul-light);color:var(--azul);font-weight:600;}
+
+    /* BOTÕES */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:var(--radius-sm);font-size:0.88rem;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:var(--trans);text-decoration:none;}
+    .btn-azul{background:var(--azul);color:#fff;}
+    .btn-azul:hover:not(:disabled){background:var(--azul-dark);transform:translateY(-1px);box-shadow:0 6px 20px var(--sombra-hover);}
+    .btn-azul:disabled{opacity:0.60;cursor:not-allowed;transform:none;}
+    .btn-outline{background:transparent;border:1.5px solid var(--borda);color:var(--texto2);}
+    .btn-outline:hover{border-color:var(--azul);color:var(--azul);}
+    .btn-vermelho{background:var(--vermelho);color:#fff;}
+    .btn-vermelho:hover{opacity:0.88;}
+    .spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .btn-azul.loading .spinner{display:block;}.btn-azul.loading .btn-txt{display:none;}
+
+    /* ALERTA */
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.87rem;margin-bottom:20px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    .alerta.sucesso{background:#F0FFF4;border-color:#C8E6C9;color:#1B5E20;}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    body.dark .alerta.sucesso{background:#1a2d1a;border-color:#225c22;color:#80ff9e;}
+    .alerta.visivel{display:flex;}
+
+    /* FORÇA SENHA */
+    .forca-wrap{margin-top:8px;}
+    .forca-barras{display:flex;gap:4px;margin-bottom:5px;}
+    .forca-barra{flex:1;height:4px;border-radius:2px;background:var(--borda);transition:var(--trans);}
+    .forca-barra.fraca{background:#E53935;}.forca-barra.media{background:#FF9800;}.forca-barra.forte{background:#4CAF50;}.forca-barra.muitoforte{background:#1DB954;}
+    .forca-label{font-size:0.77rem;font-weight:700;}
+    .forca-fraca{color:#E53935;}.forca-media{color:#FF9800;}.forca-forte{color:#4CAF50;}.forca-muitoforte{color:#1DB954;}
+    .btn-olho{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--texto2);cursor:pointer;font-size:0.95rem;padding:4px;transition:var(--trans);}
+    .btn-olho:hover{color:var(--azul);}
+
+    /* ZONA DE PERIGO */
+    .zona-perigo{background:var(--bg2);border-radius:var(--radius);border:1.5px solid #FFCDD2;padding:24px;margin-bottom:20px;}
+    body.dark .zona-perigo{border-color:#5c2222;}
+    .zona-perigo h3{font-size:0.95rem;font-weight:800;color:var(--vermelho);margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+    .zona-perigo p{font-size:0.85rem;color:var(--texto2);margin-bottom:16px;line-height:1.6;}
+
+    /* TOAST */
+    #toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+    .toast{background:var(--bg2);border:1px solid var(--borda);border-left:4px solid var(--azul);color:var(--texto);padding:13px 18px;border-radius:var(--radius-sm);font-size:0.88rem;box-shadow:0 8px 24px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;pointer-events:all;max-width:320px;}
+    .toast.sucesso{border-left-color:var(--verde);}
+    .toast.erro{border-left-color:var(--vermelho);}
+    @keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(40px)}}
+
+    /* MODAL CONFIRMAÇÃO */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.60);z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+    .modal-overlay.visivel{display:flex;}
+    .modal{background:var(--bg2);border-radius:var(--radius);padding:32px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,0.35);border:1.5px solid var(--borda);animation:modalIn 0.3s ease both;}
+    @keyframes modalIn{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal h3{font-size:1.15rem;font-weight:800;margin-bottom:10px;color:var(--vermelho);}
+    .modal p{font-size:0.88rem;color:var(--texto2);line-height:1.65;margin-bottom:24px;}
+    .modal-btns{display:flex;gap:10px;justify-content:flex-end;}
+
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+
+    @media(max-width:900px){.sidebar{position:fixed;top:var(--header-h);left:0;height:calc(100vh - var(--header-h));transform:translateX(-100%);z-index:150;box-shadow:4px 0 20px rgba(0,0,0,0.15);}.sidebar.aberta{transform:translateX(0);}.btn-burger{display:flex;}.conteudo{padding:20px 16px;}}
+    @media(max-width:640px){.grid-2{grid-template-columns:1fr;}.hero-inner{flex-direction:column;text-align:center;}.hero-dir{margin-left:0;}.tabs{gap:0;}.tab{padding:10px 14px;font-size:0.82rem;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+/* HMZ — BOTÃO VOLTAR PADRÃO */
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+
+
+/* HMZ MOBILE AUDIT — cards, grids e prevenção de cortes */
+@media (max-width: 640px) {
+  .conteudo, .main-content, .main-layout, main, .form-wrap, .content,
+  .card, .content-card, .info-card, .cand-card, .op-card, .rec-card,
+  .stats-grid, .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cand-grid, .op-grid, .rec-grid, .areas-grid, .benef-grid,
+  .modelos-grid, .mvv-grid, .info-grid, .grid-2, .grid-3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cand-card, .op-card, .rec-card, .content-card, .info-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .cand-card, .content-card, .info-card { padding: 16px; }
+  img, video, iframe { max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+  </style>
+
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+
+
+<!-- HMZ MOBILE HEADER COMPACT FIX -->
+<style id="hmz-mobile-header-compact-final">
+/* Apenas mobile: compacta o cabeçalho sem alterar o desktop ou o menu lateral. */
+@media (max-width: 720px){
+  header{
+    min-width:0!important;
+    max-width:100%!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+    gap:8px!important;
+  }
+  header .h-esq, header .h-dir{
+    min-width:0!important;
+    gap:6px!important;
+    flex-shrink:1;
+  }
+  header .logo{
+    font-size:1.22rem!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media (max-width: 600px){
+  header{min-height:64px!important;}
+
+  /* Todos os controlos do cabeçalho passam a ter uma área de toque consistente. */
+  header .h-dir .btn-dark,
+  header .h-dir .btn-h,
+  header .h-dir .btn-cfg-header,
+  header .h-dir .btn-sair,
+  header .h-dir .hmz-back-page{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    padding:0!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:0!important;
+    font-size:0!important;
+    white-space:nowrap!important;
+    flex:0 0 42px!important;
+  }
+  header .h-dir .btn-dark i,
+  header .h-dir .btn-h i,
+  header .h-dir .btn-cfg-header i,
+  header .h-dir .btn-sair i,
+  header .h-dir .hmz-back-page i{
+    font-size:1rem!important;
+    margin:0!important;
+  }
+
+  /* Chips do cabeçalho: mantém o avatar/ícone, remove apenas o texto no mobile. */
+  header .user-chip,
+  header .emp-chip,
+  header .inst-chip,
+  header .admin-chip{
+    width:42px!important;
+    min-width:42px!important;
+    height:42px!important;
+    padding:0!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:0!important;
+    flex:0 0 42px!important;
+    overflow:hidden!important;
+    font-size:0!important;
+  }
+  header .user-chip span,
+  header .emp-chip span,
+  header .inst-chip span{display:none!important;}
+  header .user-avatar,
+  header .emp-avatar,
+  header .inst-avatar,
+  header .emp-av,
+  header .inst-av{
+    flex-shrink:0!important;
+  }
+  header .admin-chip .admin-ic,
+  header .admin-chip .admin-ic i{font-size:1rem!important;}
+
+  /* Evita que o grupo direito force o cabeçalho para fora do ecrã. */
+  header .h-dir{flex-wrap:nowrap!important;}
+}
+
+@media (max-width: 420px){
+  header{padding-left:10px!important;padding-right:10px!important;gap:6px!important;}
+  header .h-esq, header .h-dir{gap:4px!important;}
+  header .logo{font-size:1.08rem!important;}
+  header .h-dir .btn-dark,
+  header .h-dir .btn-h,
+  header .h-dir .btn-cfg-header,
+  header .h-dir .btn-sair,
+  header .h-dir .hmz-back-page,
+  header .user-chip,
+  header .emp-chip,
+  header .inst-chip,
+  header .admin-chip{
+    width:38px!important;
+    min-width:38px!important;
+    height:38px!important;
+    flex-basis:38px!important;
+  }
+}
+</style>
+
+
+<style id="hmz-profile-tabs-mobile-fix">
+@media (max-width: 640px){
+  .tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;overflow:visible!important;border-bottom:0!important;margin-bottom:20px!important;}
+  .tab{min-width:0!important;white-space:normal!important;justify-content:center!important;text-align:center!important;padding:11px 8px!important;margin:0!important;border:1px solid var(--borda)!important;border-radius:9px!important;line-height:1.25!important;}
+  .tab.ativo{border-color:var(--azul)!important;background:var(--azul-light)!important;}
+}
+</style>
+</head>
+<body>
+
+
+
+<!-- HEADER -->
+<header>
+  <div class="h-esq">
+    <button class="btn-burger" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars" id="burger-icon"></i></button>
+    <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  </div>
+  <div class="h-dir">
+    <div class="user-chip">
+      <div class="user-avatar" id="avatar-iniciais">?</div>
+      <span id="chip-nome">Utilizador</span>
+    </div>
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+    </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-label" style="margin-bottom:8px;">Principal</div>
+    <div class="nav-item" onclick="location.href='dashboard-utilizador.html'"><i class="fas fa-home"></i> Painel</div>
+    <div class="nav-item" onclick="location.href='explorar.html'"><i class="fas fa-search"></i> Explorar</div>
+    <div class="nav-item" onclick="location.href='meu-cv.html'"><i class="fas fa-file-alt"></i> Meu CV</div>
+    <div class="nav-item" onclick="location.href='orientacao.html'"><i class="fas fa-compass"></i> Orientação</div>
+    <div class="sidebar-div"></div>
+    <div class="sidebar-label" style="margin-bottom:8px;">Conta</div>
+    <div class="nav-item ativo"><i class="fas fa-user"></i> Meu Perfil</div>
+    <div class="nav-item" onclick="sair()"><i class="fas fa-sign-out-alt"></i> Sair</div>
+  </aside>
+
+  <div id="overlay" onclick="fecharSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:140;"></div>
+
+  <!-- CONTEÚDO -->
+  <main class="conteudo">
+
+    <!-- HERO DO PERFIL -->
+    <div class="perfil-hero">
+      <div class="hero-inner">
+        <div class="hero-avatar" id="hero-avatar" onclick="triggerFoto()" title="Alterar foto">
+          <span id="avatar-grande">?</span>
+          <div class="overlay-foto"><i class="fas fa-camera"></i></div>
+        </div>
+        <div class="hero-info">
+          <h1 id="hero-nome">A carregar...</h1>
+          <p id="hero-email">email@exemplo.com</p>
+          <div class="hero-badges">
+            <span class="hero-badge"><i class="fas fa-map-marker-alt"></i> <span id="hero-prov">Moçambique</span></span>
+            <span class="hero-badge"><i class="fas fa-graduation-cap"></i> <span id="hero-nivel">Nível académico</span></span>
+            <span class="hero-badge" id="badge-membro"><i class="fas fa-calendar"></i> Membro desde <span id="hero-data"></span></span>
+          </div>
+        </div>
+        <div class="hero-dir" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+          <button type="button" class="btn btn-outline" onclick="verPerfilPublico()" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.30);color:#fff;">
+            <i class="fas fa-eye"></i> Ver perfil público
+          </button>
+          <a href="meu-cv.html" class="btn btn-outline" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.30);color:#fff;">
+            <i class="fas fa-file-alt"></i> Ver CV
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPLETUDE -->
+    <div class="completude-card">
+      <div class="comp-info">
+        <h3><i class="fas fa-chart-pie" style="color:var(--azul)"></i> Completude do perfil</h3>
+        <p>Um perfil completo aumenta as tuas hipóteses de ser recomendado.</p>
+      </div>
+      <div class="comp-barra-wrap">
+        <div class="comp-labels">
+          <span>Progresso</span>
+          <strong id="comp-pct">0%</strong>
+        </div>
+        <div class="barra-wrap">
+          <div class="barra-fill" id="barra-fill" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALERTA GLOBAL -->
+    <div class="alerta" id="alerta-global"><i class="fas fa-check-circle"></i><span id="alerta-msg"></span></div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab ativo" onclick="irTab('dados')" id="tab-dados"><i class="fas fa-user"></i> Dados Pessoais</div>
+      <div class="tab" onclick="irTab('academico')" id="tab-academico"><i class="fas fa-graduation-cap"></i> Perfil Académico</div>
+      <div class="tab" onclick="irTab('interesses')" id="tab-interesses"><i class="fas fa-heart"></i> Interesses</div>
+      <div class="tab" onclick="irTab('seguranca')" id="tab-seguranca"><i class="fas fa-shield-alt"></i> Segurança</div>
+    </div>
+
+    <!-- ── TAB: DADOS PESSOAIS ── -->
+    <div class="sec ativa" id="sec-dados">
+      <div class="form-card">
+        <div class="form-card-titulo"><i class="fas fa-user"></i> Informação Pessoal</div>
+        <div class="grid-2">
+          <div class="campo" id="campo-nome">
+            <label for="nome">Nome completo <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-user ic-esq"></i><input type="text" id="nome" maxlength="100" autocomplete="name"/></div>
+            <div class="msg-erro" id="erro-nome"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nome"></span></div>
+          </div>
+          <div class="campo" id="campo-nasc">
+            <label for="nasc">Data de nascimento <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-calendar ic-esq"></i><input type="date" id="nasc" autocomplete="bday"/></div>
+            <div class="msg-erro" id="erro-nasc"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nasc"></span></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="campo" id="campo-genero">
+            <label for="genero">Género <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-venus-mars ic-esq"></i>
+              <select id="genero">
+                <option value="">Selecionar...</option>
+                <option>Masculino</option><option>Feminino</option><option>Prefiro não dizer</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-genero"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-genero"></span></div>
+          </div>
+          <div class="campo" id="campo-tel">
+            <label for="tel">Telefone <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-phone ic-esq"></i><input type="tel" id="tel" placeholder="+258 8X XXX XXXX" maxlength="18" inputmode="tel"/></div>
+            <div class="msg-erro" id="erro-tel"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-tel"></span></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="campo" id="campo-prov">
+            <label for="prov">Província <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-map-marker-alt ic-esq"></i>
+              <select id="prov">
+                <option value="">Selecionar...</option>
+                <option>Cabo Delgado</option><option>Gaza</option><option>Inhambane</option>
+                <option>Manica</option><option>Maputo Cidade</option><option>Maputo Província</option>
+                <option>Nampula</option><option>Niassa</option><option>Sofala</option>
+                <option>Tete</option><option>Zambézia</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-prov"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-prov"></span></div>
+          </div>
+          <div class="campo" id="campo-email">
+            <label for="email">E-mail <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email" maxlength="120" autocomplete="email" inputmode="email"/></div>
+            <div class="msg-erro" id="erro-email"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-email"></span></div>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="bio">Bio / Apresentação <span class="opc">(opcional)</span></label>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-align-left ic-esq"></i>
+            <textarea id="bio" placeholder="Apresenta-te brevemente — quem és, o que fazes, o que procuras..." maxlength="400" oninput="contarChars(this,'cont-bio',400)"></textarea>
+          </div>
+          <div class="char-count"><span id="cont-bio">0</span>/400</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button class="btn btn-outline" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar</button>
+          <button class="btn btn-azul" id="btn-guardar-dados" onclick="guardarDados()">
+            <span class="spinner"></span>
+            <span class="btn-txt"><i class="fas fa-save"></i> Guardar alterações</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: PERFIL ACADÉMICO ── -->
+    <div class="sec" id="sec-academico">
+      <div class="form-card">
+        <div class="form-card-titulo"><i class="fas fa-graduation-cap"></i> Perfil Académico</div>
+        <div class="grid-2">
+          <div class="campo" id="campo-nivel">
+            <label for="nivel">Nível de escolaridade <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-graduation-cap ic-esq"></i>
+              <select id="nivel">
+                <option value="">Selecionar...</option>
+                <option>Ensino Primário</option>
+                <option>Ensino Secundário (10ª classe)</option>
+                <option>Ensino Secundário (12ª classe)</option>
+                <option>Técnico Médio</option>
+                <option>Licenciatura (em curso)</option>
+                <option>Licenciatura (concluída)</option>
+                <option>Mestrado (em curso)</option>
+                <option>Mestrado (concluído)</option>
+                <option>Doutoramento</option>
+              </select>
+            </div>
+            <div class="msg-erro" id="erro-nivel"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nivel"></span></div>
+          </div>
+          <div class="campo">
+            <label for="area">Área de estudo <span class="opc">(opcional)</span></label>
+            <div class="input-wrap"><i class="fas fa-book ic-esq"></i>
+              <select id="area">
+                <option value="">Selecionar...</option>
+                <option>Ciências e Tecnologia</option><option>Engenharia e Arquitectura</option>
+                <option>Saúde e Medicina</option><option>Ciências Sociais</option>
+                <option>Economia e Gestão</option><option>Direito</option>
+                <option>Educação e Pedagogia</option><option>Artes e Humanidades</option>
+                <option>Agricultura e Ambiente</option><option>Tecnologia de Informação</option>
+                <option>Comunicação e Jornalismo</option><option>Outra</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="inst-ensino">Instituição de ensino <span class="opc">(opcional)</span></label>
+          <div class="input-wrap"><i class="fas fa-university ic-esq"></i><input type="text" id="inst-ensino" placeholder="Ex: UEM, UCM, ISCTEM..." maxlength="100"/></div>
+        </div>
+        <div class="campo">
+          <label for="objectivo">Objectivo profissional <span class="opc">(opcional)</span></label>
+          <div class="input-wrap textarea-wrap"><i class="fas fa-bullseye ic-esq"></i>
+            <textarea id="objectivo" placeholder="Descreve os teus objectivos de carreira..." maxlength="400" oninput="contarChars(this,'cont-obj',400)"></textarea>
+          </div>
+          <div class="char-count"><span id="cont-obj">0</span>/400</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button class="btn btn-outline" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar</button>
+          <button class="btn btn-azul" id="btn-guardar-acad" onclick="guardarAcademico()">
+            <span class="spinner"></span>
+            <span class="btn-txt"><i class="fas fa-save"></i> Guardar alterações</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: INTERESSES ── -->
+    <div class="sec" id="sec-interesses">
+      <div class="form-card">
+        <div class="form-card-titulo"><i class="fas fa-heart"></i> Áreas de Interesse</div>
+        <div class="campo">
+          <label>Tipos de oportunidade <span class="obrig">*</span></label>
+          <div class="check-grupo" id="grupo-interesses">
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Bolsas"/> <i class="fas fa-graduation-cap"></i> Bolsas</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Empregos"/> <i class="fas fa-briefcase"></i> Empregos</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Estágios"/> <i class="fas fa-building"></i> Estágios</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Cursos"/> <i class="fas fa-book-open"></i> Cursos</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Workshops"/> <i class="fas fa-chalkboard-teacher"></i> Workshops</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Voluntariado"/> <i class="fas fa-hands-helping"></i> Voluntariado</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Concursos"/> <i class="fas fa-trophy"></i> Concursos</label>
+          </div>
+        </div>
+        <div class="campo">
+          <label>Idiomas que dominas <span class="opc">(opcional)</span></label>
+          <div class="check-grupo" id="grupo-idiomas">
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Português"/> Português</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Inglês"/> Inglês</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Francês"/> Francês</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Espanhol"/> Espanhol</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Changana"/> Changana</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Macua"/> Macua</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Sena"/> Sena</label>
+            <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Ndau"/> Ndau</label>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button class="btn btn-outline" onclick="cancelarEdicao()"><i class="fas fa-times"></i> Cancelar</button>
+          <button class="btn btn-azul" id="btn-guardar-int" onclick="guardarInteresses()">
+            <span class="spinner"></span>
+            <span class="btn-txt"><i class="fas fa-save"></i> Guardar alterações</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: SEGURANÇA ── -->
+    <div class="sec" id="sec-seguranca">
+
+      <!-- Alterar senha -->
+      <div class="form-card">
+        <div class="form-card-titulo"><i class="fas fa-key"></i> Alterar Senha</div>
+        <div class="alerta" id="alerta-senha"><i class="fas fa-exclamation-circle"></i><span id="alerta-senha-msg"></span></div>
+        <div class="campo" id="campo-senha-atual">
+          <label for="senha-atual">Senha actual <span class="obrig">*</span></label>
+          <div class="input-wrap"><i class="fas fa-lock ic-esq"></i>
+            <input type="password" id="senha-atual" placeholder="A tua senha actual" maxlength="100"/>
+            <button type="button" class="btn-olho" onclick="toggleSenha('senha-atual','olho0')" aria-label="Mostrar senha"><i class="fas fa-eye" id="olho0"></i></button>
+          </div>
+          <div class="msg-erro" id="erro-senha-atual"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-senha-atual"></span></div>
+        </div>
+        <div class="grid-2">
+          <div class="campo" id="campo-nova-senha">
+            <label for="nova-senha">Nova senha <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-lock ic-esq"></i>
+              <input type="password" id="nova-senha" placeholder="Mínimo 8 caracteres" maxlength="100" oninput="avaliarForca(this.value)"/>
+              <button type="button" class="btn-olho" onclick="toggleSenha('nova-senha','olho1')" aria-label="Mostrar nova senha"><i class="fas fa-eye" id="olho1"></i></button>
+            </div>
+            <div class="forca-wrap">
+              <div class="forca-barras"><div class="forca-barra" id="fb1"></div><div class="forca-barra" id="fb2"></div><div class="forca-barra" id="fb3"></div><div class="forca-barra" id="fb4"></div></div>
+              <span class="forca-label" id="forca-label"></span>
+            </div>
+            <div class="msg-erro" id="erro-nova-senha"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-nova-senha"></span></div>
+          </div>
+          <div class="campo" id="campo-conf-senha">
+            <label for="conf-senha">Confirmar nova senha <span class="obrig">*</span></label>
+            <div class="input-wrap"><i class="fas fa-lock ic-esq"></i>
+              <input type="password" id="conf-senha" placeholder="Repete a nova senha" maxlength="100"/>
+              <button type="button" class="btn-olho" onclick="toggleSenha('conf-senha','olho2')" aria-label="Mostrar confirmação"><i class="fas fa-eye" id="olho2"></i></button>
+            </div>
+            <div class="msg-erro" id="erro-conf-senha"><i class="fas fa-exclamation-circle"></i><span id="txt-erro-conf-senha"></span></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+          <button class="btn btn-azul" id="btn-alterar-senha" onclick="alterarSenha()">
+            <span class="spinner"></span>
+            <span class="btn-txt"><i class="fas fa-key"></i> Alterar senha</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Zona de perigo -->
+      <div class="zona-perigo">
+        <h3><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h3>
+        <p>Eliminar a tua conta é uma acção permanente e irreversível. Todos os teus dados, candidaturas e oportunidades guardadas serão apagados definitivamente.</p>
+        <button class="btn btn-vermelho" onclick="confirmarEliminar()">
+          <i class="fas fa-trash-alt"></i> Eliminar a minha conta
+        </button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>HorizonteMZ</strong> &copy; 2026
+</footer>
+
+<!-- MODAL CONFIRMAÇÃO ELIMINAR -->
+<div class="modal-overlay" id="modal-eliminar">
+  <div class="modal">
+    <h3><i class="fas fa-exclamation-triangle"></i> Eliminar conta</h3>
+    <p>Tens a certeza que queres eliminar a tua conta? Esta acção é permanente e não pode ser desfeita. Todos os teus dados serão apagados.</p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="fecharModal()"><i class="fas fa-times"></i> Cancelar</button>
+      <button class="btn btn-vermelho" onclick="eliminarConta()"><i class="fas fa-trash-alt"></i> Sim, eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Input oculto para foto -->
+<input type="file" id="input-foto" accept="image/*" style="display:none;" onchange="carregarFoto(event)"/>
+
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- JAVASCRIPT -->
+<script>
+  const KEYS={tema:'hmz_tema',sessaoUtil:'hmz_sessao_utilizador',utilizadores:'hmz_utilizadores',candidaturas:'hmz_candidaturas'};
+  let sessao=null;
+  let utilizador=null;
+  let utilizadores=[];
+  let modoPublico=false;
+
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){console.warn(e);}}
+  function iniciais(nome){if(!nome)return'?';const p=nome.split(' ');return(p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+  function formatarData(iso){if(!iso)return'';const d=new Date(iso);return d.toLocaleDateString('pt-MZ',{month:'long',year:'numeric'});}
+  function contarChars(el,cId){document.getElementById(cId).textContent=el.value.length;}
+
+  /* MODO ESCURO */
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+
+  /* TOAST */
+  function mostrarToast(msg,tipo=''){const cont=document.getElementById('toast-container');const t=document.createElement('div');t.className='toast '+tipo;t.textContent=msg;cont.appendChild(t);setTimeout(()=>{t.style.animation='toastOut 0.3s ease forwards';setTimeout(()=>t.remove(),300);},3500);}
+
+  /* ALERTA GLOBAL */
+  function mostrarAlerta(elId,msgId,msg,tipo='sucesso'){
+    const el=document.getElementById(elId);const m=document.getElementById(msgId);
+    el.className='alerta '+tipo+' visivel';m.textContent=msg;
+    setTimeout(()=>{el.className='alerta';},4000);
+  }
+
+  /* SIDEBAR */
+  let sbAberta=false;
+  function toggleSidebar(){sbAberta?fecharSidebar():abrirSidebar();}
+  function abrirSidebar(){sbAberta=true;document.getElementById('sidebar').classList.add('aberta');document.getElementById('overlay').style.display='block';document.getElementById('burger-icon').className='fas fa-times';}
+  function fecharSidebar(){sbAberta=false;document.getElementById('sidebar').classList.remove('aberta');document.getElementById('overlay').style.display='none';document.getElementById('burger-icon').className='fas fa-bars';}
+
+  /* TABS */
+  function irTab(id){
+    document.querySelectorAll('.sec').forEach(s=>s.classList.remove('ativa'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
+    document.getElementById('sec-'+id).classList.add('ativa');
+    document.getElementById('tab-'+id).classList.add('ativo');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  /* TOGGLE CHECK */
+  function toggleCheck(label){const cb=label.querySelector('input[type="checkbox"]');cb.checked=!cb.checked;label.classList.toggle('selecionado',cb.checked);}
+
+  /* CAMPOS */
+  function marcarErro(id,msg){const c=document.getElementById(id);if(!c)return;c.classList.add('erro');c.classList.remove('valido');const t=document.getElementById('txt-erro-'+id.replace('campo-',''));if(t)t.textContent=msg;}
+  function marcarValido(id){const c=document.getElementById(id);if(!c)return;c.classList.remove('erro');c.classList.add('valido');}
+  function limpar(id){const c=document.getElementById(id);if(c)c.classList.remove('erro','valido');}
+  function validarEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());}
+  function validarTel(t){return /^(\+258)?[0-9]{9,12}$/.test(t.replace(/\s/g,''));}
+
+  /* TOGGLE SENHA */
+  function toggleSenha(iId,oId){const i=document.getElementById(iId);const o=document.getElementById(oId);const s=i.type==='password';i.type=s?'text':'password';o.className=s?'fas fa-eye-slash':'fas fa-eye';}
+
+  /* FORÇA SENHA */
+  function avaliarForca(senha){
+    let pts=0;
+    if(senha.length>=8)pts++;if(senha.length>=12)pts++;
+    if(/[A-Z]/.test(senha)&&/[a-z]/.test(senha))pts++;
+    if(/[0-9]/.test(senha))pts++;if(/[^A-Za-z0-9]/.test(senha))pts++;
+    const nivel=Math.min(Math.max(Math.ceil(pts*4/5),senha.length>0?1:0),4);
+    const cls=['fraca','media','forte','muitoforte'];const labels=['Fraca','Média','Forte','Muito forte'];const lcls=['forca-fraca','forca-media','forca-forte','forca-muitoforte'];
+    ['fb1','fb2','fb3','fb4'].forEach((id,i)=>{const el=document.getElementById(id);el.className='forca-barra';if(i<nivel)el.classList.add(cls[nivel-1]);});
+    const lbl=document.getElementById('forca-label');if(!senha.length){lbl.textContent='';return;}
+    lbl.textContent=labels[nivel-1]||'';lbl.className='forca-label '+(lcls[nivel-1]||'');
+  }
+
+  /* CALCULAR COMPLETUDE */
+  function calcCompletude(u){
+    if(!u)return 0;let pts=0;
+    const obrig=['nome','email','tel','nasc','genero','provincia','nivelEscolaridade'];
+    const opcs=['areaEstudo','instituicaoEnsino','objectivo','bio','foto'];
+    obrig.forEach(c=>{if(u[c])pts+=10;});
+    opcs.forEach(c=>{if(u[c])pts+=4;});
+    if(u.interesses&&u.interesses.length>0)pts+=6;
+    if(u.idiomas&&u.idiomas.length>0)pts+=4;
+    return Math.min(pts,100);
+  }
+
+  /* PREENCHER FORMULÁRIO */
+  function preencherForms(){
+    if(!utilizador)return;
+    // Dados pessoais
+    document.getElementById('nome').value=utilizador.nome||'';
+    document.getElementById('nasc').value=utilizador.nasc||'';
+    document.getElementById('genero').value=utilizador.genero||'';
+    document.getElementById('tel').value=utilizador.tel||'';
+    document.getElementById('prov').value=utilizador.provincia||'';
+    document.getElementById('email').value=utilizador.email||'';
+    document.getElementById('bio').value=utilizador.bio||'';
+    document.getElementById('cont-bio').textContent=(utilizador.bio||'').length;
+    // Académico
+    document.getElementById('nivel').value=utilizador.nivelEscolaridade||'';
+    document.getElementById('area').value=utilizador.areaEstudo||'';
+    document.getElementById('inst-ensino').value=utilizador.instituicaoEnsino||'';
+    document.getElementById('objectivo').value=utilizador.objectivo||'';
+    document.getElementById('cont-obj').textContent=(utilizador.objectivo||'').length;
+    // Interesses
+    const ints=utilizador.interesses||[];
+    document.querySelectorAll('#grupo-interesses .check-item').forEach(item=>{
+      const cb=item.querySelector('input');
+      if(ints.includes(cb.value)){cb.checked=true;item.classList.add('selecionado');}
+    });
+    const idiomas=utilizador.idiomas||[];
+    document.querySelectorAll('#grupo-idiomas .check-item').forEach(item=>{
+      const cb=item.querySelector('input');
+      if(idiomas.includes(cb.value)){cb.checked=true;item.classList.add('selecionado');}
+    });
+  }
+
+  /* ACTUALIZAR HERO */
+  function actualizarHero(){
+    if(!utilizador)return;
+    const ini=iniciais(utilizador.nome);
+    document.getElementById('avatar-grande').textContent=ini;
+    document.getElementById('avatar-iniciais').textContent=ini;
+    document.getElementById('chip-nome').textContent=utilizador.nome?utilizador.nome.split(' ')[0]:'Utilizador';
+    document.getElementById('hero-nome').textContent=utilizador.nome||'Utilizador';
+    document.getElementById('hero-email').textContent=utilizador.email||'';
+    document.getElementById('hero-prov').textContent=utilizador.provincia||'Moçambique';
+    document.getElementById('hero-nivel').textContent=utilizador.nivelEscolaridade||'Nível académico';
+    document.getElementById('hero-data').textContent=formatarData(utilizador.criadoEm);
+    // Completude
+    const pct=calcCompletude(utilizador);
+    document.getElementById('comp-pct').textContent=pct+'%';
+    setTimeout(()=>{document.getElementById('barra-fill').style.width=pct+'%';},200);
+  }
+
+  /* GUARDAR DADOS PESSOAIS */
+  function guardarDados(){
+    if(modoPublico)return;
+    const nome=document.getElementById('nome').value.trim();
+    const nasc=document.getElementById('nasc').value;
+    const genero=document.getElementById('genero').value;
+    const tel=document.getElementById('tel').value.trim();
+    const prov=document.getElementById('prov').value;
+    const email=document.getElementById('email').value.trim();
+    let ok=true;
+    ['campo-nome','campo-nasc','campo-genero','campo-tel','campo-prov','campo-email'].forEach(limpar);
+    if(!nome||nome.length<3){marcarErro('campo-nome','Nome obrigatório (mín. 3 caracteres).');ok=false;}else marcarValido('campo-nome');
+    if(!nasc){marcarErro('campo-nasc','Data de nascimento obrigatória.');ok=false;}else marcarValido('campo-nasc');
+    if(!genero){marcarErro('campo-genero','Seleciona o género.');ok=false;}else marcarValido('campo-genero');
+    if(!tel){marcarErro('campo-tel','Telefone obrigatório.');ok=false;}
+    else if(!validarTel(tel)){marcarErro('campo-tel','Número inválido (+258...).');ok=false;}
+    else marcarValido('campo-tel');
+    if(!prov){marcarErro('campo-prov','Seleciona a província.');ok=false;}else marcarValido('campo-prov');
+    if(!email){marcarErro('campo-email','E-mail obrigatório.');ok=false;}
+    else if(!validarEmail(email)){marcarErro('campo-email','E-mail inválido.');ok=false;}
+    else{
+      const outro=utilizadores.find(u=>u.email.toLowerCase()===email.toLowerCase()&&u.id!==sessao.id);
+      if(outro){marcarErro('campo-email','Este e-mail já está em uso.');ok=false;}
+      else marcarValido('campo-email');
+    }
+    if(!ok)return;
+    const btn=document.getElementById('btn-guardar-dados');btn.classList.add('loading');btn.disabled=true;
+    setTimeout(()=>{
+      const idx=utilizadores.findIndex(u=>u.id===sessao.id);
+      if(idx!==-1){
+        utilizadores[idx].nome=nome;utilizadores[idx].nasc=nasc;
+        utilizadores[idx].genero=genero;utilizadores[idx].tel=tel;
+        utilizadores[idx].provincia=prov;utilizadores[idx].email=email.toLowerCase();
+        utilizadores[idx].bio=document.getElementById('bio').value.trim();
+        lsSet(KEYS.utilizadores,utilizadores);
+        // Actualizar sessão
+        sessao.nome=nome;sessao.email=email.toLowerCase();
+        lsSet(KEYS.sessaoUtil,sessao);
+        utilizador=utilizadores[idx];
+        actualizarHero();
+      }
+      btn.classList.remove('loading');btn.disabled=false;
+      mostrarAlerta('alerta-global','alerta-msg','Dados pessoais actualizados com sucesso!','sucesso');
+      mostrarToast('Perfil actualizado!','sucesso');
+    },800);
+  }
+
+  /* GUARDAR ACADÉMICO */
+  function guardarAcademico(){
+    if(modoPublico)return;
+    const nivel=document.getElementById('nivel').value;
+    limpar('campo-nivel');
+    if(!nivel){marcarErro('campo-nivel','Seleciona o nível de escolaridade.');return;}
+    marcarValido('campo-nivel');
+    const btn=document.getElementById('btn-guardar-acad');btn.classList.add('loading');btn.disabled=true;
+    setTimeout(()=>{
+      const idx=utilizadores.findIndex(u=>u.id===sessao.id);
+      if(idx!==-1){
+        utilizadores[idx].nivelEscolaridade=nivel;
+        utilizadores[idx].areaEstudo=document.getElementById('area').value;
+        utilizadores[idx].instituicaoEnsino=document.getElementById('inst-ensino').value.trim();
+        utilizadores[idx].objectivo=document.getElementById('objectivo').value.trim();
+        lsSet(KEYS.utilizadores,utilizadores);utilizador=utilizadores[idx];actualizarHero();
+      }
+      btn.classList.remove('loading');btn.disabled=false;
+      mostrarAlerta('alerta-global','alerta-msg','Perfil académico actualizado!','sucesso');
+      mostrarToast('Perfil académico guardado!','sucesso');
+    },800);
+  }
+
+  /* GUARDAR INTERESSES */
+  function guardarInteresses(){
+    if(modoPublico)return;
+    const ints=Array.from(document.querySelectorAll('#grupo-interesses input:checked')).map(c=>c.value);
+    const idiomas=Array.from(document.querySelectorAll('#grupo-idiomas input:checked')).map(c=>c.value);
+    if(ints.length===0){mostrarToast('Seleciona pelo menos um interesse.','erro');return;}
+    const btn=document.getElementById('btn-guardar-int');btn.classList.add('loading');btn.disabled=true;
+    setTimeout(()=>{
+      const idx=utilizadores.findIndex(u=>u.id===sessao.id);
+      if(idx!==-1){utilizadores[idx].interesses=ints;utilizadores[idx].idiomas=idiomas;lsSet(KEYS.utilizadores,utilizadores);utilizador=utilizadores[idx];}
+      btn.classList.remove('loading');btn.disabled=false;
+      mostrarAlerta('alerta-global','alerta-msg','Interesses actualizados com sucesso!','sucesso');
+      mostrarToast('Interesses guardados!','sucesso');
+    },800);
+  }
+
+  /* ALTERAR SENHA */
+  function alterarSenha(){
+    const atual=document.getElementById('senha-atual').value;
+    const nova=document.getElementById('nova-senha').value;
+    const conf=document.getElementById('conf-senha').value;
+    let ok=true;
+    ['campo-senha-atual','campo-nova-senha','campo-conf-senha'].forEach(limpar);
+    document.getElementById('alerta-senha').className='alerta';
+    if(!atual){marcarErro('campo-senha-atual','Introduz a senha actual.');ok=false;}
+    else if(atual!==utilizador.senha){marcarErro('campo-senha-atual','Senha actual incorrecta.');ok=false;}
+    else marcarValido('campo-senha-atual');
+    if(!nova||nova.length<8){marcarErro('campo-nova-senha','Mínimo 8 caracteres.');ok=false;}else marcarValido('campo-nova-senha');
+    if(!conf){marcarErro('campo-conf-senha','Confirma a nova senha.');ok=false;}
+    else if(nova!==conf){marcarErro('campo-conf-senha','As senhas não coincidem.');ok=false;}
+    else if(nova.length>=8)marcarValido('campo-conf-senha');
+    if(!ok)return;
+    const btn=document.getElementById('btn-alterar-senha');btn.classList.add('loading');btn.disabled=true;
+    setTimeout(()=>{
+      const idx=utilizadores.findIndex(u=>u.id===sessao.id);
+      if(idx!==-1){utilizadores[idx].senha=nova;lsSet(KEYS.utilizadores,utilizadores);utilizador=utilizadores[idx];}
+      btn.classList.remove('loading');btn.disabled=false;
+      document.getElementById('senha-atual').value='';document.getElementById('nova-senha').value='';document.getElementById('conf-senha').value='';
+      avaliarForca('');
+      mostrarAlerta('alerta-global','alerta-msg','Senha alterada com sucesso!','sucesso');
+      mostrarToast('Senha alterada!','sucesso');
+    },900);
+  }
+
+  /* FOTO */
+  function triggerFoto(){document.getElementById('input-foto').click();}
+  function carregarFoto(event){
+    const file=event.target.files[0];if(!file)return;
+    if(file.size>2*1024*1024){mostrarToast('A imagem deve ter menos de 2MB.','erro');return;}
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const b64=e.target.result;
+      const idx=utilizadores.findIndex(u=>u.id===sessao.id);
+      if(idx!==-1){utilizadores[idx].foto=b64;lsSet(KEYS.utilizadores,utilizadores);utilizador=utilizadores[idx];}
+      // Mostrar foto no avatar
+      const av=document.getElementById('hero-avatar');
+      av.style.backgroundImage=`url(${b64})`;av.style.backgroundSize='cover';av.style.backgroundPosition='center';
+      document.getElementById('avatar-grande').style.display='none';
+      mostrarToast('Foto actualizada!','sucesso');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* CANCELAR */
+  function cancelarEdicao(){preencherForms();mostrarToast('Alterações canceladas.','');}
+
+  /* ELIMINAR CONTA */
+  function confirmarEliminar(){document.getElementById('modal-eliminar').classList.add('visivel');document.body.style.overflow='hidden';}
+  function fecharModal(){document.getElementById('modal-eliminar').classList.remove('visivel');document.body.style.overflow='';}
+  function eliminarConta(){
+    const id=sessao?.id;
+    const idx=utilizadores.findIndex(u=>u.id===id);
+    if(idx!==-1){utilizadores.splice(idx,1);lsSet(KEYS.utilizadores,utilizadores);}
+    lsSet('hmz_candidaturas',lsGet('hmz_candidaturas',[]).filter(c=>c.utilizadorId!==id));
+    lsSet('hmz_candidaturas_emp',lsGet('hmz_candidaturas_emp',[]).filter(c=>c.utilizadorId!==id));
+    localStorage.removeItem('hmz_cv_data:'+id);
+    localStorage.removeItem('hmz_notificacoes:'+id);
+    lsSet(KEYS.sessaoUtil,null);fecharModal();
+    mostrarToast('Conta eliminada. Até logo!','');
+    setTimeout(()=>{window.location.href='index.html';},1000);
+  }
+
+  function verPerfilPublico(){
+    if(!utilizador||!utilizador.id){mostrarToast('Perfil público não disponível.','');return;}
+    window.location.href='perfil-publico-utilizador.html?id='+encodeURIComponent(utilizador.id);
+  }
+
+  /* SAIR */
+  function sair(){lsSet(KEYS.sessaoUtil,null);mostrarToast('Sessão terminada.','');setTimeout(()=>{window.location.href='index.html';},800);}
+
+  /* INICIALIZAR */
+  document.addEventListener('DOMContentLoaded',function(){
+    sessao=lsGet(KEYS.sessaoUtil);
+    utilizadores=lsGet(KEYS.utilizadores,[]);
+    const params=new URLSearchParams(window.location.search);
+    const requestedId=params.get('id');
+    if(requestedId && String(requestedId)!==String(sessao?.id||'')){
+      modoPublico=true;
+      utilizador=utilizadores.find(u=>String(u.id)===String(requestedId))||null;
+      if(!utilizador||utilizador.desativada){window.location.href='index.html';return;}
+      document.title='Perfil de '+(utilizador.nome||'Utilizador')+' | HorizonteMZ';
+      document.querySelector('.nav-item.ativo').textContent='Perfil';
+      document.querySelectorAll('.tab').forEach(t=>{if(t.id==='tab-seguranca')t.style.display='none';});
+      ['btn-guardar-dados','btn-guardar-acad','btn-guardar-int'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+      document.querySelectorAll('input,select,textarea').forEach(el=>{if(el.id!=='input-foto')el.disabled=true;});
+      const fotoBtn=document.querySelector('[onclick="triggerFoto()"]');if(fotoBtn)fotoBtn.style.display='none';
+      actualizarHero();preencherForms();
+      return;
+    }
+    if(!sessao){window.location.href='login-utilizador.html';return;}
+    const contaAtual=utilizadores.find(u=>String(u.id)===String(sessao.id));
+    if(!contaAtual){lsSet(KEYS.sessaoUtil,null);window.location.href='login-utilizador.html';return;}
+    sessao=contaAtual;
+    utilizador=utilizadores.find(u=>String(u.id)===String(sessao.id))||{nome:sessao.nome,email:sessao.email,guardados:[],interesses:[],idiomas:[]};
+    actualizarHero();preencherForms();
+    // Foto guardada
+    if(utilizador.foto){
+      const av=document.getElementById('hero-avatar');
+      av.style.backgroundImage=`url(${utilizador.foto})`;av.style.backgroundSize='cover';av.style.backgroundPosition='center';
+      document.getElementById('avatar-grande').style.display='none';
+    }
+  });
+
+  document.getElementById('modal-eliminar').addEventListener('click',function(e){if(e.target===this)fecharModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharModal();});
+
+  function aplicarPrivacidade(util,cv,isMeu){
+    if(isMeu)return{util:util,cv:cv};
+    var priv=util.privacidade||{};
+    var u=JSON.parse(JSON.stringify(util));
+    var cv2=JSON.parse(JSON.stringify(cv));
+    if(priv.ocultarEmail)delete u.email;
+    if(priv.ocultarTel)delete u.tel;
+    if(priv.ocultarIdade){delete u.nasc;delete u.dataNasc;}
+    if(priv.ocultarExperiencia)cv2.experiencias=[];
+    if(priv.ocultarEducacao)cv2.educacoes=[];
+    if(priv.ocultarCompetencias)cv2.competencias=[];
+    if(priv.ocultarInteresses){cv2.interesses='';delete u.interesses;}
+    return{util:u,cv:cv2};
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recuperar Senha — Instituição | HorizonteMZ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--cor:#16A34A;--cor-dark:#14532D;--cor-light:#F0FDF4;--amarelo:#FFBE00;--vermelho:#E53935;--verde:#1DB954;--bg:#F4F7FF;--bg2:#FFFFFF;--texto:#1A1A2E;--texto2:#555577;--borda:#DDE3F0;--sombra:rgba(22,163,74,0.08);--radius:14px;--radius-sm:8px;--trans:all 0.25s ease;}
+    body.dark{--cor:#22C55E;--cor-dark:#166534;--cor-light:#0f2d1a;--bg:#0D1117;--bg2:#161B27;--texto:#E8EEFF;--texto2:#8899BB;--borda:#253050;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;display:flex;flex-direction:column;transition:background 0.3s,color 0.3s;}
+    a{text-decoration:none;color:inherit;}
+    header{background:var(--cor-dark);height:65px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px rgba(0,0,0,0.22);}
+    .logo{font-size:1.45rem;font-weight:800;color:#fff;letter-spacing:-0.5px;}.logo span{color:var(--amarelo);}
+    .h-dir{display:flex;align-items:center;gap:8px;}
+    .btn-dark{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer;padding:7px;border-radius:var(--radius-sm);transition:var(--trans);}
+    .btn-dark:hover{background:rgba(255,255,255,0.18);}
+    .btn-voltar{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.88);font-size:0.87rem;font-weight:600;padding:7px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,0.30);transition:var(--trans);}
+    .btn-voltar:hover{background:rgba(255,255,255,0.18);}
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;}
+    .form-wrap{width:100%;max-width:440px;}
+    .form-topo{text-align:center;margin-bottom:32px;}
+    .badge-tipo{display:inline-flex;align-items:center;gap:6px;background:var(--cor-light);color:var(--cor);border:1px solid rgba(22,163,74,0.25);padding:5px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;margin-bottom:14px;}
+    .form-topo h1{font-size:1.7rem;font-weight:800;color:var(--cor);margin-bottom:8px;}
+    .form-topo p{font-size:0.90rem;color:var(--texto2);line-height:1.6;}
+    .form-card{background:var(--bg2);border-radius:var(--radius);border:1.5px solid var(--borda);padding:36px;box-shadow:0 4px 24px var(--sombra);}
+    .sec-form{display:none;}.sec-form.ativa{display:block;}
+    .campo{margin-bottom:20px;}
+    .campo label{display:block;font-size:0.85rem;font-weight:700;margin-bottom:7px;color:var(--texto);}
+    .input-wrap{position:relative;}
+    .input-wrap i.ic-esq{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--texto2);font-size:0.92rem;pointer-events:none;}
+    .input-wrap:focus-within i.ic-esq{color:var(--cor);}
+    .input-wrap input{width:100%;padding:12px 14px 12px 42px;border:1.5px solid var(--borda);border-radius:var(--radius-sm);font-size:0.93rem;background:var(--bg);color:var(--texto);font-family:inherit;transition:var(--trans);outline:none;}
+    .input-wrap input:focus{border-color:var(--cor);box-shadow:0 0 0 3px rgba(22,163,74,0.12);background:var(--bg2);}
+    .btn-principal{width:100%;padding:13px;background:var(--cor);color:#fff;border:none;border-radius:var(--radius-sm);font-size:0.97rem;font-weight:700;cursor:pointer;font-family:inherit;transition:var(--trans);display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-principal:hover{background:var(--cor-dark);transform:translateY(-1px);}
+    .codigos-wrap{display:flex;gap:10px;justify-content:center;margin-bottom:8px;}
+    .codigo-input{width:48px;height:56px;text-align:center;font-size:1.4rem;font-weight:800;border:2px solid var(--borda);border-radius:var(--radius-sm);background:var(--bg);color:var(--texto);font-family:inherit;outline:none;transition:var(--trans);}
+    .codigo-input:focus{border-color:var(--cor);box-shadow:0 0 0 3px rgba(22,163,74,0.12);}
+    .timer-wrap{text-align:center;font-size:0.84rem;color:var(--texto2);margin-bottom:20px;}
+    .timer-wrap strong{color:var(--cor);}
+    .btn-reenviar{background:none;border:none;color:var(--cor);font-size:0.84rem;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline;}
+    .sucesso-ecrã{display:none;text-align:center;padding:10px 0;}
+    .sucesso-ecrã.visivel{display:block;}
+    .sucesso-ic{width:80px;height:80px;border-radius:50%;background:var(--cor-light);border:3px solid var(--cor);display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:var(--cor);margin:0 auto 20px;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;}
+    @keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .sucesso-ecrã h2{font-size:1.5rem;font-weight:800;color:var(--cor);margin-bottom:10px;}
+    .sucesso-ecrã p{font-size:0.90rem;color:var(--texto2);line-height:1.6;margin-bottom:24px;}
+    .alerta{display:none;padding:12px 16px;border-radius:var(--radius-sm);font-size:0.87rem;margin-bottom:16px;align-items:center;gap:10px;border:1px solid;}
+    .alerta.erro{background:#FFF5F5;border-color:#FFCDD2;color:#C62828;}
+    .alerta.sucesso{background:var(--cor-light);border-color:rgba(22,163,74,0.30);color:var(--cor-dark);}
+    body.dark .alerta.erro{background:#2d1a1a;border-color:#5c2222;color:#ff8a80;}
+    body.dark .alerta.sucesso{background:rgba(22,163,74,0.10);border-color:rgba(22,163,74,0.25);color:#86efac;}
+    .alerta.visivel{display:flex;}
+    .btn-olho{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--texto2);cursor:pointer;font-size:0.95rem;padding:4px;transition:var(--trans);}
+    .btn-olho:hover{color:var(--cor);}
+    .form-rodape{text-align:center;margin-top:20px;font-size:0.86rem;color:var(--texto2);}
+    .form-rodape a{color:var(--cor);font-weight:700;}
+    footer{background:#0D1B3E;color:rgba(255,255,255,0.50);text-align:center;padding:18px 24px;font-size:0.82rem;}
+    footer strong{color:rgba(255,255,255,0.80);}
+    @media(max-width:480px){.form-card{padding:24px 18px;}.codigo-input{width:40px;height:48px;font-size:1.2rem;}}
+  
+    /* HMZ GLOBAL FIXES */
+    html{overflow-x:hidden !important;}
+    body{overflow-x:hidden !important;}
+    *{word-break:break-word;overflow-wrap:anywhere;}
+
+
+/* HMZ MOBILE RESPONSIVENESS — compactação do cabeçalho e toque */
+*{-webkit-tap-highlight-color:transparent;}
+@media(max-width:960px){
+  header{max-width:100%;padding-left:16px!important;padding-right:16px!important;gap:10px;}
+  .h-dir{min-width:0;gap:6px!important;}
+  .filtros-mob-btn{display:inline-flex!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:20!important;}
+  .filtros-overlay{z-index:300!important;}
+  .filtros-drawer{width:min(88vw,320px)!important;max-width:320px;z-index:310!important;}
+}
+@media(max-width:560px){
+  header{height:auto!important;min-height:var(--header-h,65px);}
+  .h-dir .btn-h,.h-dir .hmz-back-page{width:42px;min-width:42px;height:42px;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:0!important;}
+  .h-dir .btn-h{font-size:0!important;}
+  .h-dir .btn-h i,.h-dir .hmz-back-page i{font-size:1rem!important;margin:0!important;}
+  .h-dir .hmz-back-page{font-size:0!important;}
+  .h-dir .btn-dark,.h-dir .btn-burger{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-sair span{display:none!important;}
+  .btn-sair{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .btn-cfg-header{width:42px!important;height:42px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;}
+  .filtros-mob-btn{min-height:44px!important;}
+}
+
+</style>
+
+<style id="hmz-standard-back-final">
+.hmz-back-page{background:rgba(255,255,255,.15)!important;border:none!important;color:#fff!important;cursor:pointer;display:inline-flex!important;align-items:center;justify-content:center;gap:5px;font-family:inherit;font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:8px;transition:all .2s ease;white-space:nowrap;}
+.hmz-back-page:hover{background:rgba(255,255,255,.28)!important;transform:none!important;}
+@media(max-width:760px){.hmz-back-page{padding:6px 10px;font-size:.80rem;}}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">Horizonte<span>MZ</span></a>
+  <div class="h-dir">
+    <button type="button" class="hmz-back-page" onclick="history.back()" aria-label="Voltar à página anterior"><i class="fas fa-arrow-left"></i> Voltar</button>
+  </div>
+</header>
+<main>
+  <div class="form-wrap">
+    <div class="form-topo">
+      <div class="badge-tipo"><i class="fas fa-university"></i> Instituição</div>
+      <h1>Recuperar Senha</h1>
+      <p>Recupera o acesso à conta da tua instituição.</p>
+    </div>
+    <div class="form-card">
+      <div class="alerta" id="alerta"><i class="fas fa-exclamation-circle"></i><span id="alerta-msg"></span></div>
+
+      <!-- PASSO 1: EMAIL -->
+      <div class="sec-form ativa" id="sec1">
+        <p style="font-size:0.88rem;color:var(--texto2);margin-bottom:20px;">Introduz o e-mail da tua instituição. Vamos enviar um código de verificação.</p>
+        <div class="campo">
+          <label for="email">E-mail da instituição</label>
+          <div class="input-wrap"><i class="fas fa-envelope ic-esq"></i><input type="email" id="email" placeholder="instituicao@email.com" inputmode="email"/></div>
+        </div>
+        <button class="btn-principal" onclick="enviarCodigo()"><i class="fas fa-paper-plane"></i> Enviar código</button>
+        <div class="form-rodape" style="margin-top:16px;"><a href="escolha-tipo-recuperar.html"><i class="fas fa-arrow-left"></i> Outro tipo de conta</a></div>
+      </div>
+
+      <!-- PASSO 2: CÓDIGO -->
+      <div class="sec-form" id="sec2">
+        <p style="font-size:0.88rem;color:var(--texto2);margin-bottom:20px;">Introduz o código de 6 dígitos enviado para <strong id="email-mostrado"></strong>.</p>
+        <div class="codigos-wrap" id="codigos-wrap">
+          <input class="codigo-input" maxlength="1" inputmode="numeric" oninput="avancarCodigo(this,0)"/>
+          <input class="codigo-input" maxlength="1" inputmode="numeric" oninput="avancarCodigo(this,1)"/>
+          <input class="codigo-input" maxlength="1" inputmode="numeric" oninput="avancarCodigo(this,2)"/>
+          <input class="codigo-input" maxlength="1" inputmode="numeric" oninput="avancarCodigo(this,3)"/>
+          <input class="codigo-input" maxlength="1" inputmode="numeric" oninput="avancarCodigo(this,4)"/>
+          <input class="codigo-input" maxlength="1" inputmode="numeric" oninput="avancarCodigo(this,5)"/>
+        </div>
+        <div class="timer-wrap">Código expira em <strong id="timer">60</strong>s &nbsp;·&nbsp; <button class="btn-reenviar" onclick="reenviarCodigo()" id="btn-reenviar" disabled>Reenviar</button></div>
+        <button class="btn-principal" onclick="verificarCodigo()"><i class="fas fa-check"></i> Verificar código</button>
+      </div>
+
+      <!-- PASSO 3: NOVA SENHA -->
+      <div class="sec-form" id="sec3">
+        <p style="font-size:0.88rem;color:var(--texto2);margin-bottom:20px;">Define a nova senha de acesso à conta da tua instituição.</p>
+        <div class="campo">
+          <label for="nova-senha">Nova senha</label>
+          <div class="input-wrap"><i class="fas fa-lock ic-esq"></i><input type="password" id="nova-senha" placeholder="Mínimo 8 caracteres" maxlength="100"/><button type="button" class="btn-olho" onclick="toggleSenha('nova-senha','olho1')"><i class="fas fa-eye" id="olho1"></i></button></div>
+        </div>
+        <div class="campo">
+          <label for="conf-senha">Confirmar senha</label>
+          <div class="input-wrap"><i class="fas fa-lock ic-esq"></i><input type="password" id="conf-senha" placeholder="Repete a senha" maxlength="100"/><button type="button" class="btn-olho" onclick="toggleSenha('conf-senha','olho2')"><i class="fas fa-eye" id="olho2"></i></button></div>
+        </div>
+        <button class="btn-principal" onclick="definirSenha()"><i class="fas fa-save"></i> Definir nova senha</button>
+      </div>
+
+      <!-- SUCESSO -->
+      <div class="sucesso-ecrã" id="sec-sucesso">
+        <div class="sucesso-ic"><i class="fas fa-check"></i></div>
+        <h2>Senha alterada!</h2>
+        <p>A senha da tua instituição foi redefinida com sucesso. Podes entrar agora com a nova senha.</p>
+        <a href="login-instituicao.html" class="btn-principal" style="display:flex;justify-content:center;"><i class="fas fa-sign-in-alt"></i> Entrar na conta</a>
+      </div>
+    </div>
+  </div>
+</main>
+<footer><strong>HorizonteMZ</strong> &copy; 2026</footer>
+<script>
+  const KEYS={tema:'hmz_tema',instituicoes:'hmz_instituicoes'};
+  let codigoGerado='';let timerInterval=null;let emailRecuperacao='';
+  function lsGet(k,d=null){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function aplicarTema(dark){document.body.classList.toggle('dark',dark);const icon=document.getElementById('dark-icon');if(icon)icon.className=dark?'fas fa-sun':'fas fa-moon';}
+  function toggleDark(){const dark=!document.body.classList.contains('dark');lsSet(KEYS.tema,dark?'dark':'light');aplicarTema(dark);}
+  if(lsGet(KEYS.tema)==='dark')aplicarTema(true);
+  function mostrarAlerta(msg,tipo='erro'){const el=document.getElementById('alerta');document.getElementById('alerta-msg').textContent=msg;el.className='alerta '+tipo+' visivel';}
+  function esconderAlerta(){document.getElementById('alerta').className='alerta';}
+  function irSec(id){document.querySelectorAll('.sec-form').forEach(s=>s.classList.remove('ativa'));document.getElementById(id).classList.add('ativa');esconderAlerta();}
+  function toggleSenha(iId,oId){const i=document.getElementById(iId);const o=document.getElementById(oId);const s=i.type==='password';i.type=s?'text':'password';o.className=s?'fas fa-eye-slash':'fas fa-eye';}
+  function avancarCodigo(el,idx){if(el.value&&idx<5){document.querySelectorAll('.codigo-input')[idx+1].focus();}if(el.value.length>1)el.value=el.value[0];}
+  function iniciarTimer(){let seg=60;const el=document.getElementById('timer');const btn=document.getElementById('btn-reenviar');btn.disabled=true;clearInterval(timerInterval);timerInterval=setInterval(()=>{seg--;el.textContent=seg;if(seg<=0){clearInterval(timerInterval);btn.disabled=false;}},1000);}
+  function enviarCodigo(){
+    const email=document.getElementById('email').value.trim();
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){mostrarAlerta('Introduz um e-mail válido.');return;}
+    const inst=lsGet(KEYS.instituicoes,[]).find(i=>i.email.toLowerCase()===email.toLowerCase());
+    if(!inst){mostrarAlerta('Não existe conta de instituição com este e-mail.');return;}
+    emailRecuperacao=email;codigoGerado=String(Math.floor(100000+Math.random()*900000));
+    console.log('Código (demo):',codigoGerado);
+    document.getElementById('email-mostrado').textContent=email;
+    irSec('sec2');iniciarTimer();mostrarAlerta('Código enviado para '+email+' (demo: '+codigoGerado+')','sucesso');
+  }
+  function reenviarCodigo(){codigoGerado=String(Math.floor(100000+Math.random()*900000));console.log('Novo código:',codigoGerado);iniciarTimer();mostrarAlerta('Código reenviado! (demo: '+codigoGerado+')','sucesso');}
+  function verificarCodigo(){
+    const inputs=document.querySelectorAll('.codigo-input');const codigo=Array.from(inputs).map(i=>i.value).join('');
+    if(codigo.length<6){mostrarAlerta('Introduz o código completo de 6 dígitos.');return;}
+    if(codigo===codigoGerado){clearInterval(timerInterval);irSec('sec3');}
+    else{mostrarAlerta('Código incorrecto. Tenta novamente.');}
+  }
+  function definirSenha(){
+    const nova=document.getElementById('nova-senha').value;const conf=document.getElementById('conf-senha').value;
+    if(!nova||nova.length<8){mostrarAlerta('A senha deve ter pelo menos 8 caracteres.');return;}
+    if(nova!==conf){mostrarAlerta('As senhas não coincidem.');return;}
+    const insts=lsGet(KEYS.instituicoes,[]);const idx=insts.findIndex(i=>i.email.toLowerCase()===emailRecuperacao.toLowerCase());
+    if(idx!==-1){insts[idx].senha=nova;lsSet(KEYS.instituicoes,insts);}
+    document.getElementById('sec3').classList.remove('ativa');document.getElementById('sec-sucesso').classList.add('visivel');
+  }
+</script>
+</body>
+</html>
